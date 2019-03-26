@@ -1,11 +1,12 @@
 import React from 'react';
+import View from '../ui/View';
 import { UserConsumer } from '../UserContext';
 
 export default class MeuPerfil extends React.Component {
 
 
   render() {
-    return ( <div>
+    return ( <View style={{backgroundColor: 'black'}}>
         <UserConsumer>
         {({ logout }) => (<>
             <h3>Meu Perfil</h3>
@@ -14,7 +15,7 @@ export default class MeuPerfil extends React.Component {
         </>
         )}
         </UserConsumer>
-    </div>
+    </View>
     )
   }
 }
