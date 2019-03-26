@@ -9,7 +9,7 @@ class Home extends Component {
         <p>
         Mude algo no arquivo <code>src/pages/Home.js</code> e veja a mudança aqui.
         </p>
-        <Link to="/login" class="btn"> Login </Link>
+        <Link to="/login" className="btn"> Login </Link>
     </section>
   }
 }
