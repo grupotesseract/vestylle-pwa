@@ -26,7 +26,10 @@ class UserProvider extends React.Component {
   }
 
   setToken(userToken) {
-    this.setState({userToken})
+    this.setState({
+      isAuth: true,
+      userToken
+    })
   }
 
   render() {

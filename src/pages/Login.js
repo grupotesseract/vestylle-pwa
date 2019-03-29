@@ -2,7 +2,7 @@ import React from 'react';
 import ButtonBorder from '../ui/ButtonBorder';
 import RubikText from '../ui/RubikText';
 import Alert from '../ui/Alert';
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import ImageBackground from '../ui/ImageBackground';
 import View from '../ui/View';
 import TextInput from '../ui/TextInput';
@@ -11,6 +11,7 @@ import { UserConsumer } from '../UserContext';
 export default class LoginScreen extends React.Component {
   state = {
     erroLogin: false,
+    redirectTo: null,
     msgErro: '',
     login: '',
     password: ''
@@ -22,6 +23,9 @@ export default class LoginScreen extends React.Component {
         source={require('../assets/fundologin.jpg')}
         style={{width: '100%', minHeight: '100%', justifyContent: 'space-between', alignItems: 'center'}}>
 
+        { this.state.redirectTo && (
+          <Redirect to={this.state.redirectTo}/>
+        )}
         <View
           style={{width: '80%', flexGrow:1, marginBottom: 'auto', justifyContent: 'center'}}>
           <img
@@ -80,28 +84,30 @@ export default class LoginScreen extends React.Component {
   }
 
   signInAsync = async (setToken) => {
+    const self = this;
     this.setState({loading:true})
     await this.fetchLogin()
     .then(jsonRes => {
       if(jsonRes.success) {
         const token = jsonRes.data.token.token
         setToken(token);
-        this.props.navigation.navigate('App');
+        self.setState({ redirectTo: '/areacliente'});
         return;
       }
       const msgErro = jsonRes.message;
-      this.setState({
+      self.setState({
         erroLogin: true,
+        loading: false,
         msgErro
       })
     })
     .catch(erro => {
-      this.setState({
+      self.setState({
         erroLogin: true, 
-        msgErro: erro.toString()
+        msgErro: erro.toString(),
+        loading: false
       })
     })
-    this.setState({loading:false})
   };
 
   fetchLogin = async () => {

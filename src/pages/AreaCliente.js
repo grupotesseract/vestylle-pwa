@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 import Header from '../components/Header'
-import RodapeCompleto from '../components/RodapeCompleto';
+import MiniRodape from '../components/MiniRodape';
 import View from '../ui/View';
 
 class AreaCliente extends Component {
+  
   render() {
-    return <View>
-      <>Area do cliente</>
+    return <>
+      <Header/>
+      <View>
+      Area do cliente
       </View>
+      <MiniRodape/>
+      </>
     
   }
 }
