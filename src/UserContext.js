@@ -17,6 +17,14 @@ class UserProvider extends React.Component {
     this.setToken = this.setToken.bind(this)
   }
 
+  componentWillMount() {
+    const userToken = localStorage.getItem('userToken');
+    if (userToken) {
+      this.setToken(userToken);
+      return;
+    }
+  }
+
   login() {
     this.setState({isAuth: true});
   }
@@ -30,6 +38,8 @@ class UserProvider extends React.Component {
       isAuth: true,
       userToken
     })
+    localStorage.setItem('userToken', userToken);
+    localStorage.setItem('isAuth', true);
   }
 
   render() {

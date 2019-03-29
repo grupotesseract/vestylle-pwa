@@ -89,7 +89,7 @@ export default class LoginScreen extends React.Component {
     await this.fetchLogin()
     .then(jsonRes => {
       if(jsonRes.success) {
-        const token = jsonRes.data.token.token
+        const token = jsonRes.data.token
         setToken(token);
         self.setState({ redirectTo: '/areacliente'});
         return;
