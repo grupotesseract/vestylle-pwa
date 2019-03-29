@@ -6,6 +6,8 @@ import { UserProvider } from './UserContext';
 import './App.css';
 import MeuPerfil from './pages/MeuPerfil';
 import ProtectedRoute from './ProtectedRoute';
+import Cadastro from './pages/Cadastro';
+import CadastroSimples from './pages/CadastroSimples';
 
 class App extends Component {
   render() {
@@ -14,6 +16,8 @@ class App extends Component {
         <Switch>
           <Route exact={true} path="/" component={Home}/>
           <Route exact={true} path="/login" component={Login}/>
+          <Route exact={true} path="/cadastro" component={Cadastro}/>
+          <Route exact={true} path="/cadastrosimples" component={CadastroSimples}/>
           <ProtectedRoute path="/meuperfil" component={MeuPerfil} />
         </Switch>
       </UserProvider>

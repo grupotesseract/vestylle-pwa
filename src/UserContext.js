@@ -5,6 +5,7 @@ const UserContext = React.createContext();
 class UserProvider extends React.Component {
   state = { 
     isAuth: false,
+    userToken: null,
     perfil: {
     }
   }
@@ -23,19 +24,26 @@ class UserProvider extends React.Component {
     this.setState({isAuth: false});
   }
 
+  setToken(userToken) {
+    this.setState({userToken})
+  }
+
   render() {
     return (
       <UserContext.Provider
         value={{ 
           isAuth: this.state.isAuth,
           login: this.login,
-          logout: this.logout
+          logout: this.logout,
+          setToken: this.setToken
         }}
       >
         {this.props.children}
       </UserContext.Provider>
     )
   }
+
+  
 }
 
 const UserConsumer = UserContext.Consumer

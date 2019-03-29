@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
-import logo from '../logo.svg';
-import { Link } from 'react-router-dom'
+import Header from '../components/Header'
+import RodapeCompleto from '../components/RodapeCompleto';
 
 class Home extends Component {
   render() {
-    return <section>
-        <img src={logo} className="logo" alt="logo" />
-        <p>
-        Mude algo no arquivo <code>src/pages/Home.js</code> e veja a mudança aqui.
-        </p>
-        <Link to="/login" className="btn"> Login </Link>
-    </section>
+    return <>
+      <Header/>
+      <h4>slider cupons</h4>
+      <h4>slider ofertas</h4>
+      <RodapeCompleto/>
+    </>
+    
   }
 }
 
