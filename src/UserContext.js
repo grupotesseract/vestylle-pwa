@@ -14,6 +14,7 @@ class UserProvider extends React.Component {
     super()
     this.login = this.login.bind(this)
     this.logout = this.logout.bind(this)
+    this.setToken = this.setToken.bind(this)
   }
 
   login() {

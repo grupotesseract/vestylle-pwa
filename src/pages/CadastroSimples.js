@@ -5,7 +5,7 @@ import Alert from '../ui/Alert';
 import ImageBackground from '../ui/ImageBackground';
 import View from '../ui/View';
 import TextInput from '../ui/TextInput';
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { UserConsumer } from '../UserContext';
 
 export default class CadastroSimples extends React.Component {
@@ -17,7 +17,8 @@ export default class CadastroSimples extends React.Component {
     msgErro: '',
     login: '',
     password: '',
-    passwordConfirm: ''
+    passwordConfirm: '',
+    redirectTo: null
   }
 
   render() {
@@ -26,6 +27,9 @@ export default class CadastroSimples extends React.Component {
         source={require('../assets/fundologin.jpg')}
         style={{width: '100%', minHeight: '100%', justifyContent: 'space-between', alignItems: 'center'}}>
 
+        { this.state.redirectTo && (
+          <Redirect to={this.state.redirectTo}/>
+        )}
         <View
           style={{width: '80%', flexGrow:1, marginBottom: 'auto', justifyContent: 'center'}}>
           <img
@@ -105,20 +109,21 @@ export default class CadastroSimples extends React.Component {
   }
 
   cadastrarNovoUsuario = async (setToken) => {
+    const self = this;
     this.setState({loading:true})
     await this.fetchCadastro()
     .then(jsonRes => {
       if(jsonRes.success) {
-        console.log(jsonRes);
+        console.log('jsonRes', jsonRes);
         const token = jsonRes.data.token.token
         setToken(token);
-        this.setState({
+        self.setState({
           cadastroConcluido: true
         })
         return
       }
       const msgErro = jsonRes.message;
-      this.setState({
+      self.setState({
         erroCadastro: true,
         msgErro
       })
@@ -150,7 +155,7 @@ export default class CadastroSimples extends React.Component {
   }
 
   onClickAlertButton = () => {
-    this.props.navigation.navigate('App');
+    this.setState({ redirectTo: '/areacliente'})
   }
 
   blurPasswordConfirm = () => {
