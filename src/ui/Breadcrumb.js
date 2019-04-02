@@ -10,9 +10,11 @@ class Breadcrumb extends Component {
 
   style = {
     container: {
+      flexDirection: 'row',
       paddingTop: 20,
       paddingLeft: 20,
-      color: 'white'
+      color: 'white',
+      alignSelf: 'flex-start'
     }
   }
 }

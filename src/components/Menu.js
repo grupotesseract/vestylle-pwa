@@ -59,13 +59,13 @@ class Menu extends Component {
             <MenuButton 
                 navigation={this.props.navigation} 
                 label="Área do Cliente"
-                page="areacliente"
+                page="/areacliente"
                 icon={MdPerson}
             />
             <MenuButton 
                 navigation={this.props.navigation} 
                 label="Meus Pontos"
-                page="meuperfil"
+                page="/meuspontos"
                 icon={FaStar}
             />
             <MenuButton 

@@ -9,6 +9,7 @@ import ProtectedRoute from './ProtectedRoute';
 import Cadastro from './pages/Cadastro';
 import CadastroSimples from './pages/CadastroSimples';
 import AreaCliente from './pages/AreaCliente';
+import MeusPontos from './pages/MeusPontos';
 
 class App extends Component {
   render() {
@@ -20,7 +21,8 @@ class App extends Component {
           <Route exact={true} path="/cadastro" component={Cadastro}/>
           <Route exact={true} path="/cadastrosimples" component={CadastroSimples}/>
           <ProtectedRoute exact={true} path="/areacliente" component={AreaCliente}/>
-          <ProtectedRoute path="/meuperfil" component={MeuPerfil} />
+          <ProtectedRoute exact={true} path="/meuspontos" component={MeusPontos}/>
+          <ProtectedRoute exact={true} path="/meuperfil" component={MeuPerfil} />
         </Switch>
       </UserProvider>
     </div>;
