@@ -1,35 +1,99 @@
+/* rubik-regular - latin */
+@font-face {
+  font-family: 'Rubik';
+  font-style: normal;
+  font-weight: 400;
+  src: url('./fonts/rubik-v8-latin-regular.eot'); /* IE9 Compat Modes */
+  src: local('Rubik'), local('Rubik-Regular'),
+       url('./fonts/rubik-v8-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('./fonts/rubik-v8-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('./fonts/rubik-v8-latin-regular.woff') format('woff'), /* Modern Browsers */
+       url('./fonts/rubik-v8-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('./fonts/rubik-v8-latin-regular.svg#Rubik') format('svg'); /* Legacy iOS */
+}
+
+/* rubik-700 - latin */
+@font-face {
+  font-family: 'Rubik';
+  font-style: normal;
+  font-weight: 700;
+  src: url('./fonts/rubik-v8-latin-700.eot'); /* IE9 Compat Modes */
+  src: local('Rubik Bold'), local('Rubik-Bold'),
+       url('./fonts/rubik-v8-latin-700.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('./fonts/rubik-v8-latin-700.woff2') format('woff2'), /* Super Modern Browsers */
+       url('./fonts/rubik-v8-latin-700.woff') format('woff'), /* Modern Browsers */
+       url('./fonts/rubik-v8-latin-700.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('./fonts/rubik-v8-latin-700.svg#Rubik') format('svg'); /* Legacy iOS */
+}
+
+body *{
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  font-size: inherit;
+}
+
 .App {
+  font-family: 'Rubik';
   text-align: center;
-  background-color: #444;
+  background-color: white;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: white;
+  align-items: stretch;
+  justify-content: flex-start;
+  color: black;
 }
 
-.logo {
-  animation: logo-spin infinite 10s cubic-bezier(0.175, 0.885, 0.32, 1.075);
-  height: 40vmin;
+img {
+  object-fit: contain;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+input {
+  background-color: transparent;
+}
+
+svg {
+  display: inline;
+  margin-right: 0.2em;
 }
 
 a {
-  color: white;
   text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  color: inherit;
 }
 
-.btn {
-  border: 1px solid white;
-  border-radius: 4px;
-  padding: 0.2em 1em;
+button {
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  border: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+
+.spin {
+  animation-name: spinner;
+  animation-duration: 2000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+@-moz-keyframes spinner {
+    from { -moz-transform: rotate(0deg); }
+    to { -moz-transform: rotate(360deg); }
+}
+@-webkit-keyframes spinner {
+    from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(360deg); }
+}
+@keyframes spinner {
+    from {transform:rotate(0deg);}
+    to {transform:rotate(360deg);}
 }

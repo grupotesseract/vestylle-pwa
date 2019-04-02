@@ -1,20 +1,136 @@
 import React from 'react';
+import View from '../ui/View';
 import { UserConsumer } from '../UserContext';
+import RubikText from '../ui/RubikText';
+import Header from '../components/Header'
+import ImageBackground from '../ui/ImageBackground';
+import ButtonBorder from '../ui/ButtonBorder';
+import MiniRodape from '../components/MiniRodape'
+import { MdCheckBox, MdCheckBoxOutlineBlank } from 'react-icons/md';
+import TouchableHighlight from '../ui/TouchableHighlight';
+
+class Checkbox extends React.Component {
+  render() { 
+    return <TouchableHighlight
+      onPress={this.toggleCheckbox}
+      style={this.props.style}
+      >
+    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+      {this.props.value ? (
+      <MdCheckBox
+        size={26}
+        style={{color:'white'}}
+      />
+      ):(
+      <MdCheckBoxOutlineBlank
+        size={26}
+        style={{color:'white'}}
+      />
+      )}
+      <RubikText style={{color: 'white', paddingLeft: 5}}>{this.props.title}</RubikText>
+    </View>
+    </TouchableHighlight>
+  }
+
+  toggleCheckbox = () => {
+    const newValue = !this.props.value;
+    this.props.onChange(newValue);
+  }
+}
+
+class InputValidacao extends React.Component {
+
+  render() {
+    return (
+      <View>
+        <RubikText bold={true} style={{color: '#feca03', fontSize:12, marginTop: 3}}>{this.props.title}</RubikText>
+        <input 
+          style={this.style.inputSublinhado} 
+          value={this.props.value}
+          onChange={this.props.onChange}
+          />
+      </View>
+    )
+  }  
+
+  style = {
+    inputSublinhado: {
+      borderWidth: 0,
+      borderStyle: 'solid',
+      borderBottomWidth: 1,
+      color: 'white',
+      borderColor: '#585756',
+      marginTop: 5,
+      marginBottom: 8,
+      paddingBottom: 2,
+      fontSize: 15
+    }
+  }
+}
 
 export default class MeuPerfil extends React.Component {
 
+  state = {
+    erroAtualizaPerfil: false,
+    msgErro: '',
+    nome: '',
+    email: '',
+    cpf: '',
+    nascimento: '',
+    celular: '',
+    receberNovidades: false
+  }
 
   render() {
-    return ( <div>
-        <UserConsumer>
-        {({ logout }) => (<>
-            <h3>Meu Perfil</h3>
-            <div>Autorizado</div>
-            <button onClick={logout}>Logout</button>
-        </>
-        )}
-        </UserConsumer>
-    </div>
+    return ( <View>
+      <Header/>
+      <UserConsumer>
+      {({ logout }) => (<>
+      <ImageBackground
+        source={require('../assets/fundologin.jpg')}
+        style={{width: '100%', height: '100%'}}>
+        <View style={{padding: 20}}>
+          <RubikText bold={true} style={{color:'white', fontSize: 14, marginTop: 10, marginBottom: 10}} >Meu perfil</RubikText>
+          <InputValidacao 
+            title="Nome" 
+            value={this.state.nome}
+            onChange={(nome) => this.setState({nome : nome.target.value}) }/>
+          <InputValidacao 
+            title="E-mail" 
+            value={this.state.email}
+            onChange={(email) => this.setState({email : email.target.value})}/>
+          <InputValidacao 
+            title="CPF" 
+            value={this.state.cpf}
+            onChange={(cpf) => this.setState({cpf: cpf.target.value})}/>
+          <InputValidacao 
+            title="Data de Nascimento" 
+            value={this.state.nascimento}
+            onChange={(nascimento) => this.setState({nascimento: nascimento.target.value})}/>
+          <InputValidacao 
+            title="Celular" 
+            value={this.state.celular}
+            onChange={(celular) => this.setState({celular: celular.target.value})}/>
+
+          <Checkbox
+            title="Quero receber novidades e ofertas da Vestylle Megastore Jaú"
+            value={this.state.receberNovidades}
+            onChange={(receberNovidades) => this.setState({receberNovidades})}
+            style={{paddingTop: 20, paddingBottom: 15}}/>
+          
+          <ButtonBorder
+            title="CONTINUAR"
+            onPress={this.atualizarPerfil}
+            style={{marginBottom: 40}}
+          />
+        </View>
+        <MiniRodape/>
+      </ImageBackground>
+            
+      </>
+      )}
+      </UserConsumer>
+    </View>
     )
   }
 }

@@ -10,7 +10,7 @@ const ProtectedRoute = ({ component: Component, ...rest }) => (
           props =>
             isAuth 
             ? <Component {...props} /> 
-            : <Redirect to="/login" />
+            : <Redirect to="/cadastro" />
         }
         {...rest}
       />
