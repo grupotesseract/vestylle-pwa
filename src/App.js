@@ -10,6 +10,7 @@ import Cadastro from './pages/Cadastro';
 import CadastroSimples from './pages/CadastroSimples';
 import AreaCliente from './pages/AreaCliente';
 import MeusPontos from './pages/MeusPontos';
+import EsqueceuSenha from './pages/EsqueceuSenha';
 
 class App extends Component {
   render() {
@@ -19,6 +20,7 @@ class App extends Component {
           <Route exact={true} path="/" component={Home}/>
           <Route exact={true} path="/login" component={Login}/>
           <Route exact={true} path="/cadastro" component={Cadastro}/>
+          <Route exact={true} path="/esqueceusenha" component={EsqueceuSenha}/>
           <Route exact={true} path="/cadastrosimples" component={CadastroSimples}/>
           <ProtectedRoute exact={true} path="/areacliente" component={AreaCliente}/>
           <ProtectedRoute exact={true} path="/meuspontos" component={MeusPontos}/>

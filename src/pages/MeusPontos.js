@@ -13,7 +13,7 @@ import { FaStar } from 'react-icons/fa';
 export default class MeusPontos extends React.Component {
 
   state = {
-    qtdPontos: 333,
+    qtdPontos: 12333,
   }
 
   render() {
@@ -66,7 +66,7 @@ export default class MeusPontos extends React.Component {
                 <RubikText style={{color: 'white'}}>para gastar como quiser.</RubikText>
                 <View style={{flexDirection: 'row', alignSelf: 'center', margin: 10}}>
                   <View style={{backgroundColor: "#55bcba", width: 40}}>
-                    <RubikText bold={true} style={{width:100 ,fontSize: 10, color: "white", transform: [{rotate:'-90deg'},{translateY:-29},{translateX:-14}]}}>MIL PONTOS</RubikText>
+                    <RubikText bold={true} style={{width:100 ,fontSize: 10, color: "white", transform: 'rotate(-90deg) translate(-14px, -29px)'}}>MIL PONTOS</RubikText>
                   </View>
                   <View style={{backgroundColor: "white", padding: 5}}>
                     <RubikText bold ={true} style={{fontSize: 36 ,borderWidth: 1, borderColor:"#55bcba" ,padding: 10, paddingTop: 15}}>R$ 60,00</RubikText>
@@ -115,7 +115,7 @@ export default class MeusPontos extends React.Component {
         <View style={{zIndex: 1, alignSelf: 'stretch', alignItems: 'center', marginTop: -10, backgroundColor: "#585756"}}>
           <RubikText bold={true} style={{padding: 20, paddingTop: 30, fontSize: 26, color: 'white'}}>R$1,00 = 1 ponto</RubikText>
         </View>
-        <View style={{alignSelf: 'stretch', borderTopWidth: 1, borderColor:'white', alignItems: 'center', backgroundColor: "#3e3e3f"}}>
+        <View style={{alignSelf: 'stretch', borderTopWidth: 1, borderColor:'white', alignItems: 'center', backgroundColor: "#585756"}}>
           <View style={{flexDirection:"row", paddingTop: 20}}>
             <img
               alt=""
@@ -134,7 +134,7 @@ export default class MeusPontos extends React.Component {
             </View>
           </View>
         </View>
-        <View style={{alignSelf: 'stretch', borderTopWidth: 1, borderColor:'white', alignItems: 'center', backgroundColor: "#2d2e2b"}}>
+        <View style={{alignSelf: 'stretch', borderTopWidth: 1, borderColor:'white', alignItems: 'center', backgroundColor: "#585756"}}>
           <View style={{flexDirection: 'row', marginTop: 20, marginBottom: 20}}>
             <View style={{flexDirection: 'column', alignItems: 'center'}}>
               <RubikText style={{color: 'white', fontSize: 16}}>VOCÊ GANHA</RubikText>
