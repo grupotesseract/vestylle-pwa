@@ -31,6 +31,8 @@ body *{
   flex-direction: column;
   align-items: stretch;
   font-size: inherit;
+  border-width: 0;
+  border-style: solid;
 }
 
 .App {
