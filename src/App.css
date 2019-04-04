@@ -1,3 +1,15 @@
+@import "~slick-carousel/slick/slick.css";
+@import "~slick-carousel/slick/slick-theme.css";
+.slick-dots  {
+  bottom: -50px;
+}
+.slick-dots li {
+  width: 20px;
+  height: 20px;
+}
+.slick-dots li button:before{
+  font-size: 16px;
+}
 /* rubik-regular - latin */
 @font-face {
   font-family: 'Rubik';
