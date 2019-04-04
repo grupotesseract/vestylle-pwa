@@ -5,6 +5,8 @@ import RubikText from '../ui/RubikText';
 import { FaFacebook, FaUserCircle } from 'react-icons/fa';
 import TouchableHighlight from '../ui/TouchableHighlight';
 import { Link } from 'react-router-dom'
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
+
 
 class Cadastro extends Component {
   render() {
@@ -21,26 +23,33 @@ class Cadastro extends Component {
         <View style={this.styles.rightAlign}>
           <RubikText style={{color:'#FFFFFF', textAlign: 'left'}}>Faça seu cadastro e receba benefícios exclusivos</RubikText>
 
-          <TouchableHighlight 
-            style={this.styles.botaoQuadrado}
-            onPress={this.logInFacebook}>
-              <FaFacebook
-                size={15}
-                color="white"
-              />
-              <RubikText style={this.styles.fontBotao}> Cadastrar com FACEBOOK</RubikText>
-          </TouchableHighlight>
 
+          <FacebookLogin
+            appId="654012085033078" 
+            fields="name,email,picture"
+            callback={this.responseFacebook}
+            render={renderProps => (
+              <TouchableHighlight 
+                style={this.styles.botaoQuadrado}
+                onPress={renderProps.onClick}>
+                  <FaFacebook
+                    size={15}
+                    color="white"
+                  />
+                  <RubikText style={this.styles.fontBotao}> Cadastrar com FACEBOOK</RubikText>
+              </TouchableHighlight>
+            )}
+          ></FacebookLogin>
           <Link
-            style={this.styles.botaoQuadrado}
-            to="cadastrosimples"
-            >
-              <FaUserCircle
-                name="user-circle"
-                size={15}
-                color="white"
-              />
-              <RubikText style={this.styles.fontBotao}> Cadastrar com CPF ou E-MAIL</RubikText>
+          style={this.styles.botaoQuadrado}
+          to="cadastrosimples"
+          >
+            <FaUserCircle
+              name="user-circle"
+              size={15}
+              color="white"
+            />
+            <RubikText style={this.styles.fontBotao}> Cadastrar com CPF ou E-MAIL</RubikText>
           </Link>
           <View style={this.styles.fullCenter}>
             <Link
@@ -63,6 +72,10 @@ class Cadastro extends Component {
 
 
     </ImageBackground>
+  }
+  
+  responseFacebook = (response) => {
+    console.log(response);
   }
 
   styles = {
