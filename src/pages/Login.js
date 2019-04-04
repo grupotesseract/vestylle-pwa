@@ -71,7 +71,7 @@ export default class LoginScreen extends React.Component {
         </View>
         <Link 
           navigation={this.props.navigation}
-          to="Home"
+          to="/"
           fontSize="12"
           style={{marginTop: 100, marginBottom: 25, color: "#feca03", fontSize: 12}}
         >

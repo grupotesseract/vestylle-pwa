@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import TouchableHighlight from '../ui/TouchableHighlight';
 import View from '../ui/View';
 import { IoMdQrScanner } from 'react-icons/io';
 import { FaStar, FaHeart, FaWhatsapp } from 'react-icons/fa';

@@ -30,6 +30,7 @@ class UserProvider extends React.Component {
   }
 
   logout() {
+    localStorage.setItem('userToken', null);
     this.setState({isAuth: false});
   }
 
