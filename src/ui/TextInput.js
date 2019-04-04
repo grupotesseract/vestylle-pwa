@@ -8,6 +8,7 @@ class TextInput extends Component {
         style={Object.assign({},this.props.style)}
         value={this.props.value}
         onChange={(e) => this.props.onChangeText(e.target.value)}
+        onBlur={this.props.onBlur}
     />
   }
 }

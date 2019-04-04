@@ -42,30 +42,33 @@ export default class LoginScreen extends React.Component {
           style={{width: '80%'}}>
 
           <RubikText style={styles.label}>CPF ou E-mail</RubikText>
-          <TextInput
-            style={styles.inputComBorda}
-            onChangeText={(login) => this.setState({login})}
-            value={this.state.login}
-          />
-          <RubikText style={styles.label}>Senha</RubikText>
-          <TextInput
-            style={styles.inputComBorda}
-            secureTextEntry={true}
-            onChangeText={(password) => this.setState({password})}
-            value={this.state.password}
-          />
-          <Link
-            to="/esqueceusenha"
-            style={{color: '#feca03', marginTop: 10, marginBottom: 12, fontSize: 14, justifyContent: 'flex-start'}}>
-            <RubikText>Esqueceu sua senha?</RubikText>  
-          </Link>
           <UserConsumer>
-          {({ setToken }) => (
-          <ButtonBorder 
-            title="LOGIN"
-            loading={this.state.loading}
-            onPress={() => this.signInAsync(setToken)} 
-          />
+          {({ setToken, login }) => (
+          <form onSubmit={(e) => this.signInAsync(setToken, login, e)}>
+            <TextInput
+              style={styles.inputComBorda}
+              onChangeText={(login) => this.setState({login})}
+              value={this.state.login}
+            />
+            <RubikText style={styles.label}>Senha</RubikText>
+            <TextInput
+              style={styles.inputComBorda}
+              secureTextEntry={true}
+              onChangeText={(password) => this.setState({password})}
+              value={this.state.password}
+            />
+            <Link
+              to="/esqueceusenha"
+              style={{color: '#feca03', marginTop: 10, marginBottom: 12, fontSize: 14, justifyContent: 'flex-start'}}>
+              <RubikText>Esqueceu sua senha?</RubikText>  
+            </Link>
+            <ButtonBorder 
+              title="LOGIN"
+              submit={true}
+              loading={this.state.loading}
+              onPress={() => this.signInAsync(setToken, login, null)} 
+            />
+          </form>
           )}
           </UserConsumer>
         </View>
@@ -90,10 +93,13 @@ export default class LoginScreen extends React.Component {
     );
   }
 
-  signInAsync = async (setToken) => {
+  signInAsync = async (setToken,login, event) => {
+    if(event) {
+      event.preventDefault()
+    }
     const self = this;
     this.setState({loading:true})
-    await this.fetchLogin()
+    await login(this.state.login, this.state.password)
     .then(jsonRes => {
       if(jsonRes.success) {
         const token = jsonRes.data.token
@@ -116,20 +122,6 @@ export default class LoginScreen extends React.Component {
       })
     })
   };
-
-  fetchLogin = async () => {
-    const res = await fetch('https://develop-api.vestylle.grupotesseract.com.br/api/login', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({email: this.state.login, password: this.state.password})
-    })
-    .then(response => response.json())
-    .catch(erro => console.error('Login não rolou',erro))
-    return res;
-  }
 
   dismissAlertErro = () => {
     this.setState({

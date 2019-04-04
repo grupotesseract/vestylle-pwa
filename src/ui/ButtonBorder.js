@@ -6,16 +6,23 @@ import { FaSpinner } from 'react-icons/fa';
 class ButtonBorder extends Component {
 
   render() {
-    return <TouchableHighlight 
-      onPress={this.props.onPress}
-      style={this.style.btnBorda}>
+    return <TouchableHighlight
+      submit={this.props.submit} 
+      onPress={this.props.disabled ? null : this.props.onPress}
+      style={Object.assign({}, this.style.btnBorda, this.props.disabled ? this.style.disabled : {}) }>
       {this.props.loading ? (<FaSpinner color="white" className="spin" />) : ''}
-      <RubikText style={this.style.txtBtnBorda}>{this.props.title}</RubikText>
+      <RubikText style={Object.assign({}, this.style.txtBtnBorda, this.props.disabled ? this.style.disabled : {}) }>{this.props.title}</RubikText>
     </TouchableHighlight>
   }
 
   style = {
+    disabled: {
+      cursor: 'default',
+      borderColor:'grey',
+      color: 'grey'
+    },
     btnBorda: {
+      cursor: 'pointer',
       alignSelf: 'center',
       marginTop: 10,
       padding: 6,

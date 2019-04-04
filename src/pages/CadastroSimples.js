@@ -13,6 +13,7 @@ export default class CadastroSimples extends React.Component {
     cadastroConcluido: false,
     erroCadastro: false,
     passwordMismatch: false,
+    formValido: false,
     loading: false,
     msgErro: '',
     login: '',
@@ -43,43 +44,47 @@ export default class CadastroSimples extends React.Component {
 
         <View
           style={{width: '80%'}}>
-
-          <RubikText style={this.styles.label}>CPF ou E-mail</RubikText>
-          <TextInput
-            style={this.styles.inputComBorda}
-            onChangeText={(login) => {this.setState({login})}}
-            value={this.state.login}
-          />
-          <RubikText style={this.styles.label}>Crie uma senha</RubikText>
-          <TextInput
-            style={this.styles.inputComBorda}
-            secureTextEntry={true}
-            onChangeText={(password) => this.setState({password})}
-            value={this.state.password}
-          />
-          <RubikText style={this.styles.label}>Confirme sua senha</RubikText>
-          <TextInput
-            style={this.styles.inputComBorda}
-            secureTextEntry={true}
-            onChangeText={(passwordConfirm) => this.setState({passwordConfirm})}
-            value={this.state.passwordConfirm}
-            onBlur={this.blurPasswordConfirm}
-          />
-          { this.state.passwordMismatch && (
-            <RubikText style={this.styles.erroText}>Campos de senha estão diferentes</RubikText>
-          )}
           <UserConsumer>
-          {({ setToken }) => (
+          {({ setToken, signup }) => (
+          <form onSubmit={(e) => this.cadastrarNovoUsuario(setToken, signup, e)}>
+            <RubikText style={this.styles.label}>CPF ou E-mail</RubikText>
+            <TextInput
+              style={this.styles.inputComBorda}
+              onChangeText={(login) => {this.setState({login})}}
+              value={this.state.login}
+            />
+            <RubikText style={this.styles.label}>Crie uma senha</RubikText>
+            <TextInput
+              style={this.styles.inputComBorda}
+              secureTextEntry={true}
+              onChangeText={(password) => this.setState({password})}
+              value={this.state.password}
+              onBlur={this.blurPasswordConfirm}
+            />
+            <RubikText style={this.styles.label}>Confirme sua senha</RubikText>
+            <TextInput
+              style={this.styles.inputComBorda}
+              secureTextEntry={true}
+              onChangeText={(passwordConfirm) => this.setState({passwordConfirm})}
+              value={this.state.passwordConfirm}
+              onBlur={this.blurPasswordConfirm}
+            />
+            { this.state.passwordMismatch && (
+              <RubikText style={this.styles.erroText}>Campos de senha estão diferentes</RubikText>
+            )}
             <ButtonBorder 
               title="CADASTRAR" 
+              submit={true}
               loading={this.state.loading}
-              onPress={() => this.cadastrarNovoUsuario(setToken)} 
+              onPress={() => this.cadastrarNovoUsuario(setToken, signup, null)}
+              disabled={!this.state.formValido}
             />
+          </form>
           )}
           </UserConsumer>
         </View>
         <Link 
-          to="Home"
+          to="/"
           fontSize="12"
           style={{marginTop: 50, marginBottom: 25, color: 'white'}}
         >
@@ -108,10 +113,14 @@ export default class CadastroSimples extends React.Component {
     );
   }
 
-  cadastrarNovoUsuario = async (setToken) => {
+  cadastrarNovoUsuario = async (setToken, signup, event) => {
+    if(event) {
+      event.preventDefault()
+    }
+    if(!this.state.formValido) return;
     const self = this;
     this.setState({loading:true})
-    await this.fetchCadastro()
+    await signup(this.state.login, this.state.password)
     .then(jsonRes => {
       if(jsonRes.success) {
         console.log('jsonRes', jsonRes);
@@ -132,22 +141,6 @@ export default class CadastroSimples extends React.Component {
     this.setState({loading:false})
   };
 
-  fetchCadastro = async () => {
-    const params = JSON.stringify({email: this.state.login, password: this.state.password, nome:'teste', cpf: this.state.login})
-    console.log(params)
-    const res = await fetch('https://develop-api.vestylle.grupotesseract.com.br/api/pessoas', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: params
-    })
-    .then(response => response.json())
-    .catch(error => console.error('Deu ruim:', error));
-    return res;
-  }
-
   dismissAlertErro = () => {
     this.setState({
       erroCadastro: false
@@ -159,14 +152,24 @@ export default class CadastroSimples extends React.Component {
   }
 
   blurPasswordConfirm = () => {
-    if(this.state.password !== this.state.passwordConfirm) {
+    console.log(this.state.password,this.state.passwordConfirm)
+    if(this.state.password !== this.state.passwordConfirm && 
+      this.state.password && 
+      this.state.passwordConfirm) 
+    {
       this.setState({
-        passwordMismatch: true
+        passwordMismatch: true,
+        formValido: false
       })
     } else {
       this.setState({
         passwordMismatch: false
       })
+      if(this.state.password && this.state.passwordConfirm) {
+        this.setState({
+          formValido: true
+        })
+      }
     }
   }
 

@@ -15,6 +15,7 @@ class UserProvider extends React.Component {
     this.login = this.login.bind(this)
     this.logout = this.logout.bind(this)
     this.setToken = this.setToken.bind(this)
+    this.signup = this.signup.bind(this)
   }
 
   componentWillMount() {
@@ -25,11 +26,38 @@ class UserProvider extends React.Component {
     }
   }
 
-  login() {
-    this.setState({isAuth: true});
+  async signup(login, passwd) {
+    const params = JSON.stringify({email: login, password: passwd})
+    console.log(params)
+    const res = await fetch(process.env.REACT_APP_API_URL+'/pessoas', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: params
+    })
+    .then(response => response.json())
+    .catch(error => console.error('Signup error', error));
+    return res;
+  }
+
+  async login(user,passwd) {
+    const res = await fetch(process.env.REACT_APP_API_URL+'/login', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({email: user, password: passwd})
+    })
+    .then(response => response.json())
+    .catch(erro => console.error('Erro no login',erro))
+    return res;
   }
 
   logout() {
+    console.log('LOGOUT')
     localStorage.setItem('userToken', null);
     this.setState({isAuth: false});
   }
@@ -50,7 +78,8 @@ class UserProvider extends React.Component {
           isAuth: this.state.isAuth,
           login: this.login,
           logout: this.logout,
-          setToken: this.setToken
+          setToken: this.setToken,
+          signup: this.signup
         }}
       >
         {this.props.children}
