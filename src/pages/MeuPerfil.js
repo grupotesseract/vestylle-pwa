@@ -76,7 +76,8 @@ class FormMeuPerfil extends React.Component {
     cpf: '',
     data_nascimento: '',
     celular: '',
-    receberNovidades: false
+    receberNovidades: false,
+    loading: false
   }
 
   componentDidMount() {
@@ -122,15 +123,17 @@ class FormMeuPerfil extends React.Component {
       <ButtonBorder
         title="CONTINUAR"
         submit={true}
+        loading={this.state.loading}
         style={{marginBottom: 41}}
       />
     </form>
   }
 
-  atualizarPerfil(event) {
+  async atualizarPerfil(event) {
     if(event) {
       event.preventDefault()
     }
+    this.setState({loading: true})
     const perfil = {
       nome: this.state.nome,
       email: this.state.email,
@@ -139,7 +142,8 @@ class FormMeuPerfil extends React.Component {
       celular: this.state.celular,
       receberNovidades: this.state.receberNovidades
     }
-    this.props.setData(perfil)
+    await this.props.setData(perfil)
+    this.setState({loading: false})
   }
 }
 

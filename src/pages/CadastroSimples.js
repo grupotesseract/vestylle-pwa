@@ -59,15 +59,15 @@ export default class CadastroSimples extends React.Component {
               secureTextEntry={true}
               onChangeText={(password) => this.setState({password})}
               value={this.state.password}
-              onBlur={this.blurPasswordConfirm}
+              onBlur={this.checkPasswordConfirm}
             />
             <RubikText style={this.styles.label}>Confirme sua senha</RubikText>
             <TextInput
               style={this.styles.inputComBorda}
               secureTextEntry={true}
-              onChangeText={(passwordConfirm) => this.setState({passwordConfirm})}
+              onChangeText={this.handleConfirmPasswordChange}
               value={this.state.passwordConfirm}
-              onBlur={this.blurPasswordConfirm}
+              onBlur={this.checkPasswordConfirm}
             />
             { this.state.passwordMismatch && (
               <RubikText style={this.styles.erroText}>Campos de senha estão diferentes</RubikText>
@@ -76,7 +76,6 @@ export default class CadastroSimples extends React.Component {
               title="CADASTRAR" 
               submit={true}
               loading={this.state.loading}
-              onPress={() => this.cadastrarNovoUsuario(setToken, signup, null)}
               disabled={!this.state.formValido}
             />
           </form>
@@ -151,7 +150,17 @@ export default class CadastroSimples extends React.Component {
     this.setState({ redirectTo: '/areacliente'})
   }
 
-  blurPasswordConfirm = () => {
+  handleConfirmPasswordChange = async (passwordConfirm) => {
+   await this.setState({passwordConfirm})
+   if(passwordConfirm.length > 4) {
+    console.log(passwordConfirm, passwordConfirm.length)
+    if(this.state.passwordMismatch) {
+      this.checkPasswordConfirm();
+    }
+   }
+  }
+
+  checkPasswordConfirm = () => {
     console.log(this.state.password,this.state.passwordConfirm)
     if(this.state.password !== this.state.passwordConfirm && 
       this.state.password && 
