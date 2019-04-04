@@ -10,11 +10,76 @@ import CircularProgressbar from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { FaStar } from 'react-icons/fa';
 
-export default class MeusPontos extends React.Component {
+class DisplayPontos extends React.Component {
 
   state = {
-    qtdPontos: 12333,
+    qtdPontos: 0,
   }
+
+  componentDidMount() {
+    this.setState({qtdPontos: this.props.qtdPontos || 0})
+  }
+
+  render() {
+    return( 
+    <View style={{alignSelf: 'stretch'}}>
+      <View style={{width:100, alignSelf: 'center', marginTop: 20}}>
+        <CircularProgressbar
+          percentage={this.state.qtdPontos/10}
+          text={this.state.qtdPontos.toString()}
+          styles={{
+            path: {
+              stroke: '#55bcba'
+            },
+            trail: {
+              stroke: '#585756'
+            },
+            text: {
+              fill: 'white',
+              fontSize: 23,
+            }
+          }}
+        />
+      </View>
+      <View style={{alignItems: 'flex-start', alignSelf: 'stretch', textAlign: 'left', marginTop: 20}}>
+        { this.state.qtdPontos === 0 && (<>
+          <RubikText style={this.style.fonteDestaque}>Você ainda não possui pontos.</RubikText>
+          <RubikText style={{color: 'white'}}>Para começar a acumular pontos, utilize seu CPF nas próximas compras na loja Vestylle Megastore Jaú. Seus pontos aparecerão aqui.</RubikText>
+        </>)}
+        { this.state.qtdPontos > 0 && this.state.qtdPontos < 1000 && (<>
+          <RubikText style={{color: 'white'}} bold={true}>Ciclana,</RubikText>
+          <RubikText style={this.style.fonteDestaque}>Você ainda não possui nenhum bônus promocional.</RubikText>
+          <RubikText style={{color: 'white'}}>Junte mais { 1000 - this.state.qtdPontos } pontos para garantir seu bônus</RubikText>
+        </>)}
+        { this.state.qtdPontos >= 1000 && (<>
+          <RubikText style={{color: 'white'}} bold={true}>Parabéns Ciclana,</RubikText>
+          <RubikText style={{color: 'white'}} bold={true}>você completou 1000 pontos.</RubikText>
+          <RubikText style={this.style.fonteDestaque}>E ganhou um bônus de R$60,00</RubikText>
+          <RubikText style={{color: 'white'}}>para gastar como quiser.</RubikText>
+          <View style={{flexDirection: 'row', alignSelf: 'center', margin: 10}}>
+            <View style={{backgroundColor: "#55bcba", width: 40}}>
+              <RubikText bold={true} style={{width:100 ,fontSize: 10, color: "white", transform: 'rotate(-90deg) translate(-14px, -29px)'}}>MIL PONTOS</RubikText>
+            </View>
+            <View style={{backgroundColor: "white", padding: 5}}>
+              <RubikText bold ={true} style={{fontSize: 36 ,borderWidth: 1, borderColor:"#55bcba" ,padding: 10, paddingTop: 15}}>R$ 60,00</RubikText>
+            </View>
+          </View>
+
+          <RubikText style={{color: 'white'}}>Junte mais {1000 - this.state.qtdPontos%1000 } pontos para ganhar outro bônus</RubikText>
+        </>)}
+      </View>
+    </View>
+    )
+  }
+  style = {
+    fonteDestaque: {
+      fontWeight: 'bold',
+      color: '#58bcba'
+    }
+  }
+}
+export default class MeusPontos extends React.Component {
+
 
   render() {
     return ( <View>
@@ -29,56 +94,9 @@ export default class MeusPontos extends React.Component {
           <RubikText style={{color: 'white'}}>acumulam pontos</RubikText>
 
           <UserConsumer>
-          {({ logout }) => (<>
-          <View style={{alignSelf: 'stretch'}}>
-            <View style={{width:100, alignSelf: 'center', marginTop: 20}}>
-              <CircularProgressbar
-                percentage={this.state.qtdPontos/10}
-                text={this.state.qtdPontos}
-                styles={{
-                  path: {
-                    stroke: '#55bcba'
-                  },
-                  trail: {
-                    stroke: '#585756'
-                  },
-                  text: {
-                    fill: 'white',
-                    fontSize: 23,
-                  }
-                }}
-              />
-            </View>
-            <View style={{alignItems: 'flex-start', alignSelf: 'stretch', textAlign: 'left', marginTop: 20}}>
-              { this.state.qtdPontos === 0 && (<>
-                <RubikText style={this.style.fonteDestaque}>Você ainda não possui pontos.</RubikText>
-                <RubikText style={{color: 'white'}}>Para começar a acumular pontos, utilize seu CPF nas próximas compras na loja Vestylle Megastore Jaú. Seus pontos aparecerão aqui.</RubikText>
-              </>)}
-              { this.state.qtdPontos > 0 && this.state.qtdPontos < 1000 && (<>
-                <RubikText style={{color: 'white'}} bold={true}>Ciclana,</RubikText>
-                <RubikText style={this.style.fonteDestaque}>Você ainda não possui nenhum bônus promocional.</RubikText>
-                <RubikText style={{color: 'white'}}>Junte mais { 1000 - this.state.qtdPontos } pontos para garantir seu bônus</RubikText>
-              </>)}
-              { this.state.qtdPontos >= 1000 && (<>
-                <RubikText style={{color: 'white'}} bold={true}>Parabéns Ciclana,</RubikText>
-                <RubikText style={{color: 'white'}} bold={true}>você completou 1000 pontos.</RubikText>
-                <RubikText style={this.style.fonteDestaque}>E ganhou um bônus de R$60,00</RubikText>
-                <RubikText style={{color: 'white'}}>para gastar como quiser.</RubikText>
-                <View style={{flexDirection: 'row', alignSelf: 'center', margin: 10}}>
-                  <View style={{backgroundColor: "#55bcba", width: 40}}>
-                    <RubikText bold={true} style={{width:100 ,fontSize: 10, color: "white", transform: 'rotate(-90deg) translate(-14px, -29px)'}}>MIL PONTOS</RubikText>
-                  </View>
-                  <View style={{backgroundColor: "white", padding: 5}}>
-                    <RubikText bold ={true} style={{fontSize: 36 ,borderWidth: 1, borderColor:"#55bcba" ,padding: 10, paddingTop: 15}}>R$ 60,00</RubikText>
-                  </View>
-                </View>
-
-                <RubikText style={{color: 'white'}}>Junte mais {1000 - this.state.qtdPontos%1000 } pontos para ganhar outro bônus</RubikText>
-              </>)}
-            </View>
-          </View>
-
-          </>)}
+          {({ perfil }) => (
+            <DisplayPontos qtdPontos={perfil.saldo_pontos}/>
+          )}
           </UserConsumer>
 
         </View>
@@ -158,10 +176,4 @@ export default class MeusPontos extends React.Component {
     )
   }
 
-  style = {
-    fonteDestaque: {
-      fontWeight: 'bold',
-      color: '#58bcba'
-    }
-  }
 }
