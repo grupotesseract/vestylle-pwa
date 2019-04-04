@@ -6,6 +6,7 @@ import { FaFacebook, FaUserCircle } from 'react-icons/fa';
 import TouchableHighlight from '../ui/TouchableHighlight';
 import { Link } from 'react-router-dom'
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
+import { UserConsumer } from '../UserContext';
 
 
 class Cadastro extends Component {
@@ -24,10 +25,12 @@ class Cadastro extends Component {
           <RubikText style={{color:'#FFFFFF', textAlign: 'left'}}>Faça seu cadastro e receba benefícios exclusivos</RubikText>
 
 
+        <UserConsumer>
+        {({ setFacebookToken }) => (
           <FacebookLogin
             appId="654012085033078" 
             fields="name,email,picture"
-            callback={this.responseFacebook}
+            callback={(response) => this.responseFacebook(response, setFacebookToken)}
             render={renderProps => (
               <TouchableHighlight 
                 style={this.styles.botaoQuadrado}
@@ -40,6 +43,8 @@ class Cadastro extends Component {
               </TouchableHighlight>
             )}
           ></FacebookLogin>
+        )}
+        </UserConsumer>
           <Link
           style={this.styles.botaoQuadrado}
           to="cadastrosimples"
@@ -74,8 +79,8 @@ class Cadastro extends Component {
     </ImageBackground>
   }
   
-  responseFacebook = (response) => {
-    console.log(response);
+  responseFacebook = (response,setFacebookToken) => {
+    setFacebookToken(response.accessToken)
   }
 
   styles = {

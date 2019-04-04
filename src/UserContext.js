@@ -6,6 +6,7 @@ class UserProvider extends React.Component {
   state = { 
     isAuth: false,
     userToken: null,
+    fbToken: null,
     perfil: {}
   }
 
@@ -17,6 +18,7 @@ class UserProvider extends React.Component {
     this.signup = this.signup.bind(this)
     this.getDadosMeuPerfil = this.getDadosMeuPerfil.bind(this)
     this.setDadosMeuPerfil = this.setDadosMeuPerfil.bind(this)
+    this.setFacebookToken = this.setFacebookToken.bind(this)
   }
 
   componentWillMount() {
@@ -54,6 +56,9 @@ class UserProvider extends React.Component {
     })
     .then(response => response.json())
     .catch(erro => console.error('Erro no login',erro))
+    if(res.success) {
+      this.getDadosMeuPerfil()
+    }
     return res;
   }
 
@@ -70,6 +75,15 @@ class UserProvider extends React.Component {
     })
     localStorage.setItem('userToken', userToken);
     localStorage.setItem('isAuth', true);
+  }
+
+  setFacebookToken(fbToken) {
+    this.setState({
+      fbToken
+    })
+    localStorage.setItem('fbToken', fbToken);
+    const toke = localStorage.getItem('fbToken')
+    console.log(toke)
   }
 
   async getDadosMeuPerfil() {
@@ -116,12 +130,14 @@ class UserProvider extends React.Component {
       <UserContext.Provider
         value={{ 
           isAuth: this.state.isAuth,
+          perfil: this.state.perfil,
           login: this.login,
           logout: this.logout,
           setToken: this.setToken,
           signup: this.signup,
           getDadosMeuPerfil: this.getDadosMeuPerfil,
-          setDadosMeuPerfil: this.setDadosMeuPerfil
+          setDadosMeuPerfil: this.setDadosMeuPerfil,
+          setFacebookToken: this.setFacebookToken
         }}
       >
         {this.props.children}
