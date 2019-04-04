@@ -66,7 +66,6 @@ export default class LoginScreen extends React.Component {
               title="LOGIN"
               submit={true}
               loading={this.state.loading}
-              onPress={() => this.signInAsync(setToken, login, null)} 
             />
           </form>
           )}

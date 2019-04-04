@@ -68,60 +68,104 @@ class InputValidacao extends React.Component {
   }
 }
 
+class FormMeuPerfil extends React.Component {
+
+  state = {
+    nome: '',
+    email: '',
+    cpf: '',
+    data_nascimento: '',
+    celular: '',
+    receberNovidades: false
+  }
+
+  componentDidMount() {
+    this.props.getData()
+    .then(perfil => {
+      this.setState({
+        ...perfil
+      })
+    })
+    .catch(erro => console.error('Erro no form de meu perfil',erro))
+  }
+
+  render() {
+    return <form onSubmit={(e) => this.atualizarPerfil(e)}>
+      <RubikText bold={true} style={{color:'white', fontSize: 14, marginTop: 10, marginBottom: 10}} >Meu perfil</RubikText>
+      <InputValidacao 
+        title="Nome" 
+        value={this.state.nome}
+        onChange={(nome) => this.setState({nome : nome.target.value}) }/>
+      <InputValidacao 
+        title="E-mail" 
+        value={this.state.email}
+        onChange={(email) => this.setState({email : email.target.value})}/>
+      <InputValidacao 
+        title="CPF" 
+        value={this.state.cpf}
+        onChange={(cpf) => this.setState({cpf: cpf.target.value})}/>
+      <InputValidacao 
+        title="Data de Nascimento" 
+        value={this.state.data_nascimento}
+        onChange={(data_nascimento) => this.setState({data_nascimento: data_nascimento.target.value})}/>
+      <InputValidacao 
+        title="Celular" 
+        value={this.state.celular}
+        onChange={(celular) => this.setState({celular: celular.target.value})}/>
+
+      <Checkbox
+        title="Quero receber novidades e ofertas da Vestylle Megastore Jaú"
+        value={this.state.receberNovidades}
+        onChange={(receberNovidades) => this.setState({receberNovidades})}
+        style={{paddingTop: 20, paddingBottom: 15}}/>
+      
+      <ButtonBorder
+        title="CONTINUAR"
+        submit={true}
+        style={{marginBottom: 41}}
+      />
+    </form>
+  }
+
+  atualizarPerfil(event) {
+    if(event) {
+      event.preventDefault()
+    }
+    const perfil = {
+      nome: this.state.nome,
+      email: this.state.email,
+      cpf: this.state.cpf,
+      data_nascimento: this.state.data_nascimento,
+      celular: this.state.celular,
+      receberNovidades: this.state.receberNovidades
+    }
+    this.props.setData(perfil)
+  }
+}
+
 export default class MeuPerfil extends React.Component {
 
   state = {
     erroAtualizaPerfil: false,
     msgErro: '',
-    nome: '',
-    email: '',
-    cpf: '',
-    nascimento: '',
-    celular: '',
-    receberNovidades: false
+  }
+
+  componentDidMount() {
+
   }
 
   render() {
     return ( <View>
       <Header/>
       <UserConsumer>
-      {({ logout }) => (<>
+      {({ getDadosMeuPerfil, setDadosMeuPerfil }) => (<>
       <ImageBackground
         source={require('../assets/fundologin.jpg')}
         style={{width: '100%', height: '100%'}}>
         <View style={{padding: 20}}>
-          <RubikText bold={true} style={{color:'white', fontSize: 14, marginTop: 10, marginBottom: 10}} >Meu perfil</RubikText>
-          <InputValidacao 
-            title="Nome" 
-            value={this.state.nome}
-            onChange={(nome) => this.setState({nome : nome.target.value}) }/>
-          <InputValidacao 
-            title="E-mail" 
-            value={this.state.email}
-            onChange={(email) => this.setState({email : email.target.value})}/>
-          <InputValidacao 
-            title="CPF" 
-            value={this.state.cpf}
-            onChange={(cpf) => this.setState({cpf: cpf.target.value})}/>
-          <InputValidacao 
-            title="Data de Nascimento" 
-            value={this.state.nascimento}
-            onChange={(nascimento) => this.setState({nascimento: nascimento.target.value})}/>
-          <InputValidacao 
-            title="Celular" 
-            value={this.state.celular}
-            onChange={(celular) => this.setState({celular: celular.target.value})}/>
-
-          <Checkbox
-            title="Quero receber novidades e ofertas da Vestylle Megastore Jaú"
-            value={this.state.receberNovidades}
-            onChange={(receberNovidades) => this.setState({receberNovidades})}
-            style={{paddingTop: 20, paddingBottom: 15}}/>
-          
-          <ButtonBorder
-            title="CONTINUAR"
-            onPress={this.atualizarPerfil}
-            style={{marginBottom: 40}}
+          <FormMeuPerfil
+            getData={getDadosMeuPerfil}
+            setData={setDadosMeuPerfil}
           />
         </View>
         <MiniRodape/>
