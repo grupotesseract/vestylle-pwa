@@ -15,7 +15,16 @@ class Home extends Component {
       <View style={{
         paddingTop: 20
       }}>
-        <SliderCupons/>
+        <View style={{position: 'relative'}}>
+          <div style={{
+            position: 'absolute',
+            height: '55%',
+            width: '100%',
+            backgroundColor: '#55bcba',
+            top: '20%',
+          }}></div>
+          <SliderCupons/>
+        </View>
         <View style={{
           alignItems:'center',
         }}>
@@ -55,7 +64,20 @@ class Home extends Component {
         </RubikText>
         </View>
       </View>
+      <View style={{
+        paddingTop:40,
+      }}>
+      <RubikText 
+        bold={true} 
+        style={{ 
+          alignSelf: 'center', 
+          fontSize: 20,
+          marginBottom: 5
+        }}>
+        CONFIRA AS NOVIDADES
+      </RubikText>
       <SliderOfertas/>
+      </View>
       <RodapeCompleto/>
     </>
     

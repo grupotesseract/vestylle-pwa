@@ -61,15 +61,7 @@ export default class SliderOfertas extends React.Component {
       slidesToScroll: 1,
       arrows: false
     };
-    return (<View style={{position: 'relative'}}>
-      <div style={{
-        position: 'absolute',
-        height: '50%',
-        width: '100%',
-        backgroundColor: 'magenta',
-        top: '15%',
-      }}></div>
-      <View style={{
+    return (<View style={{
         width:'93%', 
         alignSelf:'center',
         marginBottom: '100px'
@@ -84,7 +76,6 @@ export default class SliderOfertas extends React.Component {
         ))}
       </Slider>
       </View>
-    </View>
     );
   }
 }
