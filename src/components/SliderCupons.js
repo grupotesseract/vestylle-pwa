@@ -3,13 +3,16 @@ import Slider from "react-slick";
 import { Link } from 'react-router-dom'
 import RubikText from "../ui/RubikText";
 import View from "../ui/View";
+import { LojaConsumer } from "../LojaContext";
 
 class Cupom extends React.Component {
 
   render() {
-    return <div style={{ alignSelf: 'center', overflow:'hidden', width: '100%'}}>
+    return <div 
+      key={this.props.key}
+      style={{ alignSelf: 'center', overflow:'hidden', width: '100%'}}>
         <img 
-          style={{objectFit:'cover'}} 
+          style={{objectFit:'cover', height: '100%'}} 
           alt={this.props.id}
           src={this.props.img}/>
         <Link 
@@ -29,49 +32,82 @@ class Cupom extends React.Component {
   }
 }
 
-export default class SliderCupons extends React.Component {
+class ListaCupons extends React.Component {
+  settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: false
+  };
 
   state = {
-    ofertas: []
+    cupons: []
   }
 
   componentDidMount() {
-    const ofertas = [
+    this.setState({cupons: this.props.cupons})
+    this.props.atualizaCupons()
+    .then((cupons)=>{
+      cupons = cupons.slice(0,10)
+      this.setState({cupons})
+    })
+  }
+
+  render() {
+    return <Slider {...this.settings}>
+      {this.state.cupons.map((cupom, key) => (
+        <Cupom
+          key={key}
+          id={cupom.id}
+          img={cupom.foto_caminho || "http://via.placeholder.com/500x500"}
+        />
+      ))}
+    </Slider>
+  }
+}
+
+export default class SliderCupons extends React.Component {
+
+  state = {
+    cupons: []
+  }
+
+  componentDidMount() {
+    const cupons = [
       {
         id: 1,
         img: "https://i.imgur.com/UYiroysl.jpg"
       },
       {
+        id: 223,
+        img: "https://i.imgur.com/UPrs1EWl.jpg"
+      },
+      {
         id: 2,
         img: "https://avatars1.githubusercontent.com/u/7903384?s=400&v=4"
-      }
+      },
     ]
-    this.setState({ofertas})
+
+    this.setState({cupons})
   }
 
   render() {
-    var settings = {
-      dots: true,
-      infinite: true,
-      speed: 500,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      arrows: false
-    };
     return (
       <View style={{
         width:'93%', 
         alignSelf:'center',
-        marginBottom: '100px'
+        marginBottom: '100px',
       }}>
-      <Slider {...settings}>
-        {this.state.ofertas.map((oferta) => (
-          <Cupom
-            id={oferta.id}
-            img={oferta.img}
-          />
-        ))}
-      </Slider>
+      <LojaConsumer>
+        {({atualizaCupons, cupons}) => (
+        <ListaCupons
+          atualizaCupons={atualizaCupons}
+          cupons={cupons}
+        />
+        )}
+      </LojaConsumer>
       </View>
     );
   }

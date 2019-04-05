@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom'
 import Home from './pages/Home'
 import Login from './pages/Login'
+import { LojaProvider } from './LojaContext';
 import { UserProvider } from './UserContext';
 import './App.css';
 import MeuPerfil from './pages/MeuPerfil';
@@ -15,18 +16,20 @@ import EsqueceuSenha from './pages/EsqueceuSenha';
 class App extends Component {
   render() {
     return <div className="App">
-      <UserProvider>
-        <Switch>
-          <Route exact={true} path="/" component={Home}/>
-          <Route exact={true} path="/login" component={Login}/>
-          <Route exact={true} path="/cadastro" component={Cadastro}/>
-          <Route exact={true} path="/esqueceusenha" component={EsqueceuSenha}/>
-          <Route exact={true} path="/cadastrosimples" component={CadastroSimples}/>
-          <ProtectedRoute exact={true} path="/areacliente" component={AreaCliente}/>
-          <ProtectedRoute exact={true} path="/meuspontos" component={MeusPontos}/>
-          <ProtectedRoute exact={true} path="/meuperfil" component={MeuPerfil} />
-        </Switch>
-      </UserProvider>
+      <LojaProvider>
+        <UserProvider>
+          <Switch>
+            <Route exact={true} path="/" component={Home}/>
+            <Route exact={true} path="/login" component={Login}/>
+            <Route exact={true} path="/cadastro" component={Cadastro}/>
+            <Route exact={true} path="/esqueceusenha" component={EsqueceuSenha}/>
+            <Route exact={true} path="/cadastrosimples" component={CadastroSimples}/>
+            <ProtectedRoute exact={true} path="/areacliente" component={AreaCliente}/>
+            <ProtectedRoute exact={true} path="/meuspontos" component={MeusPontos}/>
+            <ProtectedRoute exact={true} path="/meuperfil" component={MeuPerfil} />
+          </Switch>
+        </UserProvider>
+      </LojaProvider>
     </div>;
   }
 }
