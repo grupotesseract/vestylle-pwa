@@ -47,7 +47,7 @@ class RodapeCompleto extends Component {
           <img
             alt=""
             src={require('../assets/atendente.png')}
-            style={{ height: 30, width:30, flexGrow: 0, marginRight: 5, marginLeft: 5 }}
+            style={{ height: 30, width:30, flexGrow: 0, marginRight: 10, marginLeft: 10 }}
           />
           <View style={this.style.faleComAtendentes}>
             <RubikText bold={true} style={{color: "#feca03"}}>FALE COM UM DE</RubikText>
@@ -63,7 +63,7 @@ class RodapeCompleto extends Component {
           </TouchableHighlight>
         </View>
         <TouchableHighlight onPress={this.openWhatsapp}>
-          <RubikText style={{ color: "#feca03", textDecorationLine: 'underline',  flexGrow: 0 }}>
+          <RubikText style={{ color: "#feca03", textDecorationLine: 'underline',  flexGrow: 0, marginTop: 5 }}>
           <FaWhatsapp
             size={14}
           />(14) 2104-3500
@@ -78,7 +78,7 @@ class RodapeCompleto extends Component {
           </RubikText>
         </View>
         <a href="tel:1421043500">
-          <RubikText style={{ color: "white"}}>
+          <RubikText style={{ color: "white", marginTop: 5}}>
             <FaPhone
             size={14}
             style={this.style.icon}
@@ -117,7 +117,7 @@ class RodapeCompleto extends Component {
       paddingTop: 18,
     },
     toLeft: {
-      paddingLeft: 10,
+      paddingLeft: 20,
       alignItems: "flex-end",
       alignSelf: "flex-start"
     },
@@ -142,7 +142,8 @@ class RodapeCompleto extends Component {
       flexGrow: 4
     },
     faleComAtendentes: {
-      flexGrow: 8
+      flexGrow: 8,
+      fontSize:14
     },
     email: {
       borderWidth: 0,

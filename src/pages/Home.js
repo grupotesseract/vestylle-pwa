@@ -7,6 +7,7 @@ import SliderCupons from '../components/SliderCupons';
 import View from '../ui/View';
 import RubikText from '../ui/RubikText';
 import { Link } from 'react-router-dom'
+import CupomBoasVindas from '../components/CupomBoasVindas';
 
 class Home extends Component {
   render() {
@@ -65,6 +66,9 @@ class Home extends Component {
         </RubikText>
         </View>
       </View>
+
+      <CupomBoasVindas/>
+      
       <View style={{
         paddingTop:40,
       }}>
