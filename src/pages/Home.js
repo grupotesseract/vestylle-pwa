@@ -6,6 +6,7 @@ import SliderOfertas from '../components/SliderOfertas';
 import SliderCupons from '../components/SliderCupons';
 import View from '../ui/View';
 import RubikText from '../ui/RubikText';
+import { Link } from 'react-router-dom'
 
 class Home extends Component {
   render() {
@@ -67,16 +68,45 @@ class Home extends Component {
       <View style={{
         paddingTop:40,
       }}>
-      <RubikText 
-        bold={true} 
-        style={{ 
-          alignSelf: 'center', 
-          fontSize: 20,
-          marginBottom: 5
+        <RubikText 
+          bold={true} 
+          style={{ 
+            alignSelf: 'center', 
+            fontSize: 20,
+            marginBottom: 15
+          }}>
+          CONFIRA AS NOVIDADES
+        </RubikText>
+        <View style={{position: 'relative'}}>
+          <div style={{
+            position: 'absolute',
+            height: '55%',
+            width: '100%',
+            backgroundColor: '#55bcba',
+            top: '10%',
+          }}></div>
+          <SliderOfertas/>
+        </View>
+        <Link 
+          to="/produtos"
+        style={{
+          backgroundColor: 'black',
+          alignSelf:'center',
+          padding: 10,
+          paddingRight:25,
+          paddingLeft:25,
+          borderRadius: 5,
+          marginBottom: 30
         }}>
-        CONFIRA AS NOVIDADES
-      </RubikText>
-      <SliderOfertas/>
+          <RubikText 
+            style={{
+              color:'white', 
+            }}
+            bold={false}
+          >
+            TODOS OS PRODUTOS
+          </RubikText>
+        </Link>
       </View>
       <RodapeCompleto/>
     </>

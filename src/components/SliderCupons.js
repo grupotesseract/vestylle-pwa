@@ -12,7 +12,11 @@ class Cupom extends React.Component {
       key={this.props.key}
       style={{ alignSelf: 'center', overflow:'hidden', width: '100%'}}>
         <img 
-          style={{objectFit:'cover', height: '100%'}} 
+          style={{
+            objectFit:'cover', 
+            height: '100%',
+
+          }} 
           alt={this.props.id}
           src={this.props.img}/>
         <Link 
@@ -72,25 +76,6 @@ export default class SliderCupons extends React.Component {
 
   state = {
     cupons: []
-  }
-
-  componentDidMount() {
-    const cupons = [
-      {
-        id: 1,
-        img: "https://i.imgur.com/UYiroysl.jpg"
-      },
-      {
-        id: 223,
-        img: "https://i.imgur.com/UPrs1EWl.jpg"
-      },
-      {
-        id: 2,
-        img: "https://avatars1.githubusercontent.com/u/7903384?s=400&v=4"
-      },
-    ]
-
-    this.setState({cupons})
   }
 
   render() {

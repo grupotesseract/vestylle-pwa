@@ -22,7 +22,7 @@ class LojaProvider extends React.Component {
     .then(response => response.json())
     .catch(erro => console.error('Erro no atualizaOfertas',erro))
     if(res.success) {
-      const ofertas = res.data.ofertas;
+      const ofertas = res.data;
       this.setState({ofertas})
       console.log("ofertas carregadas:", ofertas)
       return ofertas
