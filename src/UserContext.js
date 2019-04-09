@@ -6,7 +6,7 @@ class UserProvider extends React.Component {
   state = { 
     isAuth: false,
     userToken: null,
-    fbToken: null,
+    fbData: null,
     userId: null,
     perfil: {}
   }
@@ -82,27 +82,27 @@ class UserProvider extends React.Component {
 
   setFacebookToken(fbResponse) {
     console.log(fbResponse)
-    const fbToken = fbResponse.accessToken
+    const fbData = fbResponse
     this.setState({
-      fbToken
+      fbData
     })
-    localStorage.setItem('fbToken', fbToken);
-    this.getAPITokenFromFacebookData(fbToken)
+    localStorage.setItem('fbData', fbData);
+    this.getAPITokenFromFacebookData(fbData)
     .then((apiToken) => {
       console.log("setFacebookToken",apiToken)
       // this.setToken(apiToken)
     })
   }
 
-  async getAPITokenFromFacebookData(fbToken) {
-    console.log(fbToken)
+  async getAPITokenFromFacebookData(fbData) {
+    console.log(fbData)
     const bodyRequest = {
-      email: "evandro.carreira@gmail.com",
-      social_token: fbToken,
-      nome: "Evandro Barbosa Carreira"
+      email: fbData.email,
+      social_token: fbData.accessToken,
+      nome: fbData.name
     }
     const res = await fetch(process.env.REACT_APP_API_URL+'/login/facebook', {
-      method: 'PATCH',
+      method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
