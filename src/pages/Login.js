@@ -101,7 +101,6 @@ export default class LoginScreen extends React.Component {
     await login(this.state.login, this.state.password)
     .then(jsonRes => {
       if(jsonRes.success) {
-        console.log(jsonRes.data)
         const token = jsonRes.data.token
         setToken(token);
         self.setState({ redirectTo: '/areacliente'});

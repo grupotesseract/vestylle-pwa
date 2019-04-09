@@ -80,19 +80,38 @@ class UserProvider extends React.Component {
     localStorage.setItem('isAuth', true);
   }
 
-  setFacebookToken(fbToken) {
+  setFacebookToken(fbResponse) {
+    console.log(fbResponse)
+    const fbToken = fbResponse.accessToken
     this.setState({
       fbToken
     })
     localStorage.setItem('fbToken', fbToken);
     this.getAPITokenFromFacebookToken(fbToken)
     .then((apiToken) => {
-      this.setToken(apiToken)
+      console.log("setFacebookToken",apiToken)
+      // this.setToken(apiToken)
     })
   }
 
-  async getAPITokenFromFacebookToken(fbToken) {
+  async getAPITokenFromFacebookData(fbToken) {
     console.log(fbToken)
+    const bodyRequest = {
+      email: "evandro.carreira@gmail.com",
+      social_token: fbToken,
+      nome: "Evandro Barbosa Carreira"
+    }
+    const res = await fetch(process.env.REACT_APP_API_URL+'/login/facebook', {
+      method: 'PATCH',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(bodyRequest)
+    })
+    .then(response => response.json())
+    .catch(erro => console.error('Erro no login',erro))
+    return res;
   }
 
   async getDadosMeuPerfil() {
