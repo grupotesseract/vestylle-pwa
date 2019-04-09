@@ -3,12 +3,12 @@
   "name": "Vestylle Megastore Jaú",
   "icons": [
     {
-      "src": "icone512",
+      "src": "icone512.png",
       "sizes": "512x512",
       "type": "image/png"
     },
     {
-      "src": "icone192",
+      "src": "icone192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
