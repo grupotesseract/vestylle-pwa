@@ -27,6 +27,7 @@ class DisplayPontos extends React.Component {
   }
 
   datetime2DDMMAAAA = (datetime) => {
+    if(!datetime) return "";
     const date = datetime.split(" ")[0].split("-");
     const year = date[0]
     const month = date[1]
@@ -80,7 +81,9 @@ class DisplayPontos extends React.Component {
           </View>
 
           <RubikText style={{color: 'white'}}>Junte mais {1000 - this.state.qtdPontos%1000 } pontos para ganhar outro bônus</RubikText>
-          <RubikText style={{color: 'white', fontSize: 12}}>Cupom válido até {this.state.data_vencimento}</RubikText>
+          {this.state.data_vencimento && (
+            <RubikText style={{color: 'white', fontSize: 12}}>Bônus válido até {this.state.data_vencimento}</RubikText>
+          )}
         </>)}
       </View>
     </View>

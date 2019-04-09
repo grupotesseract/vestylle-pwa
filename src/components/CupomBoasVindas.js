@@ -16,7 +16,7 @@ class CupomBoasVindas extends Component {
           width: 120
           }}>
           <View style={{
-            backgroundColor: 'red',
+            backgroundColor: '#e20f17',
             position: 'absolute',
             top: -25,
             padding: 10,

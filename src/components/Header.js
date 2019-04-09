@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import logo from '../assets/logofull.png';
 import Menu from './Menu';
 import { MdMenu as MenuIcon } from 'react-icons/md';
-
+import { Link } from 'react-router-dom'
 
 class Header extends Component {
 
@@ -13,7 +13,10 @@ class Header extends Component {
     render() {
         return <div style={{flexDirection: 'row', alignSelf: 'stretch'}}>
             <div style={this.style.sideContent}></div>
+
+            <Link to="/" style={this.style.logo}>
             <img src={logo} style={this.style.logo} alt="logo" />
+            </Link>
             <button 
                 style={this.style.sideContent}
                 onClick={this.toggleMenu}

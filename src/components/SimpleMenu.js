@@ -25,7 +25,7 @@ class SimpleMenu extends Component {
         />
       </Link>
       <Link
-        to = "/areacliente"
+        to = "/listadesejos"
       >
         <FaHeart
           size={26}

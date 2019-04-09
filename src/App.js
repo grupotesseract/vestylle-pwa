@@ -12,6 +12,7 @@ import CadastroSimples from './pages/CadastroSimples';
 import AreaCliente from './pages/AreaCliente';
 import MeusPontos from './pages/MeusPontos';
 import EsqueceuSenha from './pages/EsqueceuSenha';
+import ListaDesejos from './pages/ListaDesejos';
 
 class App extends Component {
   render() {
@@ -27,6 +28,7 @@ class App extends Component {
             <ProtectedRoute exact={true} path="/areacliente" component={AreaCliente}/>
             <ProtectedRoute exact={true} path="/meuspontos" component={MeusPontos}/>
             <ProtectedRoute exact={true} path="/meuperfil" component={MeuPerfil} />
+            <Route exact={true} path="/listadesejos" component={ListaDesejos} />
           </Switch>
         </UserProvider>
       </LojaProvider>

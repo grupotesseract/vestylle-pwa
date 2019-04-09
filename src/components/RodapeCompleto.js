@@ -17,7 +17,7 @@ class RodapeCompleto extends Component {
           style={{ width:'70%', alignSelf: 'center', maxWidth: 200 }}
         />
         <RubikText bold={true} style={{fontSize: 19, marginTop: 0}}>Estamos te esperando</RubikText>
-        <View style={Object.assign(this.style.toLeft, this.style.paddingTopBottom)}>
+        <View style={Object.assign({},this.style.toLeft, this.style.paddingTopBottom)}>
           <RubikText bold={true} style={{fontSize: 14}}>
           <FaClock
             size={14}
