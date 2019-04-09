@@ -13,11 +13,25 @@ import { FaStar } from 'react-icons/fa';
 class DisplayPontos extends React.Component {
 
   state = {
+    nome: '',
     qtdPontos: 0,
+    data_vencimento: null
   }
 
   componentDidMount() {
-    this.setState({qtdPontos: this.props.qtdPontos || 0})
+    this.setState({
+      qtdPontos: this.props.qtdPontos || 0,
+      data_vencimento: this.datetime2DDMMAAAA(this.props.data_vencimento),
+      nome: this.props.nome || '',
+    })
+  }
+
+  datetime2DDMMAAAA = (datetime) => {
+    const date = datetime.split(" ")[0].split("-");
+    const year = date[0]
+    const month = date[1]
+    const day = date[2]
+    return day+"/"+month+"/"+year
   }
 
   render() {
@@ -52,7 +66,7 @@ class DisplayPontos extends React.Component {
           <RubikText style={{color: 'white'}}>Junte mais { 1000 - this.state.qtdPontos } pontos para garantir seu bônus</RubikText>
         </>)}
         { this.state.qtdPontos >= 1000 && (<>
-          <RubikText style={{color: 'white'}} bold={true}>Parabéns Ciclana,</RubikText>
+          <RubikText style={{color: 'white'}} bold={true}>Parabéns {this.state.nome},</RubikText>
           <RubikText style={{color: 'white'}} bold={true}>você completou 1000 pontos.</RubikText>
           <RubikText style={this.style.fonteDestaque}>E ganhou um bônus de R$60,00</RubikText>
           <RubikText style={{color: 'white'}}>para gastar como quiser.</RubikText>
@@ -66,6 +80,7 @@ class DisplayPontos extends React.Component {
           </View>
 
           <RubikText style={{color: 'white'}}>Junte mais {1000 - this.state.qtdPontos%1000 } pontos para ganhar outro bônus</RubikText>
+          <RubikText style={{color: 'white', fontSize: 12}}>Cupom válido até {this.state.data_vencimento}</RubikText>
         </>)}
       </View>
     </View>
@@ -95,7 +110,11 @@ export default class MeusPontos extends React.Component {
 
           <UserConsumer>
           {({ perfil }) => (
-            <DisplayPontos qtdPontos={perfil.saldo_pontos}/>
+            <DisplayPontos 
+              qtdPontos={perfil.saldo_pontos}
+              data_vencimento={perfil.data_vencimento_pontos}
+              nome={perfil.nome}
+            />
           )}
           </UserConsumer>
 
