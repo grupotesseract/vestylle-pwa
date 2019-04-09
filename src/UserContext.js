@@ -22,7 +22,7 @@ class UserProvider extends React.Component {
     this.setFacebookToken = this.setFacebookToken.bind(this)
   }
 
-  componentWillMount() {
+  componentDidMount() {
     /*
     const userToken = localStorage.getItem('userToken');
     if (userToken) {
@@ -80,18 +80,31 @@ class UserProvider extends React.Component {
     localStorage.setItem('isAuth', true);
   }
 
-  setFacebookToken(fbResponse) {
-    console.log(fbResponse)
+  async setFacebookToken(fbResponse) {
     const fbData = fbResponse
     this.setState({
       fbData
     })
     localStorage.setItem('fbData', fbData);
-    this.getAPITokenFromFacebookData(fbData)
-    .then((apiToken) => {
-      console.log("setFacebookToken",apiToken)
-      // this.setToken(apiToken)
+    return this.getAPITokenFromFacebookData(fbData)
+    .then((response) => {
+      if(response.success) {
+        const loginData = response.data
+        const perfil = loginData.pessoa
+        const userToken = loginData.token
+        this.setToken(userToken)
+        this.setPerfil(perfil)
+      }
     })
+  }
+
+  setPerfil(perfil) {
+    this.setState({
+      userId: perfil.id,
+      perfil: this.null2emptystring(perfil)
+    })
+    localStorage.setItem('userId', perfil.id);
+    localStorage.setItem('perfil', perfil);
   }
 
   async getAPITokenFromFacebookData(fbData) {
@@ -115,20 +128,20 @@ class UserProvider extends React.Component {
   }
 
   async getDadosMeuPerfil() {
-    const res = await fetch(process.env.REACT_APP_API_URL+'/pessoas/27')
+    const res = await fetch(process.env.REACT_APP_API_URL+'/pessoas/'+this.state.userId)
     .then(response => response.json())
     .catch(erro => console.error('Erro no getDadosMeuPerfil',erro))
     if(res.success) {
-      const meuperfil = this.null2emptystring(res.data)
-      this.setState({perfil: meuperfil})
-      return meuperfil
+      const meuPerfil = res.data
+      this.setPerfil(meuPerfil)
+      return meuPerfil
     } else {
       throw res.message
     }
   }
 
   async setDadosMeuPerfil(perfil) {
-    const res = await fetch(process.env.REACT_APP_API_URL+'/pessoas/27', {
+    const res = await fetch(process.env.REACT_APP_API_URL+'/pessoas/'+this.state.userId, {
       method: 'PATCH',
       headers: {
         'Accept': 'application/json',

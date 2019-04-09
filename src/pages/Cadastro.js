@@ -4,17 +4,23 @@ import View from '../ui/View';
 import RubikText from '../ui/RubikText';
 import { FaFacebook, FaUserCircle } from 'react-icons/fa';
 import TouchableHighlight from '../ui/TouchableHighlight';
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
 import { UserConsumer } from '../UserContext';
 
 
 class Cadastro extends Component {
+  state = {
+    redirectTo: null
+  }
   render() {
     return <ImageBackground
       source={require('../assets/fundocadastro.jpg')}
       style={{width: '100%', height: '100vh', justifyContent: 'space-evenly', alignItems: 'flex-end'}}>
 
+        { this.state.redirectTo && (
+          <Redirect to={this.state.redirectTo}/>
+        )}
         <img
           alt="Vestylle"
           src={require('../assets/logobranco.png')}
@@ -81,6 +87,11 @@ class Cadastro extends Component {
   
   responseFacebook = (response,setFacebookToken) => {
     setFacebookToken(response)
+    .then(() => {
+      this.setState({
+        redirectTo : '/'
+      })
+    })
   }
 
   styles = {
