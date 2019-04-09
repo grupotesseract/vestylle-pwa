@@ -13,7 +13,7 @@ class Cadastro extends Component {
   render() {
     return <ImageBackground
       source={require('../assets/fundocadastro.jpg')}
-      style={{width: '100%', height: '100%', justifyContent: 'space-evenly', alignItems: 'flex-end'}}>
+      style={{width: '100%', height: '100vh', justifyContent: 'space-evenly', alignItems: 'flex-end'}}>
 
         <img
           alt="Vestylle"

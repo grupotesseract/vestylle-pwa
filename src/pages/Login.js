@@ -22,7 +22,7 @@ export default class LoginScreen extends React.Component {
     return (
       <ImageBackground
         source={require('../assets/fundologin.jpg')}
-        style={{width: '100%', minHeight: '100%', justifyContent: 'space-between', alignItems: 'center'}}>
+        style={{width: '100%', minHeight: '100vh', justifyContent: 'space-between', alignItems: 'center'}}>
 
         { this.state.redirectTo && (
           <Redirect to={this.state.redirectTo}/>
@@ -101,6 +101,7 @@ export default class LoginScreen extends React.Component {
     await login(this.state.login, this.state.password)
     .then(jsonRes => {
       if(jsonRes.success) {
+        console.log(jsonRes.data)
         const token = jsonRes.data.token
         setToken(token);
         self.setState({ redirectTo: '/areacliente'});

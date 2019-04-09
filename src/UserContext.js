@@ -7,6 +7,7 @@ class UserProvider extends React.Component {
     isAuth: false,
     userToken: null,
     fbToken: null,
+    userId: null,
     perfil: {}
   }
 
@@ -22,11 +23,13 @@ class UserProvider extends React.Component {
   }
 
   componentWillMount() {
+    /*
     const userToken = localStorage.getItem('userToken');
     if (userToken) {
       this.setToken(userToken);
       return;
     }
+    */
   }
 
   async signup(login, passwd) {
@@ -82,8 +85,14 @@ class UserProvider extends React.Component {
       fbToken
     })
     localStorage.setItem('fbToken', fbToken);
-    const toke = localStorage.getItem('fbToken')
-    console.log(toke)
+    this.getAPITokenFromFacebookToken(fbToken)
+    .then((apiToken) => {
+      this.setToken(apiToken)
+    })
+  }
+
+  async getAPITokenFromFacebookToken(fbToken) {
+    console.log(fbToken)
   }
 
   async getDadosMeuPerfil() {
