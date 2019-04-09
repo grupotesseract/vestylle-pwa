@@ -87,7 +87,7 @@ class UserProvider extends React.Component {
       fbToken
     })
     localStorage.setItem('fbToken', fbToken);
-    this.getAPITokenFromFacebookToken(fbToken)
+    this.getAPITokenFromFacebookData(fbToken)
     .then((apiToken) => {
       console.log("setFacebookToken",apiToken)
       // this.setToken(apiToken)

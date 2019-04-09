@@ -80,7 +80,7 @@ class Cadastro extends Component {
   }
   
   responseFacebook = (response,setFacebookToken) => {
-    setFacebookToken(response.accessToken)
+    setFacebookToken(response)
   }
 
   styles = {
