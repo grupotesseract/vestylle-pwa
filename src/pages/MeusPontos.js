@@ -105,7 +105,7 @@ export default class MeusPontos extends React.Component {
       <Header/>
       <View style={{backgroundColor: "#1e1e1c"}}>
         <Breadcrumb>
-          <Link to="/meuspontos"><RubikText>Área do Cliente &gt;&nbsp;</RubikText></Link>
+          <Link to="/areacliente"><RubikText>Área do Cliente &gt;&nbsp;</RubikText></Link>
           <RubikText bold={true}>Meus pontos</RubikText>
         </Breadcrumb>
         <View style={{padding: 20, alignItems: 'center'}}>

@@ -73,31 +73,31 @@ class Menu extends Component {
             <MenuButton 
                 navigation={this.props.navigation} 
                 label="Adicionar Cupom"
-                page="AreaCliente"
+                page="/adicionarcupom"
                 icon={IoMdQrScanner}
             />
             <MenuButton 
                 navigation={this.props.navigation} 
                 label="Lista de Desejos"
-                page="AreaCliente"
+                page="/desejos"
                 icon={FaHeart}
             />
             <MenuButton 
                 navigation={this.props.navigation} 
                 label="Produtos"
-                page="AreaCliente"
+                page="/produtos"
                 icon={IoMdShirt}
             />
             <MenuButton 
                 navigation={this.props.navigation} 
                 label="Loja"
-                page="AreaCliente"
+                page="/loja"
                 icon={IoMdPin}
             />
             <MenuButton 
                 navigation={this.props.navigation} 
                 label="Fale Conosco"
-                page="AreaCliente"
+                page="/faleconosco"
                 icon={FaWhatsapp}
                 noborder={true}
             />

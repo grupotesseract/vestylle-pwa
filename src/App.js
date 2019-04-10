@@ -15,6 +15,9 @@ import EsqueceuSenha from './pages/EsqueceuSenha';
 import ListaDesejos from './pages/ListaDesejos';
 import Produtos from './pages/Produtos';
 import ProdutosDetalhe from './pages/ProdutosDetalhe';
+import AdicionarCupom from './pages/AdicionarCupom';
+import FaleConosco from './pages/FaleConosco';
+import Loja from './pages/Loja';
 
 class App extends Component {
   render() {
@@ -33,6 +36,9 @@ class App extends Component {
             <ProtectedRoute exact={true} path="/meuspontos" component={MeusPontos}/>
             <ProtectedRoute exact={true} path="/meuperfil" component={MeuPerfil} />
             <Route exact={true} path="/listadesejos" component={ListaDesejos} />
+            <Route exact={true} path="/adicionarcupom" component={AdicionarCupom} />
+            <Route exact={true} path="/faleconosco" component={FaleConosco} />
+            <Route exact={true} path="/loja" component={Loja} />
           </Switch>
         </UserProvider>
       </LojaProvider>
