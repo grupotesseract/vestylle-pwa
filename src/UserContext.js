@@ -43,7 +43,14 @@ class UserProvider extends React.Component {
       },
       body: params
     })
-    .then(response => response.json())
+    .then(response => {
+      const jsonRes = response.json()
+      if(jsonRes.success) {
+        this.setToken(jsonRes.data.token.token)
+        this.setPerfil(jsonRes.data.pessoa)
+      }
+      return jsonRes
+    })
     .catch(error => console.error('Signup error', error));
     return res;
   }
@@ -60,7 +67,10 @@ class UserProvider extends React.Component {
     .then(response => response.json())
     .catch(erro => console.error('Erro no login',erro))
     if(res.success) {
-      this.getDadosMeuPerfil()
+      const meuPerfil = res.data.pessoa
+      const userToken = res.data.token
+      this.setToken(userToken)
+      this.setPerfil(meuPerfil)
     }
     return res;
   }

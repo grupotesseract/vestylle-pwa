@@ -14,9 +14,9 @@ class Cupom extends React.Component {
         <img 
           style={{
             objectFit:'cover', 
-            height: '100%',
-
+            height: '100%'
           }} 
+          className="img-slider"
           alt={this.props.id}
           src={this.props.img}/>
         <Link 

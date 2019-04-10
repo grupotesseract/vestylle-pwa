@@ -7,7 +7,9 @@ class CupomBoasVindas extends Component {
 
   render() {
     return <View style={this.style.container}>
-      <View style={{
+      <View 
+        className="cupom-boas-vindas"
+        style={{
         flexDirection: 'row'
       }}>
         <View style={{
@@ -21,7 +23,8 @@ class CupomBoasVindas extends Component {
             top: -25,
             padding: 10,
             paddingTop: 40
-          }}>
+          }}
+          className="bandeirola">
             <RubikText bold={true} 
               style={{
                 fontSize:42,
@@ -37,9 +40,9 @@ class CupomBoasVindas extends Component {
         </View>
         <View>
           <View style={{padding: 15, paddingRight: 0, textAlign:'left'}}>
-          <RubikText bold={true} style={{fontSize: 19}}>FAÇA SEU CADASTRO </RubikText>
-          <RubikText bold={true} style={{fontSize: 19, marginTop: 5, marginBottom: 5}}>E GANHE UM CUPOM </RubikText>
-          <RubikText bold={true} style={{fontSize: 19}}>DE BOAS-VINDAS!</RubikText>
+          <RubikText bold={true} className="faca-seu-cadastro">FAÇA SEU CADASTRO </RubikText>
+          <RubikText bold={true} className="faca-seu-cadastro" style={{marginTop: 5, marginBottom: 5}}>E GANHE UM CUPOM </RubikText>
+          <RubikText bold={true} className="faca-seu-cadastro">DE BOAS-VINDAS!</RubikText>
           </View>
           <Link
             to="/cadastro"
@@ -48,7 +51,7 @@ class CupomBoasVindas extends Component {
               padding: 12
             }}
           >
-            <RubikText bold={true}>QUERO ME CADASTRAR</RubikText>
+            <RubikText bold={true} className="faca-seu-cadastro">QUERO ME CADASTRAR</RubikText>
           </Link>
         </View>
       </View>

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 class View extends Component {
 
   render() {
-    return <div style={this.props.style}>
+    return <div {...this.props}>
         {this.props.children}
     </div>
   }

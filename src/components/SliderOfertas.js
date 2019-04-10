@@ -20,6 +20,7 @@ class Oferta extends React.Component {
             borderRadius: 10
         }} 
           alt={this.props.id}
+          className="img-slider"
           src={"http:"+this.props.img}/>
         <View style={{
           flexDirection: 'row'

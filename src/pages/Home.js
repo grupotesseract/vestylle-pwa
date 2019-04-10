@@ -23,7 +23,7 @@ class Home extends Component {
             height: '55%',
             width: '100%',
             backgroundColor: '#55bcba',
-            top: '20%',
+            top: '15%',
           }}></div>
           <SliderCupons/>
         </View>
