@@ -6,6 +6,7 @@ import RubikText from '../ui/RubikText';
 import RodapeCompleto from '../components/RodapeCompleto';
 import CupomBoasVindas from '../components/CupomBoasVindas';
 import Breadcrumb from '../ui/Breadcrumb';
+import LaughingSmiling from '../ui/LaughingSmiling';
 
 export default class ListaDesejos extends React.Component {
 
@@ -27,8 +28,8 @@ export default class ListaDesejos extends React.Component {
       </Breadcrumb>
       <View style={{alignItems: 'center'}}>
         <View style={{alignItems: 'center', padding: 20}}>
-          <RubikText>Seus produtos favoritos </RubikText>
-          <RubikText>ficam salvos aqui</RubikText>
+          <LaughingSmiling>Seus produtos favoritos </LaughingSmiling>
+          <LaughingSmiling>ficam salvos aqui</LaughingSmiling>
         </View>
         <RubikText bold={true}>A Lista de Desejos facilita suas compras.</RubikText>
       </View>

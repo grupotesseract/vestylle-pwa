@@ -13,6 +13,8 @@ import AreaCliente from './pages/AreaCliente';
 import MeusPontos from './pages/MeusPontos';
 import EsqueceuSenha from './pages/EsqueceuSenha';
 import ListaDesejos from './pages/ListaDesejos';
+import Produtos from './pages/Produtos';
+import ProdutosDetalhe from './pages/ProdutosDetalhe';
 
 class App extends Component {
   render() {
@@ -25,6 +27,8 @@ class App extends Component {
             <Route exact={true} path="/cadastro" component={Cadastro}/>
             <Route exact={true} path="/esqueceusenha" component={EsqueceuSenha}/>
             <Route exact={true} path="/cadastrosimples" component={CadastroSimples}/>
+            <Route exact={true} path="/produtos" component={Produtos}/>
+            <Route exact={true} path="/produtos/:produtoId" component={ProdutosDetalhe}/>
             <ProtectedRoute exact={true} path="/areacliente" component={AreaCliente}/>
             <ProtectedRoute exact={true} path="/meuspontos" component={MeusPontos}/>
             <ProtectedRoute exact={true} path="/meuperfil" component={MeuPerfil} />

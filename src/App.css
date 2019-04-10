@@ -43,6 +43,17 @@
        url('./fonts/rubik-v8-latin-700.svg#Rubik') format('svg'); /* Legacy iOS */
 }
 
+
+/* LS - latin */
+@font-face {
+  font-family: 'Laughing And Smiling';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Laughing And Smiling'),
+       url('./fonts/ls.woff') format('woff'), /* Modern Browsers */
+       url('./fonts/ls.ttf') format('truetype'); /* Safari, Android, iOS */
+}
+
 body *{
   display: flex;
   flex-direction: column;

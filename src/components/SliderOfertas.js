@@ -26,7 +26,7 @@ class Oferta extends React.Component {
           flexDirection: 'row'
         }}>
           <Link 
-            to={"/oferta/"+this.props.id}
+            to={"/produtos/"+this.props.id}
             style={{
               flexDirection: 'column',
               flexGrow: 1,

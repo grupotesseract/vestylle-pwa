@@ -64,7 +64,7 @@ class Cadastro extends Component {
           </Link>
           <View style={this.styles.fullCenter}>
             <Link
-              to="Home"
+              to="/"
               style={this.styles.textoSmall}
             >Sobre o programa Cliente Vestylle Megastore Jaú
             </Link>

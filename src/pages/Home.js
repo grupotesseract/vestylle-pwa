@@ -8,6 +8,7 @@ import View from '../ui/View';
 import RubikText from '../ui/RubikText';
 import { Link } from 'react-router-dom'
 import CupomBoasVindas from '../components/CupomBoasVindas';
+import LaughingSmiling from '../ui/LaughingSmiling';
 
 class Home extends Component {
   render() {
@@ -33,9 +34,9 @@ class Home extends Component {
           <RubikText bold={true} style={{fontSize: 25}}>
           preparamos
           </RubikText>
-          <RubikText bold={true} style={{fontSize: 26}}>
+          <LaughingSmiling style={{fontSize: 30}}>
           benefícios exclusivos
-          </RubikText>
+          </LaughingSmiling>
           <RubikText bold={true} style={{fontSize: 25}}>
           para você
           </RubikText>

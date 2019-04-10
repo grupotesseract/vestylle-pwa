@@ -9,6 +9,7 @@ import Breadcrumb from '../ui/Breadcrumb';
 import CircularProgressbar from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { FaStar } from 'react-icons/fa';
+import LaughingSmiling from '../ui/LaughingSmiling';
 
 class DisplayPontos extends React.Component {
 
@@ -108,8 +109,8 @@ export default class MeusPontos extends React.Component {
           <RubikText bold={true}>Meus pontos</RubikText>
         </Breadcrumb>
         <View style={{padding: 20, alignItems: 'center'}}>
-          <RubikText style={{color: 'white'}}>Suas compras</RubikText>
-          <RubikText style={{color: 'white'}}>acumulam pontos</RubikText>
+          <LaughingSmiling style={{color: 'white', fontSize: 26}}>Suas compras</LaughingSmiling>
+          <LaughingSmiling style={{color: 'white', fontSize: 26, marginBottom: 10}}>acumulam pontos</LaughingSmiling>
 
           <UserConsumer>
           {({ perfil }) => (
