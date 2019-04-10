@@ -7,6 +7,7 @@ import RodapeCompleto from '../components/RodapeCompleto';
 import CupomBoasVindas from '../components/CupomBoasVindas';
 import Breadcrumb from '../ui/Breadcrumb';
 import LaughingSmiling from '../ui/LaughingSmiling';
+import { FaRegHeart } from 'react-icons/fa';
 
 export default class ListaDesejos extends React.Component {
 
@@ -62,6 +63,60 @@ export default class ListaDesejos extends React.Component {
         </View>
       </View>
 
+      <RubikText
+        bold={true}
+        style={{
+          padding: 10,
+          paddingLeft: 20,
+          paddingRight: 40,
+          borderTopRightRadius: 10,
+          borderBottomRightRadius: 10,
+          fontSize: 20,
+          marginBottom: -15,
+          alignSelf: 'flex-start',
+          backgroundColor: '#55bcba',
+          zIndex:2
+        }}
+      >COMO FUNCIONA?</RubikText>
+      <View style={{
+        backgroundColor:'#1d1e1b',
+        padding: 20,
+        alignItems: 'flex-start',
+        zIndex:1,
+        flexDirection: 'row'
+      }}>
+        <RubikText style={{
+          color: 'white', 
+          textAlign:'left',
+          paddingTop: 15,
+          paddingRight:10
+          }}>
+          No momento sua lista está vazia. 
+          Para adicionar seus produtos favoritos aqui, 
+          <b style={{display:'inline'}}> basta clicar no ícone <FaRegHeart/></b> 
+          no canto inferior do produto.</RubikText>
+        <img alt="miniatura da tela"
+          src={require('../assets/minilike.png')}
+          style={{
+            marginTop: -70,
+            minHeight: 200
+          }}/>
+      </View>
+      <View style={{
+        backgroundColor:'#585756', 
+        padding: 20, 
+        flexDirection: 'row',
+        marginBottom: 50,
+        boxShadow: '0 0 10px black'
+        }}>
+        <img alt="clique no coração"
+          src={require('../assets/like.png')}
+          style={{
+            maxWidth: 100,
+            marginRight: 20
+          }}/>
+        <RubikText bold={true} style={{color: 'white'}}>Produto adicionado à lista.</RubikText>
+      </View>
       <CupomBoasVindas/>
 
       <UserConsumer>

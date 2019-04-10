@@ -79,7 +79,7 @@ class Menu extends Component {
             <MenuButton 
                 navigation={this.props.navigation} 
                 label="Lista de Desejos"
-                page="/desejos"
+                page="/listadesejos"
                 icon={FaHeart}
             />
             <MenuButton 

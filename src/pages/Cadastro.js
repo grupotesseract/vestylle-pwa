@@ -21,11 +21,13 @@ class Cadastro extends Component {
         { this.state.redirectTo && (
           <Redirect to={this.state.redirectTo}/>
         )}
+        <Link to="/">
         <img
           alt="Vestylle"
           src={require('../assets/logobranco.png')}
           style={{ width:'80%', maxWidth: 400, alignSelf: 'flex-start', marginLeft: 15, marginTop: 50, marginBottom: 'auto' }}
         />
+        </Link>
 
         <View style={this.styles.rightAlign}>
           <RubikText style={{color:'#FFFFFF', textAlign: 'left'}}>Faça seu cadastro e receba benefícios exclusivos</RubikText>
@@ -105,14 +107,14 @@ class Cadastro extends Component {
     },
     rightAlign: {
       flexDirection: 'column',
-      width: '70%',
+      width: '80%',
       color: '#FFFFFF',
       paddingBottom: 40
     },
     botaoQuadrado: {
       marginTop: 3,
       marginBottom: 3,
-      marginRight: 30,
+      marginRight: 20,
       padding: 6,
       borderWidth: 1,
       borderColor: 'white',

@@ -3,6 +3,7 @@ import View from '../ui/View';
 import { IoMdQrScanner } from 'react-icons/io';
 import { FaStar, FaHeart, FaWhatsapp } from 'react-icons/fa';
 import { Link } from 'react-router-dom'
+import TouchableHighlight from '../ui/TouchableHighlight';
 
 class SimpleMenu extends Component {
 
@@ -32,15 +33,14 @@ class SimpleMenu extends Component {
           style={this.style.icon}
         />
       </Link>
-      <Link
-        to="/whats"
-      >
+      <TouchableHighlight
+        onPress={() => window.open("http://api.whatsapp.com/send?phone=551421043500") }>
         <FaWhatsapp
           name="whatsapp"
           size={26}
           style={this.style.icon}
         />
-      </Link>
+      </TouchableHighlight>
     </View>
   }
 
