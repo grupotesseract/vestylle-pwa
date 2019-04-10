@@ -122,9 +122,6 @@ export default class CadastroSimples extends React.Component {
     await signup(this.state.login, this.state.password)
     .then(jsonRes => {
       if(jsonRes.success) {
-        console.log('jsonRes', jsonRes);
-        const token = jsonRes.data.token.token
-        setToken(token);
         self.setState({
           cadastroConcluido: true
         })

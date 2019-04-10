@@ -11,7 +11,7 @@ class Header extends Component {
     }
 
     render() {
-        return <div style={{flexDirection: 'row', alignSelf: 'stretch'}}>
+        return <div style={{borderBottom:'2px solid #bdbabc',flexDirection: 'row', alignSelf: 'stretch'}}>
             <div style={this.style.sideContent}></div>
 
             <Link to="/" style={this.style.logo}>
