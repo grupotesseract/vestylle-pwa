@@ -6,8 +6,10 @@ import Header from '../components/Header'
 import ImageBackground from '../ui/ImageBackground';
 import ButtonBorder from '../ui/ButtonBorder';
 import MiniRodape from '../components/MiniRodape'
+import { Redirect } from 'react-router-dom'
 import { MdCheckBox, MdCheckBoxOutlineBlank } from 'react-icons/md';
 import TouchableHighlight from '../ui/TouchableHighlight';
+import Alert from '../ui/Alert';
 
 class Checkbox extends React.Component {
   render() { 
@@ -93,6 +95,10 @@ class FormMeuPerfil extends React.Component {
   render() {
     return <form onSubmit={(e) => this.atualizarPerfil(e)}>
       <RubikText bold={true} style={{color:'white', fontSize: 14, marginTop: 10, marginBottom: 10}} >Meu perfil</RubikText>
+
+      { this.state.redirectTo && (
+        <Redirect to={this.state.redirectTo}/>
+      )}
       <InputValidacao 
         title="Nome" 
         value={this.state.nome}
@@ -126,7 +132,23 @@ class FormMeuPerfil extends React.Component {
         loading={this.state.loading}
         style={{marginBottom: 41}}
       />
+
+      { this.state.erroUpdate && (
+        <Alert
+          title = "Atenção"
+          message = {this.state.msgErro}
+          btnText = "OK"
+          onClickButton = {this.dismissAlertErro}
+          dismissAlert = {this.dismissAlertErro}
+        />
+      )}
     </form>
+  }
+
+  dismissAlertErro = () => {
+    this.setState({
+      erroUpdate: false
+    })
   }
 
   async atualizarPerfil(event) {
@@ -143,7 +165,17 @@ class FormMeuPerfil extends React.Component {
       receberNovidades: this.state.receberNovidades
     }
     await this.props.setData(perfil)
-    this.setState({loading: false})
+    .then(() => {
+      this.setState({loading: false})
+      this.setState({redirectTo: '/areacliente'})
+    })
+    .catch((e) => {
+      this.setState({
+        loading: false,
+        erroUpdate:true,
+        msgErro: JSON.stringify(e)
+      })
+    })
   }
 }
 

@@ -21,12 +21,17 @@ class Cadastro extends Component {
         { this.state.redirectTo && (
           <Redirect to={this.state.redirectTo}/>
         )}
-        <Link to="/">
-        <img
-          alt="Vestylle"
-          src={require('../assets/logobranco.png')}
-          style={{ width:'80%', maxWidth: 400, alignSelf: 'flex-start', marginLeft: 15, marginTop: 50, marginBottom: 'auto' }}
-        />
+        <Link to="/"
+          style={{
+            alignSelf: 'flex-start',
+            marginBottom: 'auto'  
+          }}
+        >
+          <img
+            alt="Vestylle"
+            src={require('../assets/logobranco.png')}
+            style={{ width:'80%', maxWidth: 400,  marginLeft: 15, marginTop: 50}}
+          />
         </Link>
 
         <View style={this.styles.rightAlign}>

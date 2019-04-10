@@ -8,7 +8,8 @@ class UserProvider extends React.Component {
     userToken: null,
     fbData: null,
     userId: null,
-    perfil: {}
+    perfil: {},
+    ofertas: []
   }
 
   constructor() {
@@ -20,6 +21,7 @@ class UserProvider extends React.Component {
     this.getDadosMeuPerfil = this.getDadosMeuPerfil.bind(this)
     this.setDadosMeuPerfil = this.setDadosMeuPerfil.bind(this)
     this.setFacebookToken = this.setFacebookToken.bind(this)
+    this.getOfertas = this.getOfertas.bind(this)
   }
 
   componentDidMount() {
@@ -75,6 +77,8 @@ class UserProvider extends React.Component {
     return res;
   }
 
+  
+
   logout() {
     console.log('LOGOUT')
     localStorage.setItem('userToken', null);
@@ -114,7 +118,15 @@ class UserProvider extends React.Component {
       perfil: this.null2emptystring(perfil)
     })
     localStorage.setItem('userId', perfil.id);
-    localStorage.setItem('perfil', perfil);
+    localStorage.setItem('perfil', JSON.stringify(perfil));
+    console.log('state vs localstorage', this.state.userId, localStorage.getItem('userId'))
+  }
+
+  setOfertas(ofertas) {
+    this.setState({
+      ofertas
+    })
+    localStorage.setItem('ofertas', JSON.stringify(ofertas));
   }
 
   async getAPITokenFromFacebookData(fbData) {
@@ -135,6 +147,21 @@ class UserProvider extends React.Component {
     .then(response => response.json())
     .catch(erro => console.error('Erro no login',erro))
     return res;
+  }
+
+
+  async getOfertas() {
+    const res = await fetch(process.env.REACT_APP_API_URL+'/pessoas/'+this.state.userId+'/ofertas')
+    .then(response => response.json())
+    .catch(erro => console.error('Erro no getOfertas',erro))
+    console.log('entro', res)
+    if(res.success) {
+      const ofertas = res.data.ofertas
+      this.setOfertas(ofertas)
+      return ofertas
+    } else {
+      throw res.message
+    }
   }
 
   async getDadosMeuPerfil() {
@@ -160,7 +187,10 @@ class UserProvider extends React.Component {
       body: JSON.stringify(perfil)
     })
     .then(response => response.json())
-    .catch(erro => console.error('Erro no login',erro))
+    .catch(erro => console.error('Erro no setDados',erro))
+    if(res.errors) {
+      throw res.errors
+    }
     return res;
   }
 
@@ -188,7 +218,8 @@ class UserProvider extends React.Component {
           signup: this.signup,
           getDadosMeuPerfil: this.getDadosMeuPerfil,
           setDadosMeuPerfil: this.setDadosMeuPerfil,
-          setFacebookToken: this.setFacebookToken
+          setFacebookToken: this.setFacebookToken,
+          getOfertas: this.getOfertas,
         }}
       >
         {this.props.children}
