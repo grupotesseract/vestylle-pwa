@@ -12,6 +12,7 @@ class LojaProvider extends React.Component {
     super()
     this.atualizaOfertas = this.atualizaOfertas.bind(this)
     this.atualizaCupons = this.atualizaCupons.bind(this)
+    this.getOfertasComLike = this.getOfertasComLike.bind(this)
   }
 
   componentWillMount() {
@@ -29,6 +30,27 @@ class LojaProvider extends React.Component {
     } else {
       throw res.message
     }
+  }
+
+  /***
+   * Função que recebe um array com ids das ofertas
+   * e retorna todas as ofertas marcando as 
+   * recebidas com like = true 
+   */
+  async getOfertasComLike(idsOfertas) {
+    if(!this.state.ofertas || this.state.ofertas.length < 1) {
+      await this.atualizaOfertas()
+    }
+    const ofertasComLike = this.state.ofertas.map((oferta) => {
+      if(idsOfertas.indexOf(oferta.id) !== -1) {
+        oferta.liked = true
+      } else {
+        oferta.liked = false
+      }
+      return oferta
+    })
+
+    return ofertasComLike
   }
 
   async atualizaCupons() {
@@ -53,6 +75,7 @@ class LojaProvider extends React.Component {
           ofertas: this.state.ofertas,
           atualizaCupons: this.atualizaCupons,
           atualizaOfertas: this.atualizaOfertas,
+          getOfertasComLike: this.getOfertasComLike,
         }}
       >
         {this.props.children}

@@ -4,6 +4,36 @@ import View from './View';
 import RubikText from './RubikText';
 import TouchableHighlight from "../ui/TouchableHighlight";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { UserConsumer } from '../UserContext';
+
+class LikeBtn extends Component {
+
+  render() {
+    return <TouchableHighlight
+    onPress={this.likeProduto}
+    style={{
+      flexGrow:0
+    }}>
+      {this.props.liked ? (
+        <FaHeart
+          size={32}
+          style={{color: '#585756'}}
+        />
+      ) : (
+        <FaRegHeart
+          size={32}
+          style={{color: '#585756'}}
+        />
+      )}
+  </TouchableHighlight>
+  }
+
+  likeProduto = () => {
+    const idProduto = this.props.id
+    this.props.toggleDesejo(idProduto)
+    console.log(idProduto)
+  }
+}
 
 class Produto extends Component {
 
@@ -42,28 +72,23 @@ class Produto extends Component {
             >{this.props.titulo.toUpperCase()}</RubikText>
             <RubikText style={{
               color: '#585756',
+              alignItems: 'flex-start',
+              textAlign: 'left',
               fontSize:14}}
             >
               {this.props.subtitulo}
             </RubikText>
           </Link>
-          <TouchableHighlight
-          onPress={() => this.props.likeCallback(this.props.id)}
-          style={{
-            flexGrow:0
-          }}>
-            {this.props.liked ? (
-              <FaHeart
-                size={32}
-                style={{color: '#585756'}}
-              />
-            ) : (
-              <FaRegHeart
-                size={32}
-                style={{color: '#585756'}}
+          <UserConsumer>
+            {({toggleDesejo}) => (
+              <LikeBtn
+                likeCallback={this.props.likeCallback}
+                toggleDesejo={toggleDesejo}
+                id={this.props.id}
+                liked={this.props.liked}
               />
             )}
-          </TouchableHighlight>
+          </UserConsumer>
         </View>
     </div>
   }

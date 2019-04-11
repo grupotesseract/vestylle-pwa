@@ -8,7 +8,7 @@ class UserProvider extends React.Component {
     userToken: null,
     fbData: null,
     userId: null,
-    perfil: {},
+    perfil: null,
     ofertas: []
   }
 
@@ -22,9 +22,24 @@ class UserProvider extends React.Component {
     this.setDadosMeuPerfil = this.setDadosMeuPerfil.bind(this)
     this.setFacebookToken = this.setFacebookToken.bind(this)
     this.getOfertas = this.getOfertas.bind(this)
+    this.toggleDesejo = this.toggleDesejo.bind(this)
   }
 
   componentDidMount() {
+    if(!this.state.isAuth) {
+      const userToken = localStorage.getItem('userToken')
+      const userId = localStorage.getItem('userId')
+      console.log("token carregado", userToken)
+      if(userToken && userId) {
+        this.setState({userToken, userId, isAuth: true})
+        if(!this.state.perfil) {
+          const perfil = JSON.parse(localStorage.getItem('perfil'))
+          console.log("perfil carregado do localStorage", perfil)
+          const ofertas = JSON.parse(localStorage.getItem('ofertas'))
+          this.setState({perfil, ofertas})
+        }
+      }
+    }
     /*
     const userToken = localStorage.getItem('userToken');
     if (userToken) {
@@ -70,7 +85,8 @@ class UserProvider extends React.Component {
     .catch(erro => console.error('Erro no login',erro))
     if(res.success) {
       const meuPerfil = res.data.pessoa
-      const userToken = res.data.token
+      const userToken = res.data.token.token
+      console.log("usertoken no login()", userToken)
       this.setToken(userToken)
       this.setPerfil(meuPerfil)
     }
@@ -86,6 +102,7 @@ class UserProvider extends React.Component {
   }
 
   setToken(userToken) {
+    console.log("token setado no usercontext setToken", userToken)
     this.setState({
       isAuth: true,
       userToken
@@ -106,6 +123,7 @@ class UserProvider extends React.Component {
         const loginData = response.data
         const perfil = loginData.pessoa
         const userToken = loginData.token
+      console.log("usertoken no setFacebookToken()", userToken)
         this.setToken(userToken)
         this.setPerfil(perfil)
       }
@@ -122,8 +140,9 @@ class UserProvider extends React.Component {
     console.log('state vs localstorage', this.state.userId, localStorage.getItem('userId'))
   }
 
-  setOfertas(ofertas) {
-    this.setState({
+  async setOfertas(ofertas) {
+    console.log("lista de desejo atualizada", ofertas)
+    await this.setState({
       ofertas
     })
     localStorage.setItem('ofertas', JSON.stringify(ofertas));
@@ -150,14 +169,34 @@ class UserProvider extends React.Component {
   }
 
 
+  async toggleDesejo(oferta_id) {
+    const res = await fetch(process.env.REACT_APP_API_URL+'/pessoas/'+this.state.userId+'/ofertas', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({"oferta_id":oferta_id})
+    })
+    .then(response => response.json())
+    .catch(erro => console.error('Erro no toggleDesejo',erro))
+    if(res.success) {
+      const ofertas = res.data.ofertas
+      this.setOfertas(ofertas)
+      return ofertas
+    } else {
+      throw res.message
+    }
+  }
+
   async getOfertas() {
     const res = await fetch(process.env.REACT_APP_API_URL+'/pessoas/'+this.state.userId+'/ofertas')
     .then(response => response.json())
     .catch(erro => console.error('Erro no getOfertas',erro))
-    console.log('entro', res)
     if(res.success) {
       const ofertas = res.data.ofertas
-      this.setOfertas(ofertas)
+      console.log("lista de desejos atualizadas", ofertas)
+      await this.setOfertas(ofertas)
       return ofertas
     } else {
       throw res.message
@@ -220,6 +259,8 @@ class UserProvider extends React.Component {
           setDadosMeuPerfil: this.setDadosMeuPerfil,
           setFacebookToken: this.setFacebookToken,
           getOfertas: this.getOfertas,
+          toggleDesejo: this.toggleDesejo,
+          listaDesejos: this.state.ofertas 
         }}
       >
         {this.props.children}

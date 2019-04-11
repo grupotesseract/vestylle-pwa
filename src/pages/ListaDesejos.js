@@ -17,9 +17,18 @@ class ListagemDesejos extends React.Component {
   }
 
   componentDidMount() {
-console.log(this.props.getOfertas)
+
     this.props.getOfertas()
-    .then((res) => console.log(res))
+    .then((listaDesejos) => {
+      this.setState({listaDesejos})
+    })
+  }
+
+  componentWillReceiveProps(props) {
+    props.getOfertas()
+    .then((listaDesejos) => {
+      this.setState({listaDesejos})
+    })
   }
 
   render() {
@@ -113,15 +122,32 @@ console.log(this.props.getOfertas)
         <CupomBoasVindas/>
       </> ):(<>
         {this.state.listaDesejos.map((desejo, key) => (
-          <Produto
-            key={key}
-            id={desejo.id}
-            img={desejo.urlFoto}
-            liked={desejo.liked}
-            likeCallback={this.likeCallback}
-            titulo={desejo.descricao_desejo}
-            subtitulo={desejo.descricao_oferta}
-          />
+          <View style={{position: 'relative'}}>
+            <div style={{
+              position: 'absolute',
+              height: '45%',
+              width: '100%',
+              backgroundColor: '#55bcba',
+              top: '12%',
+              zIndex:1
+            }}></div>
+            <View style={{
+                width:'93%', 
+                alignSelf:'center',
+                marginBottom: '100px',
+                zIndex:2
+              }}>
+              <Produto
+                key={key}
+                id={desejo.id}
+                img={desejo.urlFoto}
+                liked={true}
+                likeCallback={this.likeCallback}
+                titulo={desejo.titulo}
+                subtitulo={desejo.subtitulo}
+              />
+            </View>
+          </View>
         ))}      
       </>)
   }

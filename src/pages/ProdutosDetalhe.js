@@ -26,7 +26,7 @@ export default class ProdutosDetalhe extends React.Component {
 
       <RubikText bold={true} style={{color: 'black'}}>Confira as novidades</RubikText>
       <View>
-        <Link to="/desejos">
+        <Link to="/listadesejos">
           <RubikText>Clique aqui para mostrar produtos adicionados a sua LISTA DE DESEJOS</RubikText>
         </Link>
       </View>

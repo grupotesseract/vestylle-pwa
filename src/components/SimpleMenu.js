@@ -50,7 +50,7 @@ class SimpleMenu extends Component {
 
   style = {
     container: {
-      borderTopWidth: 2,
+      borderTopWidth: 0,
       borderBottomWidth: 2,
       borderColor: "#bdbbbc",
       flexDirection: "row",

@@ -3,8 +3,11 @@ import Slider from "react-slick";
 import View from "../ui/View";
 import { LojaConsumer } from "../LojaContext";
 import Produto from "../ui/Produto";
+import { UserConsumer } from "../UserContext";
 
 class ListaOfertas extends React.Component {
+
+ 
 
   settings = {
     dots: true,
@@ -23,7 +26,16 @@ class ListaOfertas extends React.Component {
     this.setState({
       ofertas: this.props.ofertas
     })
-    this.props.atualizaOfertas()
+    const listaDesejosIds = this.props.listaDesejos.map((produto)=> produto.id)
+    this.props.getOfertasComLike(listaDesejosIds)
+    .then((ofertas)=>{
+      ofertas = ofertas.slice(0,10)
+      this.setState({ofertas})
+    })
+  }
+  componentWillReceiveProps(props) {
+    const listaDesejosIds = props.listaDesejos.map((produto)=> produto.id)
+    this.props.getOfertasComLike(listaDesejosIds)
     .then((ofertas)=>{
       ofertas = ofertas.slice(0,10)
       this.setState({ofertas})
@@ -38,7 +50,6 @@ class ListaOfertas extends React.Component {
             id={oferta.id}
             img={oferta.urlFoto}
             liked={oferta.liked}
-            likeCallback={this.likeCallback}
             titulo={oferta.descricao_oferta}
             subtitulo={oferta.descricao_oferta}
           />
@@ -46,24 +57,8 @@ class ListaOfertas extends React.Component {
       </Slider>
     )
   }
-
-  likeCallback = (id) => {
-    let ofertas = this.state.ofertas
-    ofertas.forEach( (oferta, index) => {
-      if(oferta.id===id) {
-        ofertas[index].liked = true
-      }
-    })
-    this.setState({ ofertas })
-  }
 }
 export default class SliderOfertas extends React.Component {
-
-  state = {
-    ofertas: []
-  }
-
-
   render() {
     return (<View style={{
         width:'93%', 
@@ -71,14 +66,19 @@ export default class SliderOfertas extends React.Component {
         marginBottom: '100px'
       }}>
 
-      <LojaConsumer>
-        {({atualizaOfertas, ofertas}) => (
-        <ListaOfertas
-          atualizaOfertas={atualizaOfertas}
-          ofertas={ofertas}
-        />
+      <UserConsumer>
+        {( {listaDesejos} ) => (
+        <LojaConsumer>
+          {({getOfertasComLike, ofertas}) => (
+          <ListaOfertas
+            getOfertasComLike={getOfertasComLike}
+            ofertas={ofertas}
+            listaDesejos={listaDesejos}
+          />
+          )}
+        </LojaConsumer>
         )}
-      </LojaConsumer>
+      </UserConsumer>
       </View>
     );
   }

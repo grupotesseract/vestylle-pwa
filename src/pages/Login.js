@@ -43,8 +43,8 @@ export default class LoginScreen extends React.Component {
 
           <RubikText style={styles.label}>CPF ou E-mail</RubikText>
           <UserConsumer>
-          {({ setToken, login }) => (
-          <form onSubmit={(e) => this.signInAsync(setToken, login, e)}>
+          {({ login }) => (
+          <form onSubmit={(e) => this.signInAsync(login, e)}>
             <TextInput
               style={styles.inputComBorda}
               onChangeText={(login) => this.setState({login})}
@@ -92,7 +92,7 @@ export default class LoginScreen extends React.Component {
     );
   }
 
-  signInAsync = async (setToken,login, event) => {
+  signInAsync = async (login, event) => {
     if(event) {
       event.preventDefault()
     }
@@ -101,8 +101,6 @@ export default class LoginScreen extends React.Component {
     await login(this.state.login, this.state.password)
     .then(jsonRes => {
       if(jsonRes.success) {
-        const token = jsonRes.data.token
-        setToken(token);
         self.setState({ redirectTo: '/areacliente'});
         return;
       }
