@@ -25,14 +25,12 @@ class ListagemDesejos extends React.Component {
   }
 
   componentWillReceiveProps(props) {
-    props.getOfertas()
-    .then((listaDesejos) => {
-      this.setState({listaDesejos})
-    })
+    const { listaDesejos } = props
+    this.setState({listaDesejos})
   }
 
   render() {
-      return !this.state.listaDesejos ? (<>
+      return !this.state.listaDesejos || this.state.listaDesejos.length < 1 ? (<>
         <View style={{alignItems: 'center'}}>
           <RubikText bold={true}>A Lista de Desejos facilita suas compras.</RubikText>
         </View>
@@ -172,9 +170,10 @@ export default class ListaDesejos extends React.Component {
       </View>
 
       <UserConsumer>
-      {({ getOfertas, toggleLikeOferta }) => (<>
+      {({ getOfertas, listaDesejos, toggleLikeOferta }) => (<>
           <ListagemDesejos
             getOfertas={getOfertas}
+            listaDesejos={listaDesejos}
             toggleLikeOferta={toggleLikeOferta}
           />
       </>
