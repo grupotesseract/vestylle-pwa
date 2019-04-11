@@ -22,24 +22,23 @@ class ListaOfertas extends React.Component {
     ofertas: []
   }
 
-  componentDidMount() {
-    this.setState({
-      ofertas: this.props.ofertas
-    })
-    const listaDesejosIds = this.props.listaDesejos.map((produto)=> produto.id)
+  atualizaOfertas(props) {
+    const listaDesejosIds = props.listaDesejos ? props.listaDesejos.map((produto)=> produto.id) : []
     this.props.getOfertasComLike(listaDesejosIds)
     .then((ofertas)=>{
       ofertas = ofertas.slice(0,10)
       this.setState({ofertas})
     })
   }
-  componentWillReceiveProps(props) {
-    const listaDesejosIds = props.listaDesejos.map((produto)=> produto.id)
-    this.props.getOfertasComLike(listaDesejosIds)
-    .then((ofertas)=>{
-      ofertas = ofertas.slice(0,10)
-      this.setState({ofertas})
+
+  componentDidMount() {
+    this.setState({
+      ofertas: this.props.ofertas.slice(0,10)
     })
+    this.atualizaOfertas(this.props)
+  }
+  componentWillReceiveProps(props) {
+    this.atualizaOfertas(props)
   }
 
   render() {
