@@ -4,47 +4,74 @@ import View from '../ui/View';
 import RubikText from '../ui/RubikText';
 import { FaFacebook, FaUserCircle } from 'react-icons/fa';
 import TouchableHighlight from '../ui/TouchableHighlight';
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
+import { UserConsumer } from '../UserContext';
+
 
 class Cadastro extends Component {
+  state = {
+    redirectTo: null
+  }
   render() {
     return <ImageBackground
       source={require('../assets/fundocadastro.jpg')}
-      style={{width: '100%', height: '100%', justifyContent: 'space-evenly', alignItems: 'flex-end'}}>
+      style={{width: '100%', height: '100vh', justifyContent: 'space-evenly', alignItems: 'flex-end'}}>
 
-        <img
-          alt="Vestylle"
-          src={require('../assets/logobranco.png')}
-          style={{ width:'80%', maxWidth: 400, alignSelf: 'flex-start', marginLeft: 15, marginTop: 50, marginBottom: 'auto' }}
-        />
+        { this.state.redirectTo && (
+          <Redirect to={this.state.redirectTo}/>
+        )}
+        <Link to="/"
+          style={{
+            alignSelf: 'flex-start',
+            marginBottom: 'auto'  
+          }}
+        >
+          <img
+            alt="Vestylle"
+            src={require('../assets/logobranco.png')}
+            style={{ width:'80%', maxWidth: 400,  marginLeft: 15, marginTop: 50}}
+          />
+        </Link>
 
         <View style={this.styles.rightAlign}>
           <RubikText style={{color:'#FFFFFF', textAlign: 'left'}}>Faça seu cadastro e receba benefícios exclusivos</RubikText>
 
-          <TouchableHighlight 
-            style={this.styles.botaoQuadrado}
-            onPress={this.logInFacebook}>
-              <FaFacebook
-                size={15}
-                color="white"
-              />
-              <RubikText style={this.styles.fontBotao}> Cadastrar com FACEBOOK</RubikText>
-          </TouchableHighlight>
 
+        <UserConsumer>
+        {({ setFacebookToken }) => (
+          <FacebookLogin
+            appId="654012085033078" 
+            fields="name,email,picture"
+            callback={(response) => this.responseFacebook(response, setFacebookToken)}
+            render={renderProps => (
+              <TouchableHighlight 
+                style={this.styles.botaoQuadrado}
+                onPress={renderProps.onClick}>
+                  <FaFacebook
+                    size={15}
+                    color="white"
+                  />
+                  <RubikText style={this.styles.fontBotao}> Cadastrar com FACEBOOK</RubikText>
+              </TouchableHighlight>
+            )}
+          ></FacebookLogin>
+        )}
+        </UserConsumer>
           <Link
-            style={this.styles.botaoQuadrado}
-            to="cadastrosimples"
-            >
-              <FaUserCircle
-                name="user-circle"
-                size={15}
-                color="white"
-              />
-              <RubikText style={this.styles.fontBotao}> Cadastrar com CPF ou E-MAIL</RubikText>
+          style={this.styles.botaoQuadrado}
+          to="cadastrosimples"
+          >
+            <FaUserCircle
+              name="user-circle"
+              size={15}
+              color="white"
+            />
+            <RubikText style={this.styles.fontBotao}> Cadastrar com CPF ou E-MAIL</RubikText>
           </Link>
           <View style={this.styles.fullCenter}>
             <Link
-              to="Home"
+              to="/"
               style={this.styles.textoSmall}
             >Sobre o programa Cliente Vestylle Megastore Jaú
             </Link>
@@ -64,6 +91,15 @@ class Cadastro extends Component {
 
     </ImageBackground>
   }
+  
+  responseFacebook = (response,setFacebookToken) => {
+    setFacebookToken(response)
+    .then(() => {
+      this.setState({
+        redirectTo : '/'
+      })
+    })
+  }
 
   styles = {
     textoSmall: {
@@ -76,14 +112,14 @@ class Cadastro extends Component {
     },
     rightAlign: {
       flexDirection: 'column',
-      width: '70%',
+      width: '80%',
       color: '#FFFFFF',
       paddingBottom: 40
     },
     botaoQuadrado: {
       marginTop: 3,
       marginBottom: 3,
-      marginRight: 30,
+      marginRight: 20,
       padding: 6,
       borderWidth: 1,
       borderColor: 'white',

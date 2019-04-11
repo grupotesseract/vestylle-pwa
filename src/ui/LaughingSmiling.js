@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class RubikText extends Component {
+class LaughingSmiling extends Component {
 
   render() {
     return <div {...this.props} style={Object.assign({},this.style.fontRubik,this.props.style)}>
@@ -12,10 +12,11 @@ class RubikText extends Component {
 
   style = {
     fontRubik: {
-      fontFamily: 'Rubik',
-      flexDirection: 'row'
+      fontFamily: 'Laughing And Smiling',
+      flexDirection: 'row',
+      fontSize:26
     }
   }
 }
 
-export default RubikText;
+export default LaughingSmiling;

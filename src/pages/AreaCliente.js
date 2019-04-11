@@ -6,6 +6,7 @@ import RubikText from '../ui/RubikText';
 import { Link } from 'react-router-dom'
 import { FaUserAlt, FaStar, FaHeart } from 'react-icons/fa';
 import Breadcrumb from '../ui/Breadcrumb';
+import { UserConsumer } from '../UserContext';
 
 class AreaCliente extends Component {
 
@@ -18,10 +19,15 @@ class AreaCliente extends Component {
         <View style={{flexDirection:'row', textAlign: 'center'}}>
           <View style={{width: '20%'}}>
           </View>
+
+          <UserConsumer>
+          {({perfil}) => (
           <View style={{width:'60%',justifyContent: 'center', alignItems:'center', padding: 5}}>
-            <RubikText style={{color: 'white', fontSize: 20}}>Olá Ciclana,</RubikText>
+            <RubikText style={{color: 'white', fontSize: 20}}>Olá {perfil.nome},</RubikText>
             <RubikText style={{color: 'white', fontSize: 20}}>seja bem-vinda</RubikText>
           </View>
+          )}
+          </UserConsumer>
           <Link 
             to="/adicionarcupom"
             style={{width:'20%', backgroundColor:'#feca03', borderTopLeftRadius: 5, borderBottomLeftRadius: 5, flexDirection: 'column', padding: 5}}>

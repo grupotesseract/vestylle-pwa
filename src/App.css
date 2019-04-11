@@ -1,3 +1,20 @@
+@import "~slick-carousel/slick/slick.css";
+@import "~slick-carousel/slick/slick-theme.css";
+.slick-dots  {
+  bottom: -50px;
+}
+.slick-dots li {
+  width: 20px;
+  height: 20px;
+  margin: 0 2px;
+}
+.slick-dots li button:before{
+  font-size: 16px;
+}
+
+.img-slider {
+  max-height: 300px;
+}
 /* rubik-regular - latin */
 @font-face {
   font-family: 'Rubik';
@@ -26,11 +43,24 @@
        url('./fonts/rubik-v8-latin-700.svg#Rubik') format('svg'); /* Legacy iOS */
 }
 
+
+/* LS - latin */
+@font-face {
+  font-family: 'Laughing And Smiling';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Laughing And Smiling'),
+       url('./fonts/ls.woff') format('woff'), /* Modern Browsers */
+       url('./fonts/ls.ttf') format('truetype'); /* Safari, Android, iOS */
+}
+
 body *{
   display: flex;
   flex-direction: column;
   align-items: stretch;
   font-size: inherit;
+  border-width: 0;
+  border-style: solid;
 }
 
 .App {
@@ -96,4 +126,45 @@ button {
 @keyframes spinner {
     from {transform:rotate(0deg);}
     to {transform:rotate(360deg);}
+}
+
+/* Cupom de boas vindas */
+.cupom-boas-vindas .bandeirola:after{
+  content:'';
+  position:absolute;
+  right: 0;
+  bottom: -15px;
+  width: 0;
+  height: 0;
+  border-right: 50px solid #e20f17;
+  border-top: 0px solid #e20f17;
+  border-bottom: 15px solid transparent;
+}
+.cupom-boas-vindas .bandeirola:before{
+  content:'';
+  position:absolute;
+  left: 0;
+  bottom: -15px;
+  width: 0;
+  height: 0;
+  border-left: 50px solid #e20f17;
+  border-top: 0px solid #e20f17;
+  border-bottom: 15px solid transparent;
+}
+.faca-seu-cadastro {
+  font-size: 14px;
+}
+
+@media only screen and (min-width: 380px) {
+  .faca-seu-cadastro {
+    font-size: 16px;
+  }
+}
+@media only screen and (min-width: 450px) {
+  .faca-seu-cadastro {
+    font-size: 19px;
+  }
+  .img-slider {
+    max-height: 400px;
+  }
 }
