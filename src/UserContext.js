@@ -191,7 +191,7 @@ class UserProvider extends React.Component {
     })
     .then(response => response.json())
     .catch(erro => console.error('Erro no toggleDesejo',erro))
-    if(res.success) {
+    if(res && res.success) {
       const ofertas = res.data.ofertas
       this.setOfertas(ofertas)
       return ofertas
@@ -207,7 +207,7 @@ class UserProvider extends React.Component {
     const res = await fetch(process.env.REACT_APP_API_URL+'/pessoas/'+this.state.userId+'/ofertas')
     .then(response => response.json())
     .catch(erro => console.error('Erro no getOfertas',erro))
-    if(res.success) {
+    if(res && res.success) {
       const ofertas = res.data.ofertas
       console.log("lista de desejos atualizadas", ofertas)
       await this.setOfertas(ofertas)
@@ -218,7 +218,14 @@ class UserProvider extends React.Component {
   }
 
   async getDadosMeuPerfil() {
-    const res = await fetch(process.env.REACT_APP_API_URL+'/pessoas/'+this.state.userId)
+    const res = await fetch(process.env.REACT_APP_API_URL+'/pessoas/'+this.state.userId,
+      {
+        credentials: 'include',
+        headers: {
+          'Authorization': 'Bearer '+this.state.userToken
+        }
+      }
+    )
     .then(response => response.json())
     .catch(erro => console.error('Erro no getDadosMeuPerfil',erro))
     if(res.success) {
@@ -233,9 +240,11 @@ class UserProvider extends React.Component {
   async setDadosMeuPerfil(perfil) {
     const res = await fetch(process.env.REACT_APP_API_URL+'/pessoas/'+this.state.userId, {
       method: 'PATCH',
+      credentials: 'include',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer '+this.state.userToken
       },
       body: JSON.stringify(perfil)
     })
