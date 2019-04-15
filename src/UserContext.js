@@ -97,8 +97,15 @@ class UserProvider extends React.Component {
 
   logout() {
     console.log('LOGOUT')
-    localStorage.setItem('userToken', null);
-    this.setState({isAuth: false});
+    localStorage.clear();
+    this.setState({
+      isAuth: false,
+      userToken: null,
+      fbData: null,
+      userId: null,
+      perfil: null,
+      ofertas: []
+    });
   }
 
   setToken(userToken) {
@@ -112,18 +119,19 @@ class UserProvider extends React.Component {
   }
 
   async setFacebookToken(fbResponse) {
+    console.log(fbResponse)
     const fbData = fbResponse
     this.setState({
       fbData
     })
-    localStorage.setItem('fbData', fbData);
-    return this.getAPITokenFromFacebookData(fbData)
+    localStorage.setItem('fbData', JSON.stringify(fbData));
+    await this.getAPITokenFromFacebookData(fbData)
     .then((response) => {
       if(response.success) {
         const loginData = response.data
         const perfil = loginData.pessoa
         const userToken = loginData.token
-      console.log("usertoken no setFacebookToken()", userToken)
+        console.log("usertoken no setFacebookToken()", loginData)
         this.setToken(userToken)
         this.setPerfil(perfil)
       }
@@ -170,6 +178,9 @@ class UserProvider extends React.Component {
 
 
   async toggleDesejo(oferta_id) {
+    if(!this.state.userId) {
+      return
+    }
     const res = await fetch(process.env.REACT_APP_API_URL+'/pessoas/'+this.state.userId+'/ofertas', {
       method: 'POST',
       headers: {
@@ -190,6 +201,9 @@ class UserProvider extends React.Component {
   }
 
   async getOfertas() {
+    if(!this.state.userId) {
+      return
+    }
     const res = await fetch(process.env.REACT_APP_API_URL+'/pessoas/'+this.state.userId+'/ofertas')
     .then(response => response.json())
     .catch(erro => console.error('Erro no getOfertas',erro))

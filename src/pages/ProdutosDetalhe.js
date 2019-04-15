@@ -14,6 +14,7 @@ export default class ProdutosDetalhe extends React.Component {
   componentDidMount() {
     const { match: { params } } = this.props;
     const produtoId = params.produtoId
+    console.log(produtoId)
   }
 
   render() {
