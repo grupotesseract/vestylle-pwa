@@ -8,11 +8,91 @@ import { Link, Redirect } from 'react-router-dom'
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
 import { UserConsumer } from '../UserContext';
 
+class FBButton extends Component {
+
+  state = {
+    redirectUri: null
+  }
+  
+  constructor() {
+    super();
+    this.responseFacebook = this.responseFacebook.bind(this);
+  }
+
+  componentDidMount() {
+    const redirectUri = window.location.protocol+"//"+window.location.host+"/cadastro"
+    this.setState({
+      redirectUri 
+    })
+  }
+
+  clickHandler(onClick, isProcessing) {
+    console.log("redirectURI",this.state.redirectUri)
+    console.log(onClick, isProcessing)
+    onClick()
+  }
+
+  render() {
+    return <FacebookLogin
+            appId="654012085033078" 
+            fields="name,email,picture"
+            callback={(res) => this.responseFacebook(res)}
+            redirectUri={this.state.redirectUri}
+            render={renderProps => {
+              console.log("renderProps",renderProps)
+              return (
+              <TouchableHighlight 
+                style={this.styles.botaoQuadrado}
+                onPress={() => this.clickHandler(renderProps.onClick, renderProps.isProcessing)}>
+                  <FaFacebook
+                    size={15}
+                    color="white"
+                  />
+                  <RubikText style={this.styles.fontBotao}> Cadastrar com FACEBOOK</RubikText>
+              </TouchableHighlight>
+            )}}
+          ></FacebookLogin>
+  }
+
+  responseFacebook(response) {
+    this.props.setFacebookToken(response)
+    .then((res) => {
+      console.log("resultado setfacebooktoken", res)
+      if(res) {
+        console.log(this.props.loginDone);
+        this.props.loginDone()
+      }
+    })
+  }
+
+  styles = {
+    botaoQuadrado: {
+      marginTop: 3,
+      marginBottom: 3,
+      marginRight: 20,
+      padding: 6,
+      borderWidth: 1,
+      borderColor: 'white',
+      borderStyle: 'solid',
+      justifyContent: 'flex-start'
+    },
+    fontBotao: {
+      fontSize: 12,
+      marginLeft: 7
+    },
+  }
+}
 
 class Cadastro extends Component {
   state = {
     redirectTo: null
   }
+
+  constructor() {
+    super()
+    this.loginDone = this.loginDone.bind(this)
+  }
+
   render() {
     return <ImageBackground
       source={require('../assets/fundocadastro.jpg')}
@@ -36,28 +116,14 @@ class Cadastro extends Component {
 
         <View style={this.styles.rightAlign}>
           <RubikText style={{color:'#FFFFFF', textAlign: 'left'}}>Faça seu cadastro e receba benefícios exclusivos</RubikText>
-
-
-        <UserConsumer>
-        {({ setFacebookToken }) => (
-          <FacebookLogin
-            appId="654012085033078" 
-            fields="name,email,picture"
-            callback={(response) => this.responseFacebook(response, setFacebookToken)}
-            render={renderProps => (
-              <TouchableHighlight 
-                style={this.styles.botaoQuadrado}
-                onPress={renderProps.onClick}>
-                  <FaFacebook
-                    size={15}
-                    color="white"
-                  />
-                  <RubikText style={this.styles.fontBotao}> Cadastrar com FACEBOOK</RubikText>
-              </TouchableHighlight>
-            )}
-          ></FacebookLogin>
-        )}
-        </UserConsumer>
+          <UserConsumer>
+          {({ setFacebookToken }) => (
+            <FBButton
+              setFacebookToken={setFacebookToken}
+              loginDone={this.loginDone}
+            />
+          )}
+          </UserConsumer>
           <Link
           style={this.styles.botaoQuadrado}
           to="cadastrosimples"
@@ -91,13 +157,11 @@ class Cadastro extends Component {
 
     </ImageBackground>
   }
-  
-  responseFacebook = (response,setFacebookToken) => {
-    setFacebookToken(response)
-    .then(() => {
-      this.setState({
-        redirectTo : '/'
-      })
+
+  loginDone() {
+    console.log("LOGINDONE")
+    this.setState({
+      redirectTo : '/areacliente'
     })
   }
 
@@ -116,6 +180,14 @@ class Cadastro extends Component {
       color: '#FFFFFF',
       paddingBottom: 40
     },
+    fullCenter: {
+      alignSelf: 'stretch',
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingBottom: 25,
+      marginTop: 10
+    },
     botaoQuadrado: {
       marginTop: 3,
       marginBottom: 3,
@@ -126,14 +198,6 @@ class Cadastro extends Component {
       borderStyle: 'solid',
       justifyContent: 'flex-start'
     },
-    fullCenter: {
-      alignSelf: 'stretch',
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center',
-      paddingBottom: 25,
-      marginTop: 10
-    }
   }
 }
 

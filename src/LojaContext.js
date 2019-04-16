@@ -4,7 +4,7 @@ const LojaContext = React.createContext();
 
 class LojaProvider extends React.Component {
   state = { 
-    ofertas: [],
+    ofertas: null,
     cupons: [],
   }
 
@@ -22,7 +22,7 @@ class LojaProvider extends React.Component {
     const res = await fetch(process.env.REACT_APP_API_URL+'/ofertas')
     .then(response => response.json())
     .catch(erro => console.error('Erro no atualizaOfertas',erro))
-    if(res.success) {
+    if(res && res.success) {
       const ofertas = res.data;
       this.setState({ofertas})
       console.log("ofertas carregadas:", ofertas)
@@ -38,7 +38,7 @@ class LojaProvider extends React.Component {
    * recebidas com like = true 
    */
   async getOfertasComLike(idsOfertas) {
-    if(!this.state.ofertas || this.state.ofertas.length < 1) {
+    if(this.state.ofertas === null) {
       await this.atualizaOfertas()
     }
     const ofertasComLike = this.state.ofertas.map((oferta) => {

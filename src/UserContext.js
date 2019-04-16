@@ -25,13 +25,14 @@ class UserProvider extends React.Component {
     this.toggleDesejo = this.toggleDesejo.bind(this)
   }
 
-  componentDidMount() {
+  loadFromLocalStorage() {
     if(!this.state.isAuth) {
       const userToken = localStorage.getItem('userToken')
       const userId = localStorage.getItem('userId')
       console.log("token carregado", userToken)
       if(userToken && userId) {
         this.setState({userToken, userId, isAuth: true})
+          console.log("perfil do state", this.state.perfil)
         if(!this.state.perfil) {
           const perfil = JSON.parse(localStorage.getItem('perfil'))
           console.log("perfil carregado do localStorage", perfil)
@@ -40,13 +41,10 @@ class UserProvider extends React.Component {
         }
       }
     }
-    /*
-    const userToken = localStorage.getItem('userToken');
-    if (userToken) {
-      this.setToken(userToken);
-      return;
-    }
-    */
+  }
+
+  componentDidMount() {
+    this.loadFromLocalStorage();
   }
 
   async signup(login, passwd) {
@@ -97,8 +95,15 @@ class UserProvider extends React.Component {
 
   logout() {
     console.log('LOGOUT')
-    localStorage.setItem('userToken', null);
-    this.setState({isAuth: false});
+    localStorage.clear();
+    this.setState({
+      isAuth: false,
+      userToken: null,
+      fbData: null,
+      userId: null,
+      perfil: null,
+      ofertas: []
+    });
   }
 
   setToken(userToken) {
@@ -112,22 +117,29 @@ class UserProvider extends React.Component {
   }
 
   async setFacebookToken(fbResponse) {
+    console.log("fbReponse", fbResponse)
     const fbData = fbResponse
     this.setState({
       fbData
     })
-    localStorage.setItem('fbData', fbData);
-    return this.getAPITokenFromFacebookData(fbData)
+    localStorage.setItem('fbData', JSON.stringify(fbData));
+    const res = await this.getAPITokenFromFacebookData(fbData)
     .then((response) => {
       if(response.success) {
         const loginData = response.data
         const perfil = loginData.pessoa
         const userToken = loginData.token
-      console.log("usertoken no setFacebookToken()", userToken)
         this.setToken(userToken)
         this.setPerfil(perfil)
+        return userToken
       }
+      return null
     })
+    .catch((e) => {
+      console.log("Error on facebook login", e)
+      return null
+    });
+    return res
   }
 
   setPerfil(perfil) {
@@ -170,9 +182,14 @@ class UserProvider extends React.Component {
 
 
   async toggleDesejo(oferta_id) {
+    if(!this.state.userId) {
+      return
+    }
     const res = await fetch(process.env.REACT_APP_API_URL+'/pessoas/'+this.state.userId+'/ofertas', {
       method: 'POST',
+      credentials: 'include',
       headers: {
+        'Authorization': 'Bearer '+this.state.userToken,
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
@@ -180,6 +197,9 @@ class UserProvider extends React.Component {
     })
     .then(response => response.json())
     .catch(erro => console.error('Erro no toggleDesejo',erro))
+    if(!res) {
+      return
+    }
     if(res.success) {
       const ofertas = res.data.ofertas
       this.setOfertas(ofertas)
@@ -190,9 +210,22 @@ class UserProvider extends React.Component {
   }
 
   async getOfertas() {
-    const res = await fetch(process.env.REACT_APP_API_URL+'/pessoas/'+this.state.userId+'/ofertas')
+    if(!this.state.userId) {
+      return
+    }
+    const res = await fetch(process.env.REACT_APP_API_URL+'/pessoas/'+this.state.userId+'/ofertas',
+      {
+        credentials: 'include',
+        headers: {
+          'Authorization': 'Bearer '+this.state.userToken
+        }
+      }
+    )
     .then(response => response.json())
     .catch(erro => console.error('Erro no getOfertas',erro))
+    if(!res) {
+      return
+    }
     if(res.success) {
       const ofertas = res.data.ofertas
       console.log("lista de desejos atualizadas", ofertas)
@@ -204,7 +237,14 @@ class UserProvider extends React.Component {
   }
 
   async getDadosMeuPerfil() {
-    const res = await fetch(process.env.REACT_APP_API_URL+'/pessoas/'+this.state.userId)
+    const res = await fetch(process.env.REACT_APP_API_URL+'/pessoas/'+this.state.userId,
+      {
+        credentials: 'include',
+        headers: {
+          'Authorization': 'Bearer '+this.state.userToken
+        }
+      }
+    )
     .then(response => response.json())
     .catch(erro => console.error('Erro no getDadosMeuPerfil',erro))
     if(res.success) {
@@ -219,9 +259,11 @@ class UserProvider extends React.Component {
   async setDadosMeuPerfil(perfil) {
     const res = await fetch(process.env.REACT_APP_API_URL+'/pessoas/'+this.state.userId, {
       method: 'PATCH',
+      credentials: 'include',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer '+this.state.userToken
       },
       body: JSON.stringify(perfil)
     })

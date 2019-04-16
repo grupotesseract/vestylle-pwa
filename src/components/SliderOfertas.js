@@ -32,6 +32,9 @@ class ListaOfertas extends React.Component {
   }
 
   componentDidMount() {
+    if(!this.props.ofertas) {
+      return
+    }
     this.setState({
       ofertas: this.props.ofertas.slice(0,10)
     })
