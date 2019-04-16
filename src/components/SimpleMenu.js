@@ -10,7 +10,7 @@ class SimpleMenu extends Component {
   render() {
     return <View style={this.style.container}>
       <Link
-        to = "/qrcode"
+        to = "/adicionarcupom"
       >
         <IoMdQrScanner
           size={26}
