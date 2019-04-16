@@ -213,7 +213,14 @@ class UserProvider extends React.Component {
     if(!this.state.userId) {
       return
     }
-    const res = await fetch(process.env.REACT_APP_API_URL+'/pessoas/'+this.state.userId+'/ofertas')
+    const res = await fetch(process.env.REACT_APP_API_URL+'/pessoas/'+this.state.userId+'/ofertas',
+      {
+        credentials: 'include',
+        headers: {
+          'Authorization': 'Bearer '+this.state.userToken
+        }
+      }
+    )
     .then(response => response.json())
     .catch(erro => console.error('Erro no getOfertas',erro))
     if(!res) {
