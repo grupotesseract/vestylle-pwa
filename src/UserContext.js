@@ -25,13 +25,14 @@ class UserProvider extends React.Component {
     this.toggleDesejo = this.toggleDesejo.bind(this)
   }
 
-  componentDidMount() {
+  loadFromLocalStorage() {
     if(!this.state.isAuth) {
       const userToken = localStorage.getItem('userToken')
       const userId = localStorage.getItem('userId')
       console.log("token carregado", userToken)
       if(userToken && userId) {
         this.setState({userToken, userId, isAuth: true})
+          console.log("perfil do state", this.state.perfil)
         if(!this.state.perfil) {
           const perfil = JSON.parse(localStorage.getItem('perfil'))
           console.log("perfil carregado do localStorage", perfil)
@@ -40,13 +41,10 @@ class UserProvider extends React.Component {
         }
       }
     }
-    /*
-    const userToken = localStorage.getItem('userToken');
-    if (userToken) {
-      this.setToken(userToken);
-      return;
-    }
-    */
+  }
+
+  componentDidMount() {
+    this.loadFromLocalStorage();
   }
 
   async signup(login, passwd) {
@@ -119,23 +117,29 @@ class UserProvider extends React.Component {
   }
 
   async setFacebookToken(fbResponse) {
-    console.log(fbResponse)
+    console.log("fbReponse", fbResponse)
     const fbData = fbResponse
     this.setState({
       fbData
     })
     localStorage.setItem('fbData', JSON.stringify(fbData));
-    await this.getAPITokenFromFacebookData(fbData)
+    const res = await this.getAPITokenFromFacebookData(fbData)
     .then((response) => {
       if(response.success) {
         const loginData = response.data
         const perfil = loginData.pessoa
         const userToken = loginData.token
-        console.log("usertoken no setFacebookToken()", loginData)
         this.setToken(userToken)
         this.setPerfil(perfil)
+        return userToken
       }
+      return null
     })
+    .catch((e) => {
+      console.log("Error on facebook login", e)
+      return null
+    });
+    return res
   }
 
   setPerfil(perfil) {
@@ -183,7 +187,9 @@ class UserProvider extends React.Component {
     }
     const res = await fetch(process.env.REACT_APP_API_URL+'/pessoas/'+this.state.userId+'/ofertas', {
       method: 'POST',
+      credentials: 'include',
       headers: {
+        'Authorization': 'Bearer '+this.state.userToken,
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
@@ -191,7 +197,10 @@ class UserProvider extends React.Component {
     })
     .then(response => response.json())
     .catch(erro => console.error('Erro no toggleDesejo',erro))
-    if(res && res.success) {
+    if(!res) {
+      return
+    }
+    if(res.success) {
       const ofertas = res.data.ofertas
       this.setOfertas(ofertas)
       return ofertas
@@ -207,7 +216,10 @@ class UserProvider extends React.Component {
     const res = await fetch(process.env.REACT_APP_API_URL+'/pessoas/'+this.state.userId+'/ofertas')
     .then(response => response.json())
     .catch(erro => console.error('Erro no getOfertas',erro))
-    if(res && res.success) {
+    if(!res) {
+      return
+    }
+    if(res.success) {
       const ofertas = res.data.ofertas
       console.log("lista de desejos atualizadas", ofertas)
       await this.setOfertas(ofertas)
