@@ -5,7 +5,7 @@ import RubikText from '../ui/RubikText';
 import { Link } from 'react-router-dom'
 import Breadcrumb from '../ui/Breadcrumb';
 import LaughingSmiling from '../ui/LaughingSmiling';
-import MiniRodape from '../components/MiniRodape';
+import RodapeCompleto from '../components/RodapeCompleto';
 
 export default class AdicionarCupom extends React.Component {
 
@@ -22,22 +22,19 @@ export default class AdicionarCupom extends React.Component {
 
       <Breadcrumb>
         <Link to="/areacliente"><RubikText style={{color: '#585756'}}>Área do Cliente &gt;&nbsp;</RubikText></Link>
+        <Link to="/adicionarcupom">
+          <RubikText style={{color: '#585756'}}>Meus Cupons &gt;&nbsp;</RubikText>
+        </Link>
         <RubikText bold={true} style={{color: '#585756'}}>Novo</RubikText>
       </Breadcrumb>
       <View style={{alignItems: 'center'}}>
-        <View style={{alignItems: 'center', padding: 20}}>
-          <LaughingSmiling>Vista-se bem e com a qualidade</LaughingSmiling>
-          <LaughingSmiling>das melhores marcas!</LaughingSmiling>
+        <View style={{alignItems: 'center', paddingTop: 40, paddingBottom: 100}}>
+          <LaughingSmiling>Funcionalidade de cupons</LaughingSmiling>
+          <LaughingSmiling>disponível em breve</LaughingSmiling>
         </View>
       </View>
 
-      <RubikText bold={true} style={{color: 'black'}}>Confira as novidades</RubikText>
-      <View>
-        <Link to="/desejos">
-          <RubikText>Clique aqui para mostrar produtos adicionados a sua LISTA DE DESEJOS</RubikText>
-        </Link>
-      </View>
-      <MiniRodape/>
+      <RodapeCompleto/>
     </View>
     )
   }
