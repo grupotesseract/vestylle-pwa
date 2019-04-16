@@ -21,7 +21,7 @@ export default class Loja extends React.Component {
       <Header/>
 
       <Breadcrumb>
-        <RubikText bold={true} style={{color: 'black'}}>Produtos</RubikText>
+        <RubikText bold={true} style={{color: 'black'}}>Loja</RubikText>
       </Breadcrumb>
       <View style={{alignItems: 'center'}}>
         <View style={{alignItems: 'center', padding: 20}}>
@@ -29,12 +29,9 @@ export default class Loja extends React.Component {
           <LaughingSmiling>das melhores marcas!</LaughingSmiling>
         </View>
       </View>
-
-      <RubikText bold={true} style={{color: 'black'}}>Confira as novidades</RubikText>
-      <View>
-        <Link to="/desejos">
-          <RubikText>Clique aqui para mostrar produtos adicionados a sua LISTA DE DESEJOS</RubikText>
-        </Link>
+      <View style={{padding: 20, alignItems: 'center'}}>
+        <RubikText bold={true} style={{color: 'black'}}>Somos uma multimarcas de moda</RubikText>
+        <RubikText bold={true} style={{color: 'black'}}>jovem, casual, acessórios e calçados</RubikText>
       </View>
       <RodapeCompleto/>
     </View>
