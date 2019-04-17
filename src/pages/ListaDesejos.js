@@ -17,7 +17,6 @@ class ListagemDesejos extends React.Component {
   }
 
   componentDidMount() {
-
     this.props.getOfertas()
     .then((listaDesejos) => {
       this.setState({listaDesejos})

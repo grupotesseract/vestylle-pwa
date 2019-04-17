@@ -86,6 +86,7 @@ class Home extends Component {
           <div style={{
             position: 'absolute',
             height: '55%',
+            minHeight: '150px',
             width: '100%',
             backgroundColor: '#55bcba',
             top: '10%',

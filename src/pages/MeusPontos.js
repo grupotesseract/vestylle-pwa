@@ -63,7 +63,9 @@ class DisplayPontos extends React.Component {
           <RubikText style={{color: 'white'}}>Para começar a acumular pontos, utilize seu CPF nas próximas compras na loja Vestylle Megastore Jaú. Seus pontos aparecerão aqui.</RubikText>
         </>)}
         { this.state.qtdPontos > 0 && this.state.qtdPontos < 1000 && (<>
-          <RubikText style={{color: 'white'}} bold={true}>Ciclana,</RubikText>
+          { this.state.nome !== '' && (
+            <RubikText style={{color: 'white'}} bold={true}>{this.state.nome},</RubikText>
+          )}
           <RubikText style={this.style.fonteDestaque}>Você ainda não possui nenhum bônus promocional.</RubikText>
           <RubikText style={{color: 'white'}}>Junte mais { 1000 - this.state.qtdPontos } pontos para garantir seu bônus</RubikText>
         </>)}
