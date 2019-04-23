@@ -165,15 +165,23 @@ class FormMeuPerfil extends React.Component {
       receberNovidades: this.state.receberNovidades
     }
     await this.props.setData(perfil)
-    .then(() => {
+    .then((res) => {
+      if(res && res.succes && res.data) {
+        const meuPerfil = res.data
+        this.props.atualizaPerfil(meuPerfil)
+      }
       this.setState({loading: false})
       this.setState({redirectTo: '/areacliente'})
     })
     .catch((e) => {
+      let msgErro = ""
+      Object.keys(e).map(campo => {
+        msgErro += " "+e[campo]
+      })
       this.setState({
         loading: false,
         erroUpdate:true,
-        msgErro: JSON.stringify(e)
+        msgErro
       })
     })
   }
@@ -194,7 +202,7 @@ export default class MeuPerfil extends React.Component {
     return ( <View>
       <Header/>
       <UserConsumer>
-      {({ getDadosMeuPerfil, setDadosMeuPerfil }) => (<>
+      {({ getDadosMeuPerfil, setDadosMeuPerfil, setPerfil }) => (<>
       <ImageBackground
         source={require('../assets/fundologin.jpg')}
         style={{width: '100%', height: '100%'}}>
@@ -202,6 +210,7 @@ export default class MeuPerfil extends React.Component {
           <FormMeuPerfil
             getData={getDadosMeuPerfil}
             setData={setDadosMeuPerfil}
+            atualizaPerfil={setPerfil}
           />
         </View>
         <MiniRodape/>

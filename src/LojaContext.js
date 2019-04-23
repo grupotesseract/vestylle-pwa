@@ -57,7 +57,7 @@ class LojaProvider extends React.Component {
     const res = await fetch(process.env.REACT_APP_API_URL+'/cupons')
     .then(response => response.json())
     .catch(erro => console.error('Erro no atualizacupons',erro))
-    if(res.success) {
+    if(res && res.success) {
       const cupons = res.data;
       this.setState({cupons})
       console.log("cupons carregadas:", cupons)

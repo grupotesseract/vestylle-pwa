@@ -17,6 +17,7 @@ class UserProvider extends React.Component {
     this.login = this.login.bind(this)
     this.logout = this.logout.bind(this)
     this.setToken = this.setToken.bind(this)
+    this.setPerfil = this.setPerfil.bind(this)
     this.signup = this.signup.bind(this)
     this.getDadosMeuPerfil = this.getDadosMeuPerfil.bind(this)
     this.setDadosMeuPerfil = this.setDadosMeuPerfil.bind(this)
@@ -81,7 +82,7 @@ class UserProvider extends React.Component {
     })
     .then(response => response.json())
     .catch(erro => console.error('Erro no login',erro))
-    if(res.success) {
+    if(res && res.success) {
       const meuPerfil = res.data.pessoa
       const userToken = res.data.token.token
       console.log("usertoken no login()", userToken)
@@ -127,7 +128,7 @@ class UserProvider extends React.Component {
     localStorage.setItem('fbData', JSON.stringify(fbData));
     const res = await this.getAPITokenFromFacebookData(fbData)
     .then((response) => {
-      if(response.success) {
+      if(response && response.success) {
         const loginData = response.data
         const perfil = loginData.pessoa
         const userToken = loginData.token
@@ -306,6 +307,7 @@ class UserProvider extends React.Component {
           login: this.login,
           logout: this.logout,
           setToken: this.setToken,
+          setPerfil: this.setPerfil,
           signup: this.signup,
           getDadosMeuPerfil: this.getDadosMeuPerfil,
           setDadosMeuPerfil: this.setDadosMeuPerfil,

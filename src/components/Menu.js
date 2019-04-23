@@ -114,7 +114,7 @@ class Menu extends Component {
             <UserConsumer>
             {({ logout }) => (<>
             <button 
-                onClick={logout}
+                onClick={() => this.logoutAndClose(logout)}
             >
                 <FaPowerOff
                 style={{padding: 10, justifyContent: 'center', width: 46 }}
@@ -127,6 +127,12 @@ class Menu extends Component {
             </UserConsumer>
             </View>
         </View>
+    }
+
+    logoutAndClose(logout) {
+        const toggleMenu = this.props.toggleMenu
+        logout()
+        toggleMenu()
     }
 
 }
