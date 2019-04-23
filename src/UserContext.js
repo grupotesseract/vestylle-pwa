@@ -117,7 +117,9 @@ class UserProvider extends React.Component {
   }
 
   async setFacebookToken(fbResponse) {
-    console.log("fbReponse", fbResponse)
+    if(!fbResponse.accessToken || fbResponse.accessToken === '') {
+      return null
+    }
     const fbData = fbResponse
     this.setState({
       fbData
@@ -143,9 +145,17 @@ class UserProvider extends React.Component {
   }
 
   setPerfil(perfil) {
+    let perfilCompleto = this.null2emptystring(perfil)
+
+    // Inclui o primeiro nome no obj de perfil
+    if(perfilCompleto.nome && perfilCompleto.nome !== '') {
+      const nomeSimples = perfilCompleto.nome.split(' ')[0];
+      perfilCompleto.nomeSimples = nomeSimples
+    }
+
     this.setState({
       userId: perfil.id,
-      perfil: this.null2emptystring(perfil)
+      perfil: perfilCompleto
     })
     localStorage.setItem('userId', perfil.id);
     localStorage.setItem('perfil', JSON.stringify(perfil));

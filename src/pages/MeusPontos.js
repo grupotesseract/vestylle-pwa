@@ -25,6 +25,14 @@ class DisplayPontos extends React.Component {
       data_vencimento: this.datetime2DDMMAAAA(this.props.data_vencimento),
       nome: this.props.nome || '',
     })
+    this.props.atualizaPerfil()
+    .then(() => {
+      this.setState({
+        qtdPontos: this.props.qtdPontos || 0,
+        data_vencimento: this.datetime2DDMMAAAA(this.props.data_vencimento),
+        nome: this.props.nome || '',
+      })
+    })
   }
 
   datetime2DDMMAAAA = (datetime) => {
@@ -115,11 +123,12 @@ export default class MeusPontos extends React.Component {
           <LaughingSmiling style={{color: 'white', fontSize: 26, marginBottom: 10}}>acumulam pontos</LaughingSmiling>
 
           <UserConsumer>
-          {({ perfil }) => (
+          {({ perfil, getDadosMeuPerfil }) => (
             <DisplayPontos 
               qtdPontos={perfil.saldo_pontos}
               data_vencimento={perfil.data_vencimento_pontos}
-              nome={perfil.nome}
+              nome={perfil.nomeSimples || perfil.nome}
+              atualizaPerfil={getDadosMeuPerfil}
             />
           )}
           </UserConsumer>

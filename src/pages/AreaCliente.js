@@ -23,7 +23,7 @@ class AreaCliente extends Component {
           <UserConsumer>
           {({perfil}) => (
           <View style={{width:'60%',justifyContent: 'center', alignItems:'center', padding: 5}}>
-            <RubikText style={{color: 'white', fontSize: 20}}>Olá {perfil.nome}!</RubikText>
+            <RubikText style={{color: 'white', fontSize: 20}}>Olá {perfil.nomeSimples || perfil.nome}!</RubikText>
             {/* <RubikText style={{color: 'white', fontSize: 20}}>seja bem-vinda</RubikText> */}
           </View>
           )}
