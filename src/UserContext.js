@@ -30,10 +30,8 @@ class UserProvider extends React.Component {
     if(!this.state.isAuth) {
       const userToken = localStorage.getItem('userToken')
       const userId = localStorage.getItem('userId')
-      console.log("token carregado", userToken)
       if(userToken && userId) {
         this.setState({userToken, userId, isAuth: true})
-          console.log("perfil do state", this.state.perfil)
         if(!this.state.perfil) {
           const perfil = JSON.parse(localStorage.getItem('perfil'))
           console.log("perfil carregado do localStorage", perfil)
@@ -50,7 +48,6 @@ class UserProvider extends React.Component {
 
   async signup(login, passwd) {
     const params = JSON.stringify({email: login, password: passwd})
-    console.log(params)
     const res = await fetch(process.env.REACT_APP_API_URL+'/pessoas', {
       method: 'POST',
       headers: {
@@ -95,7 +92,6 @@ class UserProvider extends React.Component {
   
 
   logout() {
-    console.log('LOGOUT')
     localStorage.clear();
     this.setState({
       isAuth: false,
@@ -160,7 +156,6 @@ class UserProvider extends React.Component {
     })
     localStorage.setItem('userId', perfil.id);
     localStorage.setItem('perfil', JSON.stringify(perfil));
-    console.log('state vs localstorage', this.state.userId, localStorage.getItem('userId'))
   }
 
   async setOfertas(ofertas) {

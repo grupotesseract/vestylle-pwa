@@ -5,7 +5,7 @@ const LojaContext = React.createContext();
 class LojaProvider extends React.Component {
   state = { 
     ofertas: null,
-    cupons: [],
+    cupons: null,
   }
 
   constructor() {
@@ -25,7 +25,6 @@ class LojaProvider extends React.Component {
     if(res && res.success) {
       const ofertas = res.data;
       this.setState({ofertas})
-      console.log("ofertas carregadas:", ofertas)
       return ofertas
     } else {
       throw res.message
@@ -60,7 +59,6 @@ class LojaProvider extends React.Component {
     if(res && res.success) {
       const cupons = res.data;
       this.setState({cupons})
-      console.log("cupons carregadas:", cupons)
       return cupons
     } else {
       throw res.message
@@ -71,7 +69,7 @@ class LojaProvider extends React.Component {
     return (
       <LojaContext.Provider
         value={{ 
-          cupons: ['this.state.cupons'],
+          cupons: this.state.cupons,
           ofertas: this.state.ofertas,
           atualizaCupons: this.atualizaCupons,
           atualizaOfertas: this.atualizaOfertas,

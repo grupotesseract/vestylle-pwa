@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ImageBackground from '../ui/ImageBackground';
 import View from '../ui/View';
 import RubikText from '../ui/RubikText';
-import { FaFacebook, FaUserCircle } from 'react-icons/fa';
+import { FaFacebook, FaUserCircle, FaSpinner } from 'react-icons/fa';
 import TouchableHighlight from '../ui/TouchableHighlight';
 import { Link, Redirect } from 'react-router-dom'
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
@@ -27,8 +27,8 @@ class FBButton extends Component {
   }
 
   clickHandler(onClick, isProcessing) {
+    this.props.loadingOn();
     console.log("redirectURI",this.state.redirectUri)
-    console.log(onClick, isProcessing)
     onClick()
   }
 
@@ -39,7 +39,6 @@ class FBButton extends Component {
             callback={(res) => this.responseFacebook(res)}
             redirectUri={this.state.redirectUri}
             render={renderProps => {
-              console.log("renderProps",renderProps)
               return (
               <TouchableHighlight 
                 style={this.styles.botaoQuadrado}
@@ -59,7 +58,6 @@ class FBButton extends Component {
     .then((res) => {
       console.log("resultado setfacebooktoken", res)
       if(res) {
-        console.log(this.props.loginDone);
         this.props.loginDone()
       }
     })
@@ -85,7 +83,16 @@ class FBButton extends Component {
 
 class Cadastro extends Component {
   state = {
-    redirectTo: null
+    redirectTo: null,
+    loading: false
+  }
+
+  loadingOn = () => {
+    this.setState({loading: true})
+  }
+
+  loadingOff = () => {
+    this.setState({loading: false})
   }
 
   constructor() {
@@ -114,53 +121,61 @@ class Cadastro extends Component {
           />
         </Link>
 
-        <View style={this.styles.rightAlign}>
-          <RubikText style={{color:'#FFFFFF', textAlign: 'left'}}>Faça seu cadastro e receba benefícios exclusivos</RubikText>
-          <UserConsumer>
-          {({ setFacebookToken }) => (
-            <FBButton
-              setFacebookToken={setFacebookToken}
-              loginDone={this.loginDone}
-            />
-          )}
-          </UserConsumer>
-          <Link
-          style={this.styles.botaoQuadrado}
-          to="cadastrosimples"
-          >
-            <FaUserCircle
-              name="user-circle"
-              size={15}
-              color="white"
-            />
-            <RubikText style={this.styles.fontBotao}> Cadastrar com CPF ou E-MAIL</RubikText>
-          </Link>
-          <View style={this.styles.fullCenter}>
+        { this.state.loading ? (
+          <View style={{ alignItems: 'center', alignSelf: 'stretch', paddingBottom: 100}}>
+            <FaSpinner color="white" className="spin" style={{fontSize: 36}} />
+          </View>
+        ):(
+        <>
+          <View style={this.styles.rightAlign}>
+            <RubikText style={{color:'#FFFFFF', textAlign: 'left'}}>Faça seu cadastro e receba benefícios exclusivos</RubikText>
+            <UserConsumer>
+            {({ setFacebookToken }) => (
+              <FBButton
+                setFacebookToken={setFacebookToken}
+                loginDone={this.loginDone}
+                loadingOn={this.loadingOn}
+              />
+            )}
+            </UserConsumer>
             <Link
-              to="/"
+            style={this.styles.botaoQuadrado}
+            to="cadastrosimples"
+            >
+              <FaUserCircle
+                name="user-circle"
+                size={15}
+                color="white"
+              />
+              <RubikText style={this.styles.fontBotao}> Cadastrar com CPF ou E-MAIL</RubikText>
+            </Link>
+            <View style={this.styles.fullCenter}>
+              <Link
+                to="/"
+                style={this.styles.textoSmall}
+              >Sobre o programa Cliente Vestylle Megastore Jaú
+              </Link>
+            </View>
+          </View>
+
+          <View style={this.styles.fullCenter}>
+            <RubikText style={this.styles.textoSmall}>JÁ POSSUI CADASTRO? </RubikText>
+            <Link
+              to="Login"
+              fontSize="8"
               style={this.styles.textoSmall}
-            >Sobre o programa Cliente Vestylle Megastore Jaú
+            >&nbsp; ACESSE SUA CONTA
             </Link>
           </View>
-        </View>
-
-        <View style={this.styles.fullCenter}>
-          <RubikText style={this.styles.textoSmall}>JÁ POSSUI CADASTRO? </RubikText>
-          <Link
-            to="Login"
-            fontSize="8"
-            style={this.styles.textoSmall}
-          >&nbsp; ACESSE SUA CONTA
-          </Link>
-        </View>
-
+        </>
+        )}
 
     </ImageBackground>
   }
 
   loginDone() {
-    console.log("LOGINDONE")
     this.setState({
+      loading: false,
       redirectTo : '/areacliente'
     })
   }

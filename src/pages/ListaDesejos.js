@@ -7,28 +7,44 @@ import RodapeCompleto from '../components/RodapeCompleto';
 import CupomBoasVindas from '../components/CupomBoasVindas';
 import Breadcrumb from '../ui/Breadcrumb';
 import LaughingSmiling from '../ui/LaughingSmiling';
-import { FaRegHeart } from 'react-icons/fa';
+import { FaRegHeart, FaSpinner } from 'react-icons/fa';
 import Produto from '../ui/Produto';
 
 class ListagemDesejos extends React.Component {
 
   state = {
-    listaDesejos: null
+    listaDesejos: null,
+    loading: false
   }
 
   componentDidMount() {
     this.props.getOfertas()
     .then((listaDesejos) => {
-      this.setState({listaDesejos})
+     this.setState({listaDesejos})
     })
   }
 
-  componentWillReceiveProps(props) {
-    const { listaDesejos } = props
-    this.setState({listaDesejos})
+  static getDerivedStateFromProps(props, state) {
+    const loading = props.isAuth && props.listaDesejos === null
+    if (props.listaDesejos !== state.listaDesejos) {
+      return {
+        listaDesejos: props.listaDesejos,
+        loading
+      };
+    }
+
+    // Return null to indicate no change to state.
+    return null;
   }
 
+
+
   render() {
+      if(this.state.loading) {
+        return <View style={{ alignItems: 'center', alignSelf: 'stretch', paddingBottom: 100}}>
+            <FaSpinner className="spin" style={{fontSize: 36}} />
+          </View>
+      }
       return !this.state.listaDesejos || this.state.listaDesejos.length < 1 ? (<>
         <View style={{alignItems: 'center'}}>
           <RubikText bold={true}>A Lista de Desejos facilita suas compras.</RubikText>
@@ -119,7 +135,7 @@ class ListagemDesejos extends React.Component {
         <CupomBoasVindas/>
       </> ):(<>
         {this.state.listaDesejos.map((desejo, key) => (
-          <View style={{position: 'relative'}}>
+          <View key={key} style={{position: 'relative'}}>
             <div style={{
               position: 'absolute',
               height: '45%',
@@ -169,11 +185,12 @@ export default class ListaDesejos extends React.Component {
       </View>
 
       <UserConsumer>
-      {({ getOfertas, listaDesejos, toggleLikeOferta }) => (<>
+      {({ getOfertas, listaDesejos, toggleLikeOferta, isAuth }) => (<>
           <ListagemDesejos
             getOfertas={getOfertas}
             listaDesejos={listaDesejos}
             toggleLikeOferta={toggleLikeOferta}
+            isAuth={isAuth}
           />
       </>
       )}

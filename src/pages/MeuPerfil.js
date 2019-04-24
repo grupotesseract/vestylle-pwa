@@ -11,6 +11,7 @@ import { MdCheckBox, MdCheckBoxOutlineBlank } from 'react-icons/md';
 import TouchableHighlight from '../ui/TouchableHighlight';
 import Alert from '../ui/Alert';
 import MaskedInput from 'react-text-mask'
+import { FaSpinner } from 'react-icons/fa';
 
 class Checkbox extends React.Component {
   render() { 
@@ -89,7 +90,7 @@ class FormMeuPerfil extends React.Component {
     data_nascimento: '',
     celular: '',
     receberNovidades: false,
-    loading: false
+    loading: true
   }
 
   componentDidMount() {
@@ -99,7 +100,8 @@ class FormMeuPerfil extends React.Component {
         perfil.data_nascimento = this.utf2ddmmaaaa(perfil.data_nascimento)
       }
       this.setState({
-        ...perfil
+        ...perfil,
+        loading: false
       })
     })
     .catch(erro => console.error('Erro no form de meu perfil',erro))
@@ -107,7 +109,10 @@ class FormMeuPerfil extends React.Component {
 
   render() {
     return <form onSubmit={(e) => this.atualizarPerfil(e)}>
-      <RubikText bold={true} style={{color:'white', fontSize: 14, marginTop: 10, marginBottom: 10}} >Meu perfil</RubikText>
+      <RubikText bold={true} style={{color:'white', fontSize: 14, marginTop: 10, marginBottom: 10}} >
+        Meu perfil
+        {this.state.loading && <FaSpinner color="white" className="spin" style={{fontSize: 18,marginLeft: 20}}/>}
+      </RubikText>
 
       { this.state.redirectTo && (
         <Redirect to={this.state.redirectTo}/>
