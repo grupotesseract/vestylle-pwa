@@ -10,6 +10,7 @@ import { Redirect } from 'react-router-dom'
 import { MdCheckBox, MdCheckBoxOutlineBlank } from 'react-icons/md';
 import TouchableHighlight from '../ui/TouchableHighlight';
 import Alert from '../ui/Alert';
+import MaskedInput from 'react-text-mask'
 
 class Checkbox extends React.Component {
   render() { 
@@ -46,11 +47,20 @@ class InputValidacao extends React.Component {
     return (
       <View>
         <RubikText bold={true} style={{color: '#feca03', fontSize:12, marginTop: 3}}>{this.props.title}</RubikText>
-        <input 
-          style={this.style.inputSublinhado} 
-          value={this.props.value}
-          onChange={this.props.onChange}
+        { this.props.mask ? (
+          <MaskedInput
+            style={this.style.inputSublinhado} 
+            value={this.props.value}
+            onChange={this.props.onChange}
+            mask={this.props.mask}
           />
+        ):(
+          <input 
+            style={this.style.inputSublinhado} 
+            value={this.props.value}
+            onChange={this.props.onChange}
+            />
+        )}
       </View>
     )
   }  
@@ -85,6 +95,9 @@ class FormMeuPerfil extends React.Component {
   componentDidMount() {
     this.props.getData()
     .then(perfil => {
+      if(perfil.data_nascimento) {
+        perfil.data_nascimento = this.utf2ddmmaaaa(perfil.data_nascimento)
+      }
       this.setState({
         ...perfil
       })
@@ -108,15 +121,18 @@ class FormMeuPerfil extends React.Component {
         value={this.state.email}
         onChange={(email) => this.setState({email : email.target.value})}/>
       <InputValidacao 
+        mask={[/\d/, /\d/, /\d/, '.',/\d/, /\d/, /\d/, '.',/\d/, /\d/, /\d/, '-', /\d/, /\d/]}
         title="CPF" 
         value={this.state.cpf}
         onChange={(cpf) => this.setState({cpf: cpf.target.value})}/>
       <InputValidacao 
+        mask={[/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/]}
         title="Data de Nascimento" 
         value={this.state.data_nascimento}
         onChange={(data_nascimento) => this.setState({data_nascimento: data_nascimento.target.value})}/>
       <InputValidacao 
-        title="Celular" 
+        mask={['(',/\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/]}
+        title="Celular"
         value={this.state.celular}
         onChange={(celular) => this.setState({celular: celular.target.value})}/>
 
@@ -156,13 +172,16 @@ class FormMeuPerfil extends React.Component {
       event.preventDefault()
     }
     this.setState({loading: true})
-    const perfil = {
+    let perfil = {
       nome: this.state.nome,
       email: this.state.email,
       cpf: this.state.cpf,
       data_nascimento: this.state.data_nascimento,
       celular: this.state.celular,
       receberNovidades: this.state.receberNovidades
+    }
+    if(perfil.data_nascimento) {
+      perfil.data_nascimento = this.ddmmaaaa2utf(perfil.data_nascimento)
     }
     await this.props.setData(perfil)
     .then((res) => {
@@ -175,8 +194,9 @@ class FormMeuPerfil extends React.Component {
     })
     .catch((e) => {
       let msgErro = ""
-      Object.keys(e).map(campo => {
+      Object.keys(e).map((campo) => {
         msgErro += " "+e[campo]
+        return msgErro
       })
       this.setState({
         loading: false,
@@ -184,6 +204,22 @@ class FormMeuPerfil extends React.Component {
         msgErro
       })
     })
+  }
+
+  ddmmaaaa2utf = (stringDate) => {
+    const splittedDate = stringDate.split('/');
+    const day = splittedDate[0]
+    const month = splittedDate[1]
+    const year = splittedDate[2]
+    return year+'-'+month+'-'+day;
+  }
+  utf2ddmmaaaa = (utfDate) => {
+    const date = utfDate.split(' ')[0];
+    const splittedDate = date.split('-');
+    const day = splittedDate[2]
+    const month = splittedDate[1]
+    const year = splittedDate[0]
+    return day+'/'+month+'/'+year;
   }
 }
 
