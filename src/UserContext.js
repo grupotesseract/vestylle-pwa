@@ -57,12 +57,13 @@ class UserProvider extends React.Component {
       body: params
     })
     .then(response => {
-      const jsonRes = response.json()
-      if(jsonRes.success) {
-        this.setToken(jsonRes.data.token.token)
-        this.setPerfil(jsonRes.data.pessoa)
-      }
-      return jsonRes
+      return response.json().then((jsonRes) => {
+        if(jsonRes.success) {
+          this.setToken(jsonRes.data.token.token)
+          this.setPerfil(jsonRes.data.pessoa)
+        }
+        return jsonRes
+      })
     })
     .catch(error => console.error('Signup error', error));
     return res;
