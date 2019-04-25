@@ -4,9 +4,14 @@
   "private": true,
   "dependencies": {
     "react": "^16.6.3",
+    "react-circular-progressbar": "^1.0.0",
     "react-dom": "^16.6.3",
+    "react-facebook-login": "^4.1.1",
+    "react-icons": "^3.5.0",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "2.1.1"
+    "react-scripts": "^2.1.8",
+    "react-slick": "^0.23.2",
+    "slick-carousel": "^1.8.1"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -8,10 +8,10 @@ import View from '../ui/View';
 import TextInput from '../ui/TextInput';
 import { UserConsumer } from '../UserContext';
 
-export default class LoginScreen extends React.Component {
+export default class EsqueceuSenha extends React.Component {
 
   state = {
-    erroLogin: false,
+    erroSenha: false,
     redirectTo: null,
     msgErro: '',
     login: '',
@@ -22,13 +22,13 @@ export default class LoginScreen extends React.Component {
     return (
       <ImageBackground
         source={require('../assets/fundologin.jpg')}
-        style={{width: '100%', minHeight: '100vh', justifyContent: 'space-between', alignItems: 'center'}}>
+        style={{width: '100%', minHeight: '100%', justifyContent: 'space-between', alignItems: 'center'}}>
 
         { this.state.redirectTo && (
           <Redirect to={this.state.redirectTo}/>
         )}
         <View
-          style={{width: '80%', flexGrow:1, marginBottom: 'auto', justifyContent: 'center'}}>
+          style={{width: '80%', flexGrow:2, marginBottom: 'auto', justifyContent: 'center'}}>
           <img
             alt="Vestylle"
             src={require('../assets/logobranco.png')}
@@ -39,35 +39,21 @@ export default class LoginScreen extends React.Component {
         </View>
 
         <View
-          style={{width: '80%'}}>
+          style={{width: '80%', justifySelf: 'center', flexGrow: 1}}>
 
-          <RubikText style={styles.label}>CPF ou E-mail</RubikText>
+          <RubikText style={styles.label}>Digite seu E-mail</RubikText>
+          <TextInput
+            style={styles.inputComBorda}
+            onChangeText={(email) => this.setState({email})}
+            value={this.state.email}
+          />
           <UserConsumer>
-          {({ login }) => (
-          <form onSubmit={(e) => this.signInAsync(login, e)}>
-            <TextInput
-              style={styles.inputComBorda}
-              onChangeText={(login) => this.setState({login})}
-              value={this.state.login}
-            />
-            <RubikText style={styles.label}>Senha</RubikText>
-            <TextInput
-              style={styles.inputComBorda}
-              secureTextEntry={true}
-              onChangeText={(password) => this.setState({password})}
-              value={this.state.password}
-            />
-            <Link
-              to="/esqueceusenha"
-              style={{color: '#feca03', marginTop: 10, marginBottom: 12, fontSize: 14, justifyContent: 'flex-start'}}>
-              <RubikText>Esqueceu sua senha?</RubikText>  
-            </Link>
-            <ButtonBorder 
-              title="LOGIN"
-              submit={true}
-              loading={this.state.loading}
-            />
-          </form>
+          {({ setToken }) => (
+          <ButtonBorder 
+            title="PRÓXIMA"
+            loading={this.state.loading}
+            onPress={() => this.signInAsync(setToken)} 
+          />
           )}
           </UserConsumer>
         </View>
@@ -92,15 +78,14 @@ export default class LoginScreen extends React.Component {
     );
   }
 
-  signInAsync = async (login, event) => {
-    if(event) {
-      event.preventDefault()
-    }
+  signInAsync = async (setToken) => {
     const self = this;
     this.setState({loading:true})
-    await login(this.state.login, this.state.password)
+    await this.fetchLogin()
     .then(jsonRes => {
       if(jsonRes.success) {
+        const token = jsonRes.data.token
+        setToken(token);
         self.setState({ redirectTo: '/areacliente'});
         return;
       }
@@ -120,6 +105,20 @@ export default class LoginScreen extends React.Component {
     })
   };
 
+  fetchLogin = async () => {
+    const res = await fetch('https://develop-api.vestylle.grupotesseract.com.br/api/login', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({email: this.state.login, password: this.state.password})
+    })
+    .then(response => response.json())
+    .catch(erro => console.error('Login não rolou',erro))
+    return res;
+  }
+
   dismissAlertErro = () => {
     this.setState({
       erroLogin: false
@@ -135,7 +134,8 @@ const styles = {
     color: 'white',
     borderWidth: 1,
     borderStyle: 'solid',
-    borderRadius: 5
+    borderRadius: 5,
+    marginBottom: 10
   },
   label: {
     color: '#feca03',
