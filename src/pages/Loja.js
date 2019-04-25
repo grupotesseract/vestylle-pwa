@@ -3,7 +3,6 @@ import View from '../ui/View';
 import Header from '../components/Header'
 import RubikText from '../ui/RubikText';
 import RodapeCompleto from '../components/RodapeCompleto';
-import { Link } from 'react-router-dom'
 import Breadcrumb from '../ui/Breadcrumb';
 import LaughingSmiling from '../ui/LaughingSmiling';
 

@@ -10,6 +10,8 @@ import { Redirect } from 'react-router-dom'
 import { MdCheckBox, MdCheckBoxOutlineBlank } from 'react-icons/md';
 import TouchableHighlight from '../ui/TouchableHighlight';
 import Alert from '../ui/Alert';
+import MaskedInput from 'react-text-mask'
+import { FaSpinner } from 'react-icons/fa';
 
 class Checkbox extends React.Component {
   render() { 
@@ -46,11 +48,20 @@ class InputValidacao extends React.Component {
     return (
       <View>
         <RubikText bold={true} style={{color: '#feca03', fontSize:12, marginTop: 3}}>{this.props.title}</RubikText>
-        <input 
-          style={this.style.inputSublinhado} 
-          value={this.props.value}
-          onChange={this.props.onChange}
+        { this.props.mask ? (
+          <MaskedInput
+            style={this.style.inputSublinhado} 
+            value={this.props.value}
+            onChange={this.props.onChange}
+            mask={this.props.mask}
           />
+        ):(
+          <input 
+            style={this.style.inputSublinhado} 
+            value={this.props.value}
+            onChange={this.props.onChange}
+            />
+        )}
       </View>
     )
   }  
@@ -79,14 +90,18 @@ class FormMeuPerfil extends React.Component {
     data_nascimento: '',
     celular: '',
     receberNovidades: false,
-    loading: false
+    loading: true
   }
 
   componentDidMount() {
     this.props.getData()
     .then(perfil => {
+      if(perfil.data_nascimento) {
+        perfil.data_nascimento = this.utf2ddmmaaaa(perfil.data_nascimento)
+      }
       this.setState({
-        ...perfil
+        ...perfil,
+        loading: false
       })
     })
     .catch(erro => console.error('Erro no form de meu perfil',erro))
@@ -94,7 +109,10 @@ class FormMeuPerfil extends React.Component {
 
   render() {
     return <form onSubmit={(e) => this.atualizarPerfil(e)}>
-      <RubikText bold={true} style={{color:'white', fontSize: 14, marginTop: 10, marginBottom: 10}} >Meu perfil</RubikText>
+      <RubikText bold={true} style={{color:'white', fontSize: 14, marginTop: 10, marginBottom: 10}} >
+        Meu perfil
+        {this.state.loading && <FaSpinner color="white" className="spin" style={{fontSize: 18,marginLeft: 20}}/>}
+      </RubikText>
 
       { this.state.redirectTo && (
         <Redirect to={this.state.redirectTo}/>
@@ -108,15 +126,18 @@ class FormMeuPerfil extends React.Component {
         value={this.state.email}
         onChange={(email) => this.setState({email : email.target.value})}/>
       <InputValidacao 
+        mask={[/\d/, /\d/, /\d/, '.',/\d/, /\d/, /\d/, '.',/\d/, /\d/, /\d/, '-', /\d/, /\d/]}
         title="CPF" 
         value={this.state.cpf}
         onChange={(cpf) => this.setState({cpf: cpf.target.value})}/>
       <InputValidacao 
+        mask={[/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/]}
         title="Data de Nascimento" 
         value={this.state.data_nascimento}
         onChange={(data_nascimento) => this.setState({data_nascimento: data_nascimento.target.value})}/>
       <InputValidacao 
-        title="Celular" 
+        mask={['(',/\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/]}
+        title="Celular"
         value={this.state.celular}
         onChange={(celular) => this.setState({celular: celular.target.value})}/>
 
@@ -156,7 +177,7 @@ class FormMeuPerfil extends React.Component {
       event.preventDefault()
     }
     this.setState({loading: true})
-    const perfil = {
+    let perfil = {
       nome: this.state.nome,
       email: this.state.email,
       cpf: this.state.cpf,
@@ -164,18 +185,46 @@ class FormMeuPerfil extends React.Component {
       celular: this.state.celular,
       receberNovidades: this.state.receberNovidades
     }
+    if(perfil.data_nascimento) {
+      perfil.data_nascimento = this.ddmmaaaa2utf(perfil.data_nascimento)
+    }
     await this.props.setData(perfil)
-    .then(() => {
+    .then((res) => {
+      if(res && res.succes && res.data) {
+        const meuPerfil = res.data
+        this.props.atualizaPerfil(meuPerfil)
+      }
       this.setState({loading: false})
       this.setState({redirectTo: '/areacliente'})
     })
     .catch((e) => {
+      let msgErro = ""
+      Object.keys(e).map((campo) => {
+        msgErro += " "+e[campo]
+        return msgErro
+      })
       this.setState({
         loading: false,
         erroUpdate:true,
-        msgErro: JSON.stringify(e)
+        msgErro
       })
     })
+  }
+
+  ddmmaaaa2utf = (stringDate) => {
+    const splittedDate = stringDate.split('/');
+    const day = splittedDate[0]
+    const month = splittedDate[1]
+    const year = splittedDate[2]
+    return year+'-'+month+'-'+day;
+  }
+  utf2ddmmaaaa = (utfDate) => {
+    const date = utfDate.split(' ')[0];
+    const splittedDate = date.split('-');
+    const day = splittedDate[2]
+    const month = splittedDate[1]
+    const year = splittedDate[0]
+    return day+'/'+month+'/'+year;
   }
 }
 
@@ -194,7 +243,7 @@ export default class MeuPerfil extends React.Component {
     return ( <View>
       <Header/>
       <UserConsumer>
-      {({ getDadosMeuPerfil, setDadosMeuPerfil }) => (<>
+      {({ getDadosMeuPerfil, setDadosMeuPerfil, setPerfil }) => (<>
       <ImageBackground
         source={require('../assets/fundologin.jpg')}
         style={{width: '100%', height: '100%'}}>
@@ -202,6 +251,7 @@ export default class MeuPerfil extends React.Component {
           <FormMeuPerfil
             getData={getDadosMeuPerfil}
             setData={setDadosMeuPerfil}
+            atualizaPerfil={setPerfil}
           />
         </View>
         <MiniRodape/>

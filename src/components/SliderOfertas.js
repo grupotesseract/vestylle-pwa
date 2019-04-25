@@ -4,10 +4,10 @@ import View from "../ui/View";
 import { LojaConsumer } from "../LojaContext";
 import Produto from "../ui/Produto";
 import { UserConsumer } from "../UserContext";
+import { FaSpinner } from "react-icons/fa";
+import RubikText from "../ui/RubikText";
 
 class ListaOfertas extends React.Component {
-
- 
 
   settings = {
     dots: true,
@@ -15,11 +15,12 @@ class ListaOfertas extends React.Component {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    arrows: false
+    arrows: false,
   };
 
   state = {
-    ofertas: []
+    ofertas: null,
+    error: null
   }
 
   atualizaOfertas(props) {
@@ -28,6 +29,10 @@ class ListaOfertas extends React.Component {
     .then((ofertas)=>{
       ofertas = ofertas.slice(0,10)
       this.setState({ofertas})
+    })
+    .catch((e) => {
+      const error = "Erro ao carregar ofertas."
+      this.setState({error})
     })
   }
 
@@ -40,11 +45,34 @@ class ListaOfertas extends React.Component {
     })
     this.atualizaOfertas(this.props)
   }
+  
   componentWillReceiveProps(props) {
     this.atualizaOfertas(props)
   }
 
   render() {
+    if(this.state.ofertas === null) {
+      return <FaSpinner
+        style={{
+          fontSize: 72,
+          color: 'white',
+          alignSelf: 'center',
+          marginTop: 60
+        }}
+        className='spin'
+      />
+    }
+
+    if(this.state.ofertas.length === 0) {
+      return <RubikText
+        style={{
+          color: 'white',
+          alignSelf: 'center',
+          marginTop: 80,
+          zIndex: 2
+        }}
+        >Nenhuma oferta encontrada.</RubikText>
+    }
     return(<Slider {...this.settings}>
         {this.state.ofertas.map((oferta, key) => (
           <Produto
@@ -72,6 +100,7 @@ export default class SliderOfertas extends React.Component {
         {( {listaDesejos} ) => (
         <LojaConsumer>
           {({getOfertasComLike, ofertas}) => (
+
           <ListaOfertas
             getOfertasComLike={getOfertasComLike}
             ofertas={ofertas}

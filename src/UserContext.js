@@ -17,6 +17,7 @@ class UserProvider extends React.Component {
     this.login = this.login.bind(this)
     this.logout = this.logout.bind(this)
     this.setToken = this.setToken.bind(this)
+    this.setPerfil = this.setPerfil.bind(this)
     this.signup = this.signup.bind(this)
     this.getDadosMeuPerfil = this.getDadosMeuPerfil.bind(this)
     this.setDadosMeuPerfil = this.setDadosMeuPerfil.bind(this)
@@ -29,10 +30,8 @@ class UserProvider extends React.Component {
     if(!this.state.isAuth) {
       const userToken = localStorage.getItem('userToken')
       const userId = localStorage.getItem('userId')
-      console.log("token carregado", userToken)
       if(userToken && userId) {
         this.setState({userToken, userId, isAuth: true})
-          console.log("perfil do state", this.state.perfil)
         if(!this.state.perfil) {
           const perfil = JSON.parse(localStorage.getItem('perfil'))
           console.log("perfil carregado do localStorage", perfil)
@@ -49,7 +48,6 @@ class UserProvider extends React.Component {
 
   async signup(login, passwd) {
     const params = JSON.stringify({email: login, password: passwd})
-    console.log(params)
     const res = await fetch(process.env.REACT_APP_API_URL+'/pessoas', {
       method: 'POST',
       headers: {
@@ -59,12 +57,13 @@ class UserProvider extends React.Component {
       body: params
     })
     .then(response => {
-      const jsonRes = response.json()
-      if(jsonRes.success) {
-        this.setToken(jsonRes.data.token.token)
-        this.setPerfil(jsonRes.data.pessoa)
-      }
-      return jsonRes
+      return response.json().then((jsonRes) => {
+        if(jsonRes.success) {
+          this.setToken(jsonRes.data.token.token)
+          this.setPerfil(jsonRes.data.pessoa)
+        }
+        return jsonRes
+      })
     })
     .catch(error => console.error('Signup error', error));
     return res;
@@ -81,7 +80,7 @@ class UserProvider extends React.Component {
     })
     .then(response => response.json())
     .catch(erro => console.error('Erro no login',erro))
-    if(res.success) {
+    if(res && res.success) {
       const meuPerfil = res.data.pessoa
       const userToken = res.data.token.token
       console.log("usertoken no login()", userToken)
@@ -94,7 +93,6 @@ class UserProvider extends React.Component {
   
 
   logout() {
-    console.log('LOGOUT')
     localStorage.clear();
     this.setState({
       isAuth: false,
@@ -117,7 +115,9 @@ class UserProvider extends React.Component {
   }
 
   async setFacebookToken(fbResponse) {
-    console.log("fbReponse", fbResponse)
+    if(!fbResponse.accessToken || fbResponse.accessToken === '') {
+      return null
+    }
     const fbData = fbResponse
     this.setState({
       fbData
@@ -125,7 +125,7 @@ class UserProvider extends React.Component {
     localStorage.setItem('fbData', JSON.stringify(fbData));
     const res = await this.getAPITokenFromFacebookData(fbData)
     .then((response) => {
-      if(response.success) {
+      if(response && response.success) {
         const loginData = response.data
         const perfil = loginData.pessoa
         const userToken = loginData.token
@@ -143,13 +143,20 @@ class UserProvider extends React.Component {
   }
 
   setPerfil(perfil) {
+    let perfilCompleto = this.null2emptystring(perfil)
+
+    // Inclui o primeiro nome no obj de perfil
+    if(perfilCompleto.nome && perfilCompleto.nome !== '') {
+      const nomeSimples = perfilCompleto.nome.split(' ')[0];
+      perfilCompleto.nomeSimples = nomeSimples
+    }
+
     this.setState({
       userId: perfil.id,
-      perfil: this.null2emptystring(perfil)
+      perfil: perfilCompleto
     })
     localStorage.setItem('userId', perfil.id);
     localStorage.setItem('perfil', JSON.stringify(perfil));
-    console.log('state vs localstorage', this.state.userId, localStorage.getItem('userId'))
   }
 
   async setOfertas(ofertas) {
@@ -296,6 +303,7 @@ class UserProvider extends React.Component {
           login: this.login,
           logout: this.logout,
           setToken: this.setToken,
+          setPerfil: this.setPerfil,
           signup: this.signup,
           getDadosMeuPerfil: this.getDadosMeuPerfil,
           setDadosMeuPerfil: this.setDadosMeuPerfil,
