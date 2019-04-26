@@ -13,6 +13,7 @@ class LojaProvider extends React.Component {
     this.atualizaOfertas = this.atualizaOfertas.bind(this)
     this.atualizaCupons = this.atualizaCupons.bind(this)
     this.getOfertasComLike = this.getOfertasComLike.bind(this)
+    this.getOfertaById = this.getOfertaById.bind(this)
   }
 
   componentWillMount() {
@@ -52,6 +53,16 @@ class LojaProvider extends React.Component {
     return ofertasComLike
   }
 
+  async getOfertaById(idOferta) {
+    if(!this.state.ofertas) {
+      await this.atualizaOfertas()
+    }
+    const oferta = this.state.ofertas.find((oferta) => {
+      return Number(oferta.id) === Number(idOferta)
+    })
+    return oferta
+  }
+
   async atualizaCupons() {
     const res = await fetch(process.env.REACT_APP_API_URL+'/cupons')
     .then(response => response.json())
@@ -74,6 +85,7 @@ class LojaProvider extends React.Component {
           atualizaCupons: this.atualizaCupons,
           atualizaOfertas: this.atualizaOfertas,
           getOfertasComLike: this.getOfertasComLike,
+          getOfertaById: this.getOfertaById,
         }}
       >
         {this.props.children}

@@ -89,6 +89,7 @@ class FormMeuPerfil extends React.Component {
     cpf: '',
     data_nascimento: '',
     celular: '',
+    genero: '',
     receberNovidades: false,
     loading: true
   }
@@ -125,6 +126,31 @@ class FormMeuPerfil extends React.Component {
         title="E-mail" 
         value={this.state.email}
         onChange={(email) => this.setState({email : email.target.value})}/>
+
+
+      <View>
+        <RubikText bold={true} style={{color: '#feca03', fontSize:12, marginTop: 3}}>Gênero</RubikText>
+        <select
+          onChange={(e) => this.setState({genero: e.target.value})}
+          style= {{
+            backgroundColor: 'transparent',
+            padding: 0,
+            color: 'white',
+            fontFamily: 'Rubik',
+            marginBottom: 5,
+            borderWidth: 0,
+            borderStyle: 'solid',
+            borderBottomWidth: 1,
+            borderColor: '#585756',
+            marginTop: 5,
+            fontSize: 15
+          }}
+        >
+          <option value="Prefiro Não Informar" selected={"Prefiro Não Informar"===this.state.genero}>Prefiro Não Informar</option>
+          <option value="Feminino" selected={"Feminino"===this.state.genero}>Feminino</option>
+          <option value="Masculino" selected={"Masculino"===this.state.genero}>Masculino</option>
+        </select>
+      </View>
       <InputValidacao 
         mask={[/\d/, /\d/, /\d/, '.',/\d/, /\d/, /\d/, '.',/\d/, /\d/, /\d/, '-', /\d/, /\d/]}
         title="CPF" 
@@ -181,13 +207,20 @@ class FormMeuPerfil extends React.Component {
       nome: this.state.nome,
       email: this.state.email,
       cpf: this.state.cpf,
+      genero: this.state.genero,
       data_nascimento: this.state.data_nascimento,
       celular: this.state.celular,
       receberNovidades: this.state.receberNovidades
     }
+    
+    // Trata data de nascimento e cpf
     if(perfil.data_nascimento) {
       perfil.data_nascimento = this.ddmmaaaa2utf(perfil.data_nascimento)
     }
+    if(perfil.cpf) {
+      perfil.cpf = perfil.cpf.replace(/\D/g,'')
+    }
+
     await this.props.setData(perfil)
     .then((res) => {
       if(res && res.succes && res.data) {

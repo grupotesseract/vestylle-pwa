@@ -53,7 +53,7 @@ class Home extends Component {
         <RubikText 
           bold={true} 
           style={{ fontSize: 15, color: '#585756' }}>
-          Com os cupons promocionais
+          Com os cupons promocionais da
         </RubikText>
         <RubikText 
           bold={true} 
