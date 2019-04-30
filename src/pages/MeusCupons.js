@@ -4,8 +4,8 @@ import View from '../ui/View';
 import Breadcrumb from '../ui/Breadcrumb';
 import RubikText from '../ui/RubikText';
 import Header from '../components/Header';
-import ButtonBorder from '../ui/ButtonBorder';
-
+import { Link } from 'react-router-dom'
+import RodapeCompleto from '../components/RodapeCompleto';
 
 class ListaCupons extends React.Component {
     state = {
@@ -116,16 +116,22 @@ class ListaCupons extends React.Component {
                 }}>
                     Válido até {cupom.data_validade}
                 </RubikText>
-                <ButtonBorder
+                <Link
+                    to={"/cupom/"+cupom.id}
                     title="VER DETALHES"
                     style={{
                         backgroundColor: '#e20f17',
                         color: 'white',
+                        padding: 5,
+                        marginTop: 10,
                         paddingRight: 30,
                         paddingLeft: 30,
-                        borderRadius: 5
+                        borderRadius: 5,
+                        alignSelf: 'center'
                     }}
-                />
+                >
+                    <RubikText>VER DETALHES</RubikText>
+                </Link>
             </View>
         })}
         </>
@@ -162,8 +168,68 @@ export default class MeusCupons extends React.Component {
                 Ativos | Utilizados
             </View>
             <ListaCupons/>
+
+            <View style={{
+                backgroundColor: "#feca03",
+                margin: 30,
+                padding: 30,
+                flexDirection: 'row'
+            }}>
+                <img
+                src={require('../assets/barscan.png')}
+                alt="Escanear Cupom"
+                style={{
+                    marginLeft: 10,
+                    marginRight: 30
+                }}
+                />
+                <View style={{justifyContent: 'center'}}>
+                    <RubikText bold={true}>
+                        ADICIONAR CUPOM
+                    </RubikText>
+                    <RubikText style={{textAlign: 'left'}}>
+                        Insira seu código promocional ou faça a leitura do QR Code e ganhe descontos especiais em suas compras
+                    </RubikText>
+                </View>
+            </View>
+
         </View>
       </View>
+            <RubikText
+                bold={true} 
+                style={{
+                backgroundColor: '#55bcba',
+                padding: 10,
+                paddingRight: 20,
+                marginTop: 20,
+                marginBottom: -2,
+                borderTopRightRadius: 20,
+                borderBottomRightRadius: 10,
+                paddingLeft: 35,
+                alignSelf: 'flex-start'
+                }}
+            >
+                COMO UTILIZO O MEU CUPOM?
+            </RubikText>
+            <View style={{flexDirection: 'row', alignSelf: 'stretch', backgroundColor: 'black', marginBottom: 50}}>
+                <View>
+                    <RubikText style={{ color: 'white',padding: 20, textAlign: 'left'}}>
+                        Para utilizar seu cupom basta <b style={{display: 'inline',color: "#feca03"}}>ativar e mostrar a tela do seu celular</b> para a pessoa que te atender na loja Vestylle Megastore Jaú
+                    </RubikText>
+                </View>
+                <img
+                src={require('../assets/maobar.png')}
+                alt="Escanear Cupom"
+                className="sm-hide"
+                style={{
+                    marginTop: -12,
+                    marginBottom: -12,
+                    zIndex: 2,
+                    alignSelf:'center'
+                }}
+                />
+            </View>
+      <RodapeCompleto/>
     </View>
     )
   }
