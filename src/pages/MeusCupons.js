@@ -178,6 +178,7 @@ export default class MeusCupons extends React.Component {
                 <img
                 src={require('../assets/barscan.png')}
                 alt="Escanear Cupom"
+                className="sm-hide"
                 style={{
                     marginLeft: 10,
                     marginRight: 30
@@ -195,40 +196,41 @@ export default class MeusCupons extends React.Component {
 
         </View>
       </View>
-            <RubikText
-                bold={true} 
-                style={{
-                backgroundColor: '#55bcba',
-                padding: 10,
-                paddingRight: 20,
-                marginTop: 20,
-                marginBottom: -2,
-                borderTopRightRadius: 20,
-                borderBottomRightRadius: 10,
-                paddingLeft: 35,
-                alignSelf: 'flex-start'
-                }}
-            >
-                COMO UTILIZO O MEU CUPOM?
-            </RubikText>
-            <View style={{flexDirection: 'row', alignSelf: 'stretch', backgroundColor: 'black', marginBottom: 50}}>
-                <View>
-                    <RubikText style={{ color: 'white',padding: 20, textAlign: 'left'}}>
-                        Para utilizar seu cupom basta <b style={{display: 'inline',color: "#feca03"}}>ativar e mostrar a tela do seu celular</b> para a pessoa que te atender na loja Vestylle Megastore Jaú
-                    </RubikText>
-                </View>
-                <img
-                src={require('../assets/maobar.png')}
-                alt="Escanear Cupom"
-                className="sm-hide"
-                style={{
-                    marginTop: -12,
-                    marginBottom: -12,
-                    zIndex: 2,
-                    alignSelf:'center'
-                }}
-                />
+        <RubikText
+            bold={true} 
+            style={{
+            backgroundColor: '#55bcba',
+            padding: 10,
+            paddingRight: 20,
+            marginTop: 20,
+            marginBottom: -2,
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 10,
+            paddingLeft: 35,
+            alignSelf: 'flex-start'
+            }}
+        >
+            COMO UTILIZO O MEU CUPOM?
+        </RubikText>
+        <View style={{flexDirection: 'row', alignSelf: 'stretch', backgroundColor: 'black', marginBottom: 50}}>
+            <View>
+                <RubikText style={{ color: 'white',padding: 20, textAlign: 'left'}}>
+                    Para utilizar seu cupom basta <b style={{display: 'inline',color: "#feca03"}}>ativar e mostrar a tela do seu celular</b> para a pessoa que te atender na loja Vestylle Megastore Jaú
+                </RubikText>
             </View>
+            <img
+            src={require('../assets/maobar.png')}
+            alt="Escanear Cupom"
+            className="sm-hide"
+            style={{
+                marginTop: -12,
+                marginBottom: -12,
+                zIndex: 2,
+                alignSelf:'center',
+                width: '500px'
+            }}
+            />
+        </View>
       <RodapeCompleto/>
     </View>
     )

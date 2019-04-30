@@ -21,7 +21,7 @@ class Cupom extends React.Component {
           alt={this.props.id}
           src={this.props.img}/>
         <Link 
-          to={"/adicionarcupom/"+this.props.id}
+          to={"/cupom/"+this.props.id}
           style={{
             backgroundColor: "#feca03",
             padding: 10,
