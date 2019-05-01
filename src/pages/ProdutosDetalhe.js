@@ -63,7 +63,7 @@ class ProdutoDetalhado extends React.Component {
           }} 
           alt={oferta.titulo}
           className="img-slider"
-          src={"http:"+oferta.urlFoto}/>
+          src={oferta.urlFoto}/>
 
         <View style={{
           backgroundColor: 'black',
