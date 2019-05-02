@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import RubikText from "../ui/RubikText";
 import View from "../ui/View";
 import { LojaConsumer } from "../LojaContext";
+import { FaSpinner } from "react-icons/fa";
 
 class Cupom extends React.Component {
 
@@ -20,7 +21,7 @@ class Cupom extends React.Component {
           alt={this.props.id}
           src={this.props.img}/>
         <Link 
-          to={"/adicionarcupom/"+this.props.id}
+          to={"/cupom/"+this.props.id}
           style={{
             backgroundColor: "#feca03",
             padding: 10,
@@ -47,7 +48,7 @@ class ListaCupons extends React.Component {
   };
 
   state = {
-    cupons: []
+    cupons: null
   }
 
   componentDidMount() {
@@ -60,6 +61,27 @@ class ListaCupons extends React.Component {
   }
 
   render() {
+    if(this.state.cupons === null) {
+      return <FaSpinner
+        style={{
+          fontSize: 72,
+          color: 'white',
+          alignSelf: 'center',
+          marginTop: 60
+        }}
+        className='spin'
+      />
+    }
+    if(this.state.cupons.length === 0) {
+      return <RubikText
+        style={{
+          color: 'white',
+          alignSelf: 'center',
+          marginTop: 80,
+          zIndex: 2
+        }}
+        >Nenhum cupom encontrado.</RubikText>
+    }
     return <Slider {...this.settings}>
       {this.state.cupons.map((cupom, key) => (
         <Cupom
@@ -73,10 +95,6 @@ class ListaCupons extends React.Component {
 }
 
 export default class SliderCupons extends React.Component {
-
-  state = {
-    cupons: []
-  }
 
   render() {
     return (

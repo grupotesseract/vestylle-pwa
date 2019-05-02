@@ -18,6 +18,8 @@ import ProdutosDetalhe from './pages/ProdutosDetalhe';
 import AdicionarCupom from './pages/AdicionarCupom';
 import FaleConosco from './pages/FaleConosco';
 import Loja from './pages/Loja';
+import MeusCupons from './pages/MeusCupons';
+import CupomDetalhe from './pages/CupomDetalhe';
 
 class App extends Component {
   render() {
@@ -38,6 +40,8 @@ class App extends Component {
             <Route exact={true} path="/listadesejos" component={ListaDesejos} />
             <Route path="/adicionarcupom" component={AdicionarCupom} />
             <Route path="/adicionarcupom/:cupomId" component={AdicionarCupom} />
+            <Route path="/cupom/:cupomId" component={CupomDetalhe} />
+            <Route path="/meuscupons" component={MeusCupons} />
             <Route exact={true} path="/faleconosco" component={FaleConosco} />
             <Route exact={true} path="/loja" component={Loja} />
           </Switch>

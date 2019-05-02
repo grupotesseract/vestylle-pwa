@@ -23,7 +23,7 @@ class AreaCliente extends Component {
           <UserConsumer>
           {({perfil}) => (
           <View style={{width:'60%',justifyContent: 'center', alignItems:'center', padding: 5}}>
-            <RubikText style={{color: 'white', fontSize: 20}}>Olá {perfil.nome}!</RubikText>
+            <RubikText style={{color: 'white', fontSize: 20}}>Olá {perfil.nomeSimples || perfil.nome}!</RubikText>
             {/* <RubikText style={{color: 'white', fontSize: 20}}>seja bem-vinda</RubikText> */}
           </View>
           )}
@@ -66,10 +66,70 @@ class AreaCliente extends Component {
           </Link>
         
         </View>
+        <button 
+          style={this.style.btnMeuPerfil}
+          onClick={this.receberNotificacoes}>
+          Receber notificações
+        </button>
       </View>
       <MiniRodape/>
       </>
     
+  }
+
+  receberNotificacoes = () => {
+    // Pega registro do service worker
+    if(!('serviceWorker' in navigator)) {
+      console.log('sw not supported');
+    } 
+    if(('serviceWorker' in navigator)) {
+      console.log('sw available (not ready)');
+      navigator.serviceWorker.ready
+      .then((serviceWorkerRegistration) => {
+        console.log('sw ready, registration:');
+        console.log(serviceWorkerRegistration)
+
+        // Pede permissão para exibir notificações
+        // (ou avisa que bloqueou)
+        if( Notification.permission === 'denied' ) {
+          alert('Você proibiu as notificações, redefina as configurações para receber mensagens')
+        }
+        Notification.requestPermission((status) => {
+          console.log('Notification status', status)
+          if(status === 'granted') {
+            let swReg = serviceWorkerRegistration;
+
+            const vapidPublicKey = process.env.VAPID_PUBLIC_KEY;
+            const convertedVapidKey = this.urlBase64ToUint8Array(vapidPublicKey);
+      
+            swReg.pushManager.subscribe({
+              userVisibleOnly: true,
+              applicationServerKey: convertedVapidKey
+            }).then((subscription) => {
+              console.log('subscription', subscription)
+              this.registerOnPush(swReg);
+            });
+          }
+        });
+      })
+      .catch(err => console.log('Erro no register do sw:', err))
+    }
+  }
+
+  registerOnPush = (swReg) => {
+    swReg.active.addEventListener("push", (event) => {
+      console.log("push received");
+      let title = (event.data && event.data.text()) || "Yay a message";
+      let body = "We have received a push message";
+      let tag = "push-simple-demo-notification-tag";
+      let icon = '/assets/my-logo-120x120.png';
+
+      event.waitUntil(
+        swReg.showNotification(title, { body, icon, tag })
+      )
+    });
+
+    console.log(swReg)
   }
 
   style = {

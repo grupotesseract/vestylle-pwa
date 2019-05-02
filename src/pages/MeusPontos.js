@@ -25,6 +25,14 @@ class DisplayPontos extends React.Component {
       data_vencimento: this.datetime2DDMMAAAA(this.props.data_vencimento),
       nome: this.props.nome || '',
     })
+    this.props.atualizaPerfil()
+    .then(() => {
+      this.setState({
+        qtdPontos: this.props.qtdPontos || 0,
+        data_vencimento: this.datetime2DDMMAAAA(this.props.data_vencimento),
+        nome: this.props.nome || '',
+      })
+    })
   }
 
   datetime2DDMMAAAA = (datetime) => {
@@ -63,7 +71,9 @@ class DisplayPontos extends React.Component {
           <RubikText style={{color: 'white'}}>Para começar a acumular pontos, utilize seu CPF nas próximas compras na loja Vestylle Megastore Jaú. Seus pontos aparecerão aqui.</RubikText>
         </>)}
         { this.state.qtdPontos > 0 && this.state.qtdPontos < 1000 && (<>
-          <RubikText style={{color: 'white'}} bold={true}>Ciclana,</RubikText>
+          { this.state.nome !== '' && (
+            <RubikText style={{color: 'white'}} bold={true}>{this.state.nome},</RubikText>
+          )}
           <RubikText style={this.style.fonteDestaque}>Você ainda não possui nenhum bônus promocional.</RubikText>
           <RubikText style={{color: 'white'}}>Junte mais { 1000 - this.state.qtdPontos } pontos para garantir seu bônus</RubikText>
         </>)}
@@ -113,11 +123,12 @@ export default class MeusPontos extends React.Component {
           <LaughingSmiling style={{color: 'white', fontSize: 26, marginBottom: 10}}>acumulam pontos</LaughingSmiling>
 
           <UserConsumer>
-          {({ perfil }) => (
+          {({ perfil, getDadosMeuPerfil }) => (
             <DisplayPontos 
               qtdPontos={perfil.saldo_pontos}
               data_vencimento={perfil.data_vencimento_pontos}
-              nome={perfil.nome}
+              nome={perfil.nomeSimples || perfil.nome}
+              atualizaPerfil={getDadosMeuPerfil}
             />
           )}
           </UserConsumer>

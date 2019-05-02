@@ -127,7 +127,14 @@ export default class CadastroSimples extends React.Component {
         })
         return
       }
-      const msgErro = jsonRes.message;
+      let msgErro = jsonRes.message;
+      if(jsonRes.errors) {
+        msgErro = ""
+        Object.keys(jsonRes.errors).map((campo) => {
+          msgErro += " "+jsonRes.errors[campo]
+          return msgErro
+        })
+      }
       self.setState({
         erroCadastro: true,
         msgErro

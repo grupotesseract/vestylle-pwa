@@ -54,6 +54,16 @@
        url('./fonts/ls.ttf') format('truetype'); /* Safari, Android, iOS */
 }
 
+html {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+body {
+  max-width: 530px;
+  width:100%;
+}
+
 body *{
   display: flex;
   flex-direction: column;
@@ -155,7 +165,15 @@ button {
   font-size: 14px;
 }
 
+.sm-hide {
+  display: none;
+  opacity: 1;
+}
 @media only screen and (min-width: 380px) {
+  .sm-hide {
+    display: block;
+    opacity: 1;
+  }
   .faca-seu-cadastro {
     font-size: 16px;
   }
