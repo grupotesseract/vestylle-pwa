@@ -113,7 +113,7 @@ class AreaCliente extends Component {
             }).then((subscription) => {
               console.log('subscription', subscription)
               this.registerOnPush(swReg);
-            }).catch((e) => console.log);
+            }).catch((e) => console.error(e));
           }
         });
       })
