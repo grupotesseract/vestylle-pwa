@@ -12,6 +12,7 @@ class MenuButton extends React.Component {
         <Link 
           to={this.props.page}
           style={{ flexDirection: 'row', }}
+          onClick={this.props.toggleMenu}
         >
           <this.props.icon 
             size={26}
@@ -53,49 +54,49 @@ class Menu extends Component {
             zIndex:9
         }}>
             <MenuButton 
-                navigation={this.props.navigation} 
+                toggleMenu={this.props.toggleMenu} 
                 label="Início"
                 page="/"
                 icon={IoMdHome}
             />
             <MenuButton 
-                navigation={this.props.navigation} 
+                toggleMenu={this.props.toggleMenu} 
                 label="Área do Cliente"
                 page="/areacliente"
                 icon={MdPerson}
             />
             <MenuButton 
-                navigation={this.props.navigation} 
+                toggleMenu={this.props.toggleMenu} 
                 label="Meus Pontos"
                 page="/meuspontos"
                 icon={FaStar}
             />
             <MenuButton 
-                navigation={this.props.navigation} 
+                toggleMenu={this.props.toggleMenu} 
                 label="Adicionar Cupom"
                 page="/adicionarcupom"
                 icon={IoMdQrScanner}
             />
             <MenuButton 
-                navigation={this.props.navigation} 
+                toggleMenu={this.props.toggleMenu} 
                 label="Lista de Desejos"
                 page="/listadesejos"
                 icon={FaHeart}
             />
             <MenuButton 
-                navigation={this.props.navigation} 
+                toggleMenu={this.props.toggleMenu} 
                 label="Produtos"
                 page="/produtos"
                 icon={IoMdShirt}
             />
             <MenuButton 
-                navigation={this.props.navigation} 
+                toggleMenu={this.props.toggleMenu} 
                 label="Loja"
                 page="/loja"
                 icon={IoMdPin}
             />
             <MenuButton 
-                navigation={this.props.navigation} 
+                toggleMenu={this.props.toggleMenu} 
                 label="Fale Conosco"
                 page="/faleconosco"
                 icon={FaWhatsapp}

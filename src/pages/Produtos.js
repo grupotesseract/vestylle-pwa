@@ -10,6 +10,7 @@ import Produto from '../ui/Produto';
 import { LojaConsumer } from '../LojaContext';
 import { UserConsumer } from '../UserContext';
 import { FaRegHeart } from 'react-icons/fa';
+import CupomBoasVindas from '../components/CupomBoasVindas';
 
 class ListaProdutos extends React.Component {
 
@@ -39,21 +40,20 @@ class ListaProdutos extends React.Component {
   render() {
   return <>
     {this.state.ofertas.map((oferta, key) => {
-      console.log(key)
-      let bg = null
+      let rowBackground = null
       if(key%2 === 0) {
-        bg = <div style={{
+        rowBackground = <div style={{
             position: 'absolute',
-            height: '55%',
+            height: '50%',
             width: '100%',
             backgroundColor: '#55bcba',
-            top: '15%',
+            top: '25%',
             zIndex: 1
           }}></div>
       }
       return (
-      <View style={{position:'relative'}}>
-        {bg}
+      <View style={{position:'relative'}} key={key}>
+        {rowBackground}
         <View style={{padding:30, zIndex:2}}>
           <Produto
             key={key}
@@ -125,6 +125,7 @@ export default class Produtos extends React.Component {
         )}
         </UserConsumer>
       </View>
+      <CupomBoasVindas/>
       <RodapeCompleto/>
     </View>
     )

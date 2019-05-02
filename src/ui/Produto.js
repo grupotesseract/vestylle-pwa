@@ -49,7 +49,7 @@ class Produto extends Component {
         }} 
           alt={this.props.id}
           className="img-slider"
-          src={"http:"+this.props.img}/>
+          src={this.props.img}/>
         <View style={{
           flexDirection: 'row'
         }}>

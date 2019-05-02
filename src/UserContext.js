@@ -83,7 +83,6 @@ class UserProvider extends React.Component {
     if(res && res.success) {
       const meuPerfil = res.data.pessoa
       const userToken = res.data.token.token
-      console.log("usertoken no login()", userToken)
       this.setToken(userToken)
       this.setPerfil(meuPerfil)
     }
@@ -105,7 +104,6 @@ class UserProvider extends React.Component {
   }
 
   setToken(userToken) {
-    console.log("token setado no usercontext setToken", userToken)
     this.setState({
       isAuth: true,
       userToken

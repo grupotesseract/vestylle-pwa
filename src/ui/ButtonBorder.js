@@ -25,7 +25,7 @@ class ButtonBorder extends Component {
     return <TouchableHighlight
       submit={this.props.submit} 
       onPress={this.state.disabled ? null : this.props.onPress}
-      style={Object.assign({}, this.style.btnBorda, this.state.disabled ? this.style.disabled : {}) }>
+      style={Object.assign({}, this.style.btnBorda, this.props.style, this.state.disabled ? this.style.disabled : {}) }>
       {this.props.loading ? (<FaSpinner color="white" className="spin" />) : ''}
       <RubikText style={Object.assign({}, this.style.txtBtnBorda, this.state.disabled ? this.style.disabled : {}) }>{this.props.title}</RubikText>
     </TouchableHighlight>
