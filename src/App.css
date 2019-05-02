@@ -73,6 +73,10 @@ body *{
   border-style: solid;
 }
 
+body script {
+  display: none;
+}
+
 .App {
   font-family: 'Rubik';
   text-align: center;

@@ -113,7 +113,7 @@ class AreaCliente extends Component {
             }).then((subscription) => {
               console.log('subscription', subscription)
               this.registerOnPush(swReg);
-            });
+            }).catch((e) => console.log);
           }
         });
       })
@@ -126,7 +126,7 @@ class AreaCliente extends Component {
   urlBase64ToUint8Array = (base64String) => {
     var padding = '='.repeat((4 - base64String.length % 4) % 4);
     var base64 = (base64String + padding)
-        .replace(/\-/g, '+')
+        .replace(/-/g, '+')
         .replace(/_/g, '/');
 
     var rawData = window.atob(base64);
