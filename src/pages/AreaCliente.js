@@ -89,6 +89,7 @@ class AreaCliente extends Component {
         console.log('sw ready, registration:');
         console.log(serviceWorkerRegistration)
 
+        console.log("REACT_APP_VAPID_PUBLIC_ENV", process.env.REACT_APP_VAPID_PUBLIC_ENV)
         // Pede permissão para exibir notificações
         // (ou avisa que bloqueou)
         if( Notification.permission === 'denied' ) {
