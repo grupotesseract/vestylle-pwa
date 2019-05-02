@@ -4,7 +4,7 @@ import MiniRodape from '../components/MiniRodape';
 import View from '../ui/View';
 import RubikText from '../ui/RubikText';
 import { Link } from 'react-router-dom'
-import { FaUserAlt, FaStar, FaHeart } from 'react-icons/fa';
+import { FaUserAlt, FaStar, FaHeart, FaBell } from 'react-icons/fa';
 import Breadcrumb from '../ui/Breadcrumb';
 import { UserConsumer } from '../UserContext';
 
@@ -66,11 +66,15 @@ class AreaCliente extends Component {
           </Link>
         
         </View>
-        <button 
-          style={this.style.btnMeuPerfil}
-          onClick={this.receberNotificacoes}>
-          Receber notificações
-        </button>
+
+        <View style={{paddingRight: 10, paddingLeft: 10, flexDirection: 'row'}}>
+          <button 
+            style={this.style.btnMeuPerfil}
+            onClick={this.receberNotificacoes}>
+            <FaBell size={64} color="#1e1e1c"/>
+            <RubikText style={this.style.fonteBotao} bold={true}>Ativar notificações</RubikText>
+          </button>
+        </View>
       </View>
       <MiniRodape/>
       </>
@@ -89,7 +93,7 @@ class AreaCliente extends Component {
         console.log('sw ready, registration:');
         console.log(serviceWorkerRegistration)
 
-        console.log("REACT_APP_VAPID_PUBLIC_ENV", process.env.REACT_APP_VAPID_PUBLIC_ENV)
+        console.log("REACT_APP_VAPID_PUBLIC_KEY", process.env.REACT_APP_VAPID_PUBLIC_KEY)
         // Pede permissão para exibir notificações
         // (ou avisa que bloqueou)
         if( Notification.permission === 'denied' ) {
@@ -100,7 +104,7 @@ class AreaCliente extends Component {
           if(status === 'granted') {
             let swReg = serviceWorkerRegistration;
 
-            const vapidPublicKey = process.env.VAPID_PUBLIC_KEY;
+            const vapidPublicKey = process.env.REACT_APP_VAPID_PUBLIC_KEY;
             const convertedVapidKey = this.urlBase64ToUint8Array(vapidPublicKey);
       
             swReg.pushManager.subscribe({
@@ -115,6 +119,23 @@ class AreaCliente extends Component {
       })
       .catch(err => console.log('Erro no register do sw:', err))
     }
+  }
+
+  // Utility function
+  // Chrome doesnt support base64String
+  urlBase64ToUint8Array = (base64String) => {
+    var padding = '='.repeat((4 - base64String.length % 4) % 4);
+    var base64 = (base64String + padding)
+        .replace(/\-/g, '+')
+        .replace(/_/g, '/');
+
+    var rawData = window.atob(base64);
+    var outputArray = new Uint8Array(rawData.length);
+
+    for (var i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
   }
 
   registerOnPush = (swReg) => {
