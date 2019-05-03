@@ -67,92 +67,24 @@ class AreaCliente extends Component {
         
         </View>
 
-        <View style={{paddingRight: 10, paddingLeft: 10, flexDirection: 'row'}}>
-          <button 
-            style={this.style.btnMeuPerfil}
-            onClick={this.receberNotificacoes}>
-            <FaBell size={64} color="#1e1e1c"/>
-            <RubikText style={this.style.fonteBotao} bold={true}>Ativar notificações</RubikText>
-          </button>
-        </View>
+        <UserConsumer>
+          {({ receberNotificacoes }) => (<>
+          <View style={{paddingRight: 10, paddingLeft: 10, flexDirection: 'row'}}>
+            <button 
+              style={this.style.btnMeuPerfil}
+              onClick={receberNotificacoes}>
+              <FaBell size={64} color="#1e1e1c"/>
+              <RubikText style={this.style.fonteBotao} bold={true}>Ativar notificações</RubikText>
+            </button>
+          </View>
+          </>)}
+        </UserConsumer>
       </View>
       <MiniRodape/>
       </>
     
   }
 
-  receberNotificacoes = () => {
-    // Pega registro do service worker
-    if(!('serviceWorker' in navigator)) {
-      console.log('sw not supported');
-    } 
-    if(('serviceWorker' in navigator)) {
-      console.log('sw available (not ready)');
-      navigator.serviceWorker.ready
-      .then((serviceWorkerRegistration) => {
-        console.log('sw ready, registration:');
-        console.log(serviceWorkerRegistration)
-
-        console.log("REACT_APP_VAPID_PUBLIC_KEY", process.env.REACT_APP_VAPID_PUBLIC_KEY)
-        // Pede permissão para exibir notificações
-        // (ou avisa que bloqueou)
-        if( Notification.permission === 'denied' ) {
-          alert('Você proibiu as notificações, redefina as configurações para receber mensagens')
-        }
-        Notification.requestPermission((status) => {
-          console.log('Notification status', status)
-          if(status === 'granted') {
-            let swReg = serviceWorkerRegistration;
-
-            const vapidPublicKey = process.env.REACT_APP_VAPID_PUBLIC_KEY;
-            const convertedVapidKey = this.urlBase64ToUint8Array(vapidPublicKey);
-      
-            swReg.pushManager.subscribe({
-              userVisibleOnly: true,
-              applicationServerKey: convertedVapidKey
-            }).then((subscription) => {
-              console.log('subscription', subscription)
-              this.registerOnPush(swReg);
-            }).catch((e) => console.error(e));
-          }
-        });
-      })
-      .catch(err => console.log('Erro no register do sw:', err))
-    }
-  }
-
-  // Utility function
-  // Chrome doesnt support base64String
-  urlBase64ToUint8Array = (base64String) => {
-    var padding = '='.repeat((4 - base64String.length % 4) % 4);
-    var base64 = (base64String + padding)
-        .replace(/-/g, '+')
-        .replace(/_/g, '/');
-
-    var rawData = window.atob(base64);
-    var outputArray = new Uint8Array(rawData.length);
-
-    for (var i = 0; i < rawData.length; ++i) {
-        outputArray[i] = rawData.charCodeAt(i);
-    }
-    return outputArray;
-  }
-
-  registerOnPush = (swReg) => {
-    swReg.active.addEventListener("push", (event) => {
-      console.log("push received");
-      let title = (event.data && event.data.text()) || "Yay a message";
-      let body = "We have received a push message";
-      let tag = "push-simple-demo-notification-tag";
-      let icon = '/assets/my-logo-120x120.png';
-
-      event.waitUntil(
-        swReg.showNotification(title, { body, icon, tag })
-      )
-    });
-
-    console.log(swReg)
-  }
 
   style = {
     btnMeuPerfil: {
