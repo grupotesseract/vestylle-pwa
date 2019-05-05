@@ -19,35 +19,36 @@ export default class AdicionarCupom extends React.Component {
     alertMessage: null
   }
 
-  handleScan = data => {
-    if (data) {
+  handleScan = cupomValue => {
+    if (cupomValue) {
       this.setState({
-        cupom: data,
+        cupom: cupomValue,
         status: 'display'
       })
+      this.findCupom(cupomValue)
     }
   }
 
   handleChangeCumpom = (e) => {
     const cupomValue = e.target.value
-    if(cupomValue && cupomValue.length > 3) {
-      if(!this.state.loadingCupom) {
-        this.setState({ loadingCupom: true })
-        this.findCupom(cupomValue)
-      }
-    }
+    this.findCupom(cupomValue)
   }
 
   findCupom = (cupomValue) => {
-    setTimeout(
-    ()=>{
-      console.log(cupomValue)
-      this.setState({
-        alertMessage: 'Infelizmente este cupom não foi encontrado, verifique o código ou utilize um novo cupom.',
-        loadingCupom: false
-      })
-    },
-    1000)
+    if(cupomValue && cupomValue.length > 3) {
+      if(!this.state.loadingCupom) {
+        this.setState({ loadingCupom: true })
+        setTimeout(
+        ()=>{
+          console.log(cupomValue)
+          this.setState({
+            alertMessage: 'Infelizmente este cupom não foi encontrado, verifique o código ou utilize um novo cupom.',
+            loadingCupom: false
+          })
+        },
+        1000)
+      }
+    }
   }
 
   handleError = err => {
