@@ -5,14 +5,18 @@ import RubikText from '../ui/RubikText';
 import { Link } from 'react-router-dom'
 import Breadcrumb from '../ui/Breadcrumb';
 import RodapeCompleto from '../components/RodapeCompleto';
-import { FaCamera, FaTimes, FaTimesCircle, FaArrowLeft } from 'react-icons/fa';
+import { FaCamera, FaArrowLeft, FaSpinner } from 'react-icons/fa';
 import QrReader from 'react-qr-reader'
+import Alert from '../ui/Alert';
 
 export default class AdicionarCupom extends React.Component {
 
   state = {
     status: 'display',
-    cupom: null
+    cupom: null,
+    loadingCupom: false,
+    redirectTo: null,
+    alertMessage: null
   }
 
   handleScan = data => {
@@ -22,6 +26,28 @@ export default class AdicionarCupom extends React.Component {
         status: 'display'
       })
     }
+  }
+
+  handleChangeCumpom = (e) => {
+    const cupomValue = e.target.value
+    if(cupomValue && cupomValue.length > 3) {
+      if(!this.state.loadingCupom) {
+        this.setState({ loadingCupom: true })
+        this.findCupom(cupomValue)
+      }
+    }
+  }
+
+  findCupom = (cupomValue) => {
+    setTimeout(
+    ()=>{
+      console.log(cupomValue)
+      this.setState({
+        alertMessage: 'Infelizmente este cupom não foi encontrado, verifique o código ou utilize um novo cupom.',
+        loadingCupom: false
+      })
+    },
+    1000)
   }
 
   handleError = err => {
@@ -158,10 +184,31 @@ export default class AdicionarCupom extends React.Component {
           textAlign: 'center'
         }}
         value={this.state.cupom}
+        onChange={this.handleChangeCumpom}
       />
+      { this.state.loadingCupom && (
+          <View style={{ alignItems: 'center', alignSelf: 'stretch', paddingBottom: 10}}>
+            <FaSpinner color="black" className="spin" style={{fontSize: 36}} />
+          </View>
+      )}
+      { this.state.alertMessage && (
+        <Alert
+          title = "Adicionando Cupom"
+          message = {this.state.alertMessage}
+          btnText = "OK"
+          onClickButton = {this.dismissAlertErro}
+          dismissAlert = {this.dismissAlertErro}
+        />
+      )}
 
       <RodapeCompleto/>
     </View>
     )
+  }
+
+  dismissAlertErro = () => {
+    this.setState({
+      alertMessage: false
+    })
   }
 }
