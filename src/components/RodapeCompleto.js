@@ -24,13 +24,13 @@ class RodapeCompleto extends Component {
           /> 
           Horário de funcionamento</RubikText>
           <RubikText style={{fontSize: 14}}>Segunda a Sexta 9h as 18h</RubikText>
-          <RubikText style={{fontSize: 14}}>Sábados 9h as 13h</RubikText>
+          <RubikText style={{fontSize: 14}}>Sábados 9h as 17h</RubikText>
         </View>
         <RubikText style={{fontSize: 14}}>
           <FaMapMarker
             size={14}
           />
-          Rua Edgard Ferraz 281, Jaú - SP | 17201-000
+          Rua Edgard Ferraz 281, Jaú - SP | 17201-440
         </RubikText>
         <a href="http://maps.apple.com/?ll=-22.2955408,-48.5574577,17">
           <RubikText bold={true} style={{fontSize: 14, textDecorationLine: 'underline'}}>VER LOCALIZAÇÃO NO MAPA</RubikText>
@@ -62,13 +62,22 @@ class RodapeCompleto extends Component {
             <RubikText style={{ color: "#feca03", textDecorationLine: 'underline' }}>&nbsp;Whatsapp</RubikText>
           </TouchableHighlight>
         </View>
-        <TouchableHighlight onPress={this.openWhatsapp}>
-          <RubikText style={{ color: "#feca03", textDecorationLine: 'underline',  flexGrow: 0, marginTop: 5 }}>
-          <FaWhatsapp
-            size={14}
-          />(14) 2104-3500
-          </RubikText>
-        </TouchableHighlight>
+        <View style={{flexDirection:'row', justifyContent: 'space-evenly'}}>
+          <TouchableHighlight onPress={() => window.open("http://api.whatsapp.com/send?phone=551421043500")}>
+            <RubikText style={{ color: "#feca03", textDecorationLine: 'underline',  flexGrow: 0, marginTop: 5 }}>
+            <FaWhatsapp
+              size={14}
+            />(14) 99766-8707
+            </RubikText>
+          </TouchableHighlight>
+          <TouchableHighlight onPress={this.openWhatsapp}>
+            <RubikText style={{ color: "#feca03", textDecorationLine: 'underline',  flexGrow: 0, marginTop: 5 }}>
+            <FaWhatsapp
+              size={14}
+            />(14) 2104-3500
+            </RubikText>
+          </TouchableHighlight>
+        </View>
         <View style = {{alignItems: 'flex-start', flexGrow: 1, alignSelf: 'stretch'}}>
           <RubikText style={{color: "white", paddingTop: 20, paddingLeft: 20 }}>
             Ou se preferir, você pode entrar em

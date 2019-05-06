@@ -37,7 +37,7 @@ export default class Loja extends React.Component {
         </View>
       </View>
       <View style={{padding: 20, alignItems: 'center'}}>
-        <RubikText bold={true} style={{color: 'black', fontSize:20}}>Somos uma multimarcas de moda</RubikText>
+        <RubikText bold={true} style={{color: 'black', fontSize:20}}>Somos uma loja multimarcas de moda</RubikText>
         <RubikText bold={true} style={{color: 'black', fontSize:20}}>jovem, casual, acessórios e calçados</RubikText>
       </View>
 
@@ -68,7 +68,7 @@ export default class Loja extends React.Component {
           <FaMapMarker
             size={14}
           />
-          Rua Edgard Ferraz 281, Jaú - SP | 17201-000
+          Rua Edgard Ferraz 281, Jaú - SP | 17201-440
         </RubikText>
 
         <iframe 

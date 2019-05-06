@@ -12,8 +12,8 @@ class Alert extends Component {
   render() {
     return <View style={this.style.alertBackground}>
       <View style={this.style.alertContainer}>
-        <RubikText style={{color: '#feca03'}}> {this.props.title} </RubikText>
-        <RubikText style={{color: 'white'}}> {this.props.message} </RubikText>
+        <RubikText style={{color: '#feca03', fontSize: 20}} bold={true}> {this.props.title} </RubikText>
+        <RubikText style={{color: 'white', paddingTop: 10, paddingBottom: 10}}> {this.props.message} </RubikText>
         <ButtonBorder
             title = {this.props.btnText}
             onPress = {this.props.onClickButton}
@@ -37,6 +37,7 @@ class Alert extends Component {
         backgroundColor: 'black',
         borderRadius: 5,
         padding: 20,
+        margin:20,
         maxWidth: '90%',
         alignItems: 'center',
         justifyContent: 'center',

@@ -146,9 +146,9 @@ class FormMeuPerfil extends React.Component {
             fontSize: 15
           }}
         >
-          <option value="Prefiro Não Informar" selected={"Prefiro Não Informar"===this.state.genero}>Prefiro Não Informar</option>
-          <option value="Feminino" selected={"Feminino"===this.state.genero}>Feminino</option>
-          <option value="Masculino" selected={"Masculino"===this.state.genero}>Masculino</option>
+          <option style={{backgroundColor:'#33302b'}} value="Prefiro Não Informar" selected={"Prefiro Não Informar"===this.state.genero}>Prefiro Não Informar</option>
+          <option style={{backgroundColor:'#33302b'}} value="Feminino" selected={"Feminino"===this.state.genero}>Feminino</option>
+          <option style={{backgroundColor:'#33302b'}} value="Masculino" selected={"Masculino"===this.state.genero}>Masculino</option>
         </select>
       </View>
       <InputValidacao 

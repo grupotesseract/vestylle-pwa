@@ -47,7 +47,7 @@ class FBButton extends Component {
                     size={15}
                     color="white"
                   />
-                  <RubikText style={this.styles.fontBotao}> Cadastrar com FACEBOOK</RubikText>
+                  <RubikText style={this.styles.fontBotao}> Login com FACEBOOK</RubikText>
               </TouchableHighlight>
             )}}
           ></FacebookLogin>

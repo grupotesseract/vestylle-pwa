@@ -58,7 +58,7 @@ class ListagemDesejos extends React.Component {
             />
           </View>
           <View style={{flexGrow: 1}}>
-            <RubikText bold={true} style={{fontSize: 17, marginBottom:8}}>ALERTA DESCONTO</RubikText>
+            <RubikText bold={true} style={{fontSize: 17, marginBottom:8}}>ALERTA DE DESCONTO</RubikText>
             <RubikText bold={true} style={{justifyContent:'flex-start', textAlign: 'left'}}>Adicionando seus produtos favoritos, nós podemos te avisar se ele entrar em oferta. </RubikText>
             <RubikText style={{justifyContent:'flex-start', textAlign: 'left'}}>Você pode desabilitar essa função em Area do Cliente > Meu Perfil</RubikText>
           </View>

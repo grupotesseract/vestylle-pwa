@@ -249,7 +249,7 @@ export default class MeusCupons extends React.Component {
                             this.style.toggleInativo) 
                     }
                 >
-                    ATIVOS
+                    DISPONÍVEIS
                 </RubikText>
                 <RubikText
                     style={ 
@@ -261,7 +261,7 @@ export default class MeusCupons extends React.Component {
                             this.style.toggleInativo) 
                     }
                 >
-                    UTILIZADOS
+                    ATIVADOS
                 </RubikText>
             </View>
             { this.state.cupons === 'ativos' ?
@@ -319,7 +319,7 @@ export default class MeusCupons extends React.Component {
         <View style={{flexDirection: 'row', alignSelf: 'stretch', backgroundColor: 'black', marginBottom: 50}}>
             <View>
                 <RubikText style={{ color: 'white',padding: 20, textAlign: 'left'}}>
-                    Para utilizar seu cupom basta <b style={{display: 'inline',color: "#feca03"}}>ativar e mostrar a tela do seu celular</b> para a pessoa que te atender na loja Vestylle Megastore Jaú
+                    Para utilizar seu cupom basta <b style={{display: 'inline',color: "#feca03"}}>ativar e mostrar a tela do seu celular</b> para um(a) atendente da loja Vestylle Megastore Jaú
                 </RubikText>
             </View>
             <img
@@ -356,8 +356,8 @@ export default class MeusCupons extends React.Component {
         borderWidth: 0,
         borderStyle: 'solid',
         padding: 5,
-        paddingRight: 23,
-        paddingLeft: 23,
+        paddingRight: 10,
+        paddingLeft: 10,
         cursor: 'pointer'
       },
       toggleLeftBtn: {

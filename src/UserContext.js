@@ -252,6 +252,9 @@ class UserProvider extends React.Component {
     )
     .then(response => response.json())
     .catch(erro => console.error('Erro no getDadosMeuPerfil',erro))
+    if(!res) {
+      return
+    }
     if(res.success) {
       const meuPerfil = res.data
       this.setPerfil(meuPerfil)
