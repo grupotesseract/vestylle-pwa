@@ -10,6 +10,7 @@ class CupomContent extends Component {
     if(this.props.isAuth) {
       return null
     }
+    
     return <View style={this.style.container}>
       <View 
         className="cupom-boas-vindas"
