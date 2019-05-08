@@ -52,7 +52,10 @@ export default class AdicionarCupom extends React.Component {
   }
 
   handleError = err => {
-    console.error(err)
+    console.error(err) 
+    this.setState({
+        status: 'display'
+      })
   }
 
   changeStatus = (status) => {
