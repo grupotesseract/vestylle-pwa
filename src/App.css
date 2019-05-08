@@ -143,7 +143,7 @@ button {
 }
 
 /* Cupom de boas vindas */
-.cupom-boas-vindas .bandeirola:after{
+.bandeirola:after{
   content:'';
   position:absolute;
   right: 0;
@@ -154,7 +154,7 @@ button {
   border-top: 0px solid #e20f17;
   border-bottom: 15px solid transparent;
 }
-.cupom-boas-vindas .bandeirola:before{
+.bandeirola:before{
   content:'';
   position:absolute;
   left: 0;

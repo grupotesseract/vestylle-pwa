@@ -75,14 +75,18 @@ class ListaOfertas extends React.Component {
     }
     return(<Slider {...this.settings}>
         {this.state.ofertas.map((oferta, key) => (
-          <Produto
-            key={key}
-            id={oferta.id}
-            img={oferta.urlFoto}
-            liked={oferta.liked}
-            titulo={oferta.descricao_oferta}
-            subtitulo={oferta.descricao_oferta}
-          />
+          <div style={{position: 'relative'}}>
+          <div style={{paddingTop: 5}}>
+            <Produto
+              key={key}
+              id={oferta.id}
+              img={oferta.urlFoto}
+              liked={oferta.liked}
+              titulo={oferta.descricao_oferta}
+              subtitulo={oferta.descricao_oferta}
+            />
+          </div>
+          </div>
         ))}
       </Slider>
     )

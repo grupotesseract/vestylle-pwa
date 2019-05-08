@@ -38,7 +38,31 @@ class LikeBtn extends Component {
 class Produto extends Component {
 
   render() {
-    return <div style={{ alignSelf: 'center', overflow:'hidden', width: '100%'}}>
+    return <div style={{ overflow: 'visible', position: 'relative', alignSelf: 'center', width: '100%'}}>
+        {(this.props.porcentagem_off) &&
+        <View style={{
+            backgroundColor: '#e20f17',
+            position: 'absolute',
+            top: -3,
+            right: 30,
+            padding: 10,
+            paddingBottom: 0
+          }}
+          className="bandeirola">
+            <RubikText bold={true} 
+              style={{
+                fontSize:22,
+                color: 'white'
+              }}>10%</RubikText>
+            <RubikText bold={true} 
+              style={{
+                fontSize:20,
+                color: 'white',
+                flexDirection: 'column',
+                marginTop: -2
+              }}>OFF</RubikText>
+        </View>
+        }
         <img 
           style={{
             objectFit:'cover', 
