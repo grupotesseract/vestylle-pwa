@@ -15,6 +15,9 @@
 .img-slider {
   max-height: 300px;
 }
+.img-thumb {
+  max-height: 170px;
+}
 /* rubik-regular - latin */
 @font-face {
   font-family: 'Rubik';
