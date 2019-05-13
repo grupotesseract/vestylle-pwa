@@ -82,8 +82,8 @@ class ListaOfertas extends React.Component {
               id={oferta.id}
               img={oferta.urlFoto}
               liked={oferta.liked}
-              titulo={oferta.descricao_oferta}
-              subtitulo={oferta.descricao_oferta}
+              titulo={oferta.titulo}
+              subtitulo={oferta.subtitulo}
             />
           </div>
           </div>
