@@ -124,7 +124,7 @@ export default class FaleConosco extends React.Component {
           </RubikText>
         </TouchableHighlight>
         <TouchableHighlight onPress={this.openWhatsapp}>
-          <RubikText style={{ marginTop: 5, color: "black", textDecorationLine: 'underline',  flexGrow: 0, marginTop: 5 }}>
+          <RubikText style={{ color: "black", textDecorationLine: 'underline',  flexGrow: 0, marginTop: 5 }}>
           <FaWhatsapp
             size={14}
           />(14) 2104-3500
