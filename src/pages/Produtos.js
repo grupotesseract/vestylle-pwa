@@ -72,7 +72,7 @@ class ListaProdutos extends React.Component {
       return <View style={{
         flexDirection: 'row', 
         flexWrap: 'wrap', 
-        justifyContent: 'space-around',
+        justifyContent: 'space-evenly',
         marginBottom: 50
         }}>
       {this.state.ofertas.map((oferta, key) => {
@@ -82,7 +82,7 @@ class ListaProdutos extends React.Component {
             position:'relative', 
             maxWidth: '50%', 
             float: 'left',
-            minWidth: 170
+            minWidth: 160
           }} 
           key={key}>
           <ProdutoThumb

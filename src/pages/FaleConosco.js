@@ -7,7 +7,10 @@ import Breadcrumb from '../ui/Breadcrumb';
 import TouchableHighlight from '../ui/TouchableHighlight';
 import { FaWhatsapp, FaPhone } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
+import { Redirect } from 'react-router-dom'
 import ButtonBorder from '../ui/ButtonBorder';
+import { LojaConsumer } from '../LojaContext';
+import Alert from '../ui/Alert';
 
 class FormContato extends React.Component {
   state = {
@@ -15,13 +18,18 @@ class FormContato extends React.Component {
     contato: '',
     assunto: '',
     mensagem: '',
-    loading: false
+    loading: false,
+    erroForm: null,
+    mensagemEnviada: false
   }
 
   render() {
     return (
       <View>
 
+      { this.state.redirectTo && (
+        <Redirect to={this.state.redirectTo}/>
+      )}
       <input 
         style={this.style.inputRound} 
         value={this.state.nome}
@@ -48,8 +56,8 @@ class FormContato extends React.Component {
         />
       <ButtonBorder
         title="ENVIAR"
-        submit={true}
         loading={this.state.loading}
+        onPress={() => this.sendData()}
         style={{
           marginBottom: 41,
           backgroundColor: '#1d1e1b',
@@ -60,8 +68,66 @@ class FormContato extends React.Component {
           paddingLeft: 50
         }}
       />
+
+      { this.state.erroForm && (
+        <Alert
+          title = "Atenção"
+          message = {this.state.erroForm}
+          btnText = "voltar"
+          onClickButton = {() => this.dismissAlert()}
+          dismissAlert = {() => this.dismissAlert()}
+        />
+      )}
+      { this.state.mensagemEnviada && (
+        <Alert
+          title = "Obrigado!"
+          message = "Agradecemos por entrar em contato!"
+          btnText = "tela inicial"
+          onClickButton = {() => this.redirectToHome()}
+          dismissAlert = {() => this.redirectToHome()}
+        />
+      )}
       </View>
     )
+  }
+
+  redirectToHome() {
+    this.setState({
+      mensagemEnviada: null,
+      redirectTo: '/'
+    })
+  }
+
+  dismissAlert() {
+    this.setState({
+      erroForm: null
+    })
+  }
+
+  async sendData() {
+    this.setState({
+      loading: true
+    })
+    await this.props.faleConosco(
+      1,
+      this.state.nome,
+      this.state.contato,
+      this.state.assunto,
+      this.state.mensagem
+    )
+    .then((res) => {
+      if(res.success) {
+        console.log(res)
+        this.setState({mensagemEnviada: true})
+      } else {
+        console.log(res)
+        this.setState({erroForm: res.message})
+      }
+
+    })
+    .catch((e) => {
+      console.log("deu ruim", e)
+    })
   }
 
   style={
@@ -167,7 +233,13 @@ export default class FaleConosco extends React.Component {
         OU ENTRE EM CONTATO PELO FORMULÁRIO
       </RubikText>
 
-      <FormContato/>
+      <LojaConsumer>
+        {({faleConosco}) => (
+        <FormContato
+          faleConosco={faleConosco}
+        />
+        )}
+      </LojaConsumer>
       <RodapeCompleto/>
     </View>
     )
