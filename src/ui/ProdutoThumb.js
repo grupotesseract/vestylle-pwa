@@ -29,7 +29,7 @@ class ProdutoThumb extends Component {
               style={{
                 fontSize:18,
                 color: 'white'
-              }}>10%</RubikText>
+              }}>{this.props.porcentagem_off}%</RubikText>
             <RubikText bold={true} 
               style={{
                 fontSize:16,

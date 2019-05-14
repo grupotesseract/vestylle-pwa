@@ -7,7 +7,66 @@ import Header from '../components/Header';
 import RodapeCompleto from '../components/RodapeCompleto';
 import { LojaConsumer } from '../LojaContext';
 import { FaSpinner } from 'react-icons/fa';
+import TouchableHighlight from '../ui/TouchableHighlight';
+import { UserConsumer } from '../UserContext';
 
+
+class CodigoCupom extends React.Component {
+
+    state = {
+        codigo : null
+    }
+    render() {
+        return (
+        <View style={{ 
+            backgroundColor: '#feca03', 
+            alignSelf: 'stretch',
+            padding: 20
+        }}>
+            {this.state.codigo && (
+            <RubikText 
+                bold={true}
+                style={{ 
+                    backgroundColor: 'white', 
+                    color: 'black',
+                    alignSelf: 'center',
+                    margin:30,
+                    padding: 20,
+                    paddingRight: 30,
+                    paddingLeft: 30,
+                    fontSize: 24
+                }}
+            >
+                {this.state.codigo}
+            </RubikText>
+            )}
+
+            {!this.state.codigo && (
+            <TouchableHighlight
+            style={{
+              backgroundColor: '#e20f17',
+              padding: 15,
+              marginTop:20,
+              marginBottom:20,
+              paddingRight: 30,
+              paddingLeft: 30,
+              alignSelf: 'center',
+              cursor: 'pointer'
+            }}
+            onPress={() => this.ativaCupom()}
+            >
+                <RubikText bold={true} style={{color: 'white'}}>ATIVAR CUPOM</RubikText>
+            </TouchableHighlight>
+            )}
+        </View>
+    )}
+
+    ativaCupom() {
+        this.setState({
+            codigo : "#"+Math.round(Math.random()*10000000)
+        })
+    }
+}
 class DadosCupom extends React.Component {
     state = {
         cupom : null,
@@ -208,27 +267,14 @@ export default class CupomDetalhe extends React.Component {
             />
         </View>
 
-        <View style={{ 
-            backgroundColor: '#feca03', 
-            alignSelf: 'stretch',
-            padding: 20
-        }}>
-            <RubikText 
-                bold={true}
-                style={{ 
-                    backgroundColor: 'white', 
-                    color: 'black',
-                    alignSelf: 'center',
-                    margin:30,
-                    padding: 20,
-                    paddingRight: 30,
-                    paddingLeft: 30,
-                    fontSize: 24
-                }}
-            >
-                #00102033
-            </RubikText>
-        </View>
+        <UserConsumer>
+        {({perfil}) => (
+            <CodigoCupom
+                cupomId = {this.state.cupomId}
+                usuario={perfil}
+            />
+        )}
+        </UserConsumer>
 
       <RodapeCompleto/>
     </View>
