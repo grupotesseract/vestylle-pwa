@@ -9,21 +9,75 @@ import { LojaConsumer } from '../LojaContext';
 import { FaSpinner } from 'react-icons/fa';
 import TouchableHighlight from '../ui/TouchableHighlight';
 import { UserConsumer } from '../UserContext';
+import { Link } from 'react-router-dom'
 
 
 class CodigoCupom extends React.Component {
 
     state = {
-        codigo : null
+        codigo : null,
+        cupomId: null,
+        usuario: null,
+        loadingCodigo: false,
+        atualizaCodigo: null
     }
+    constructor() {
+        super()
+        this.atualizaCodigo = this.atualizaCodigo.bind(this)
+    }
+
+    async atualizaCodigo() {
+        if(!this.state.loadingCodigo) {
+            if(this.props.atualizaCuponsUtilizados) {
+                this.setState({loadingCodigo: true})
+                const cupom = await this.props.atualizaCuponsUtilizados()
+                .then(cuponsUtilizados => {
+                    const cupom = cuponsUtilizados.find(c => Number(c.id) === Number(this.state.cupomId) )
+                    return cupom
+                })
+                if(cupom) {
+                    const codigoTxt = cupom.codigo_unico
+                    this.setState({codigo: codigoTxt})
+                }
+            }
+        }
+    }
+
+    componentDidMount() {
+        if(this.props.cupomId && this.props.cuponsUtilizados && this.props.cuponsUtilizados.length) {
+            const cupom = this.props.cuponsUtilizados.find(c => Number(c.id) === Number(this.props.cupomId) )
+            const codigoTxt = cupom.codigo_unico
+            this.setState({codigo: codigoTxt})
+        }
+        this.setState({ atualizaCodigo: this.atualizaCodigo })
+        this.atualizaCodigo()
+    }
+
+    static getDerivedStateFromProps(props, state) {
+        if(!state.codigo && state.atualizaCodigo) {
+            state.atualizaCodigo()
+        }
+        if (props.cupomId !== state.cupomId ||
+            props.usuario !== state.usuario) {
+            return {
+                cupomId: props.cupomId,
+                usuario: props.usuario
+            }
+        } 
+        return null;
+    }
+
     render() {
+        if(!this.state.usuario) {
+            return <> </>
+        }
         return (
         <View style={{ 
             backgroundColor: '#feca03', 
             alignSelf: 'stretch',
             padding: 20
         }}>
-            {this.state.codigo && (
+            {this.state.codigo  && (
             <RubikText 
                 bold={true}
                 style={{ 
@@ -41,9 +95,41 @@ class CodigoCupom extends React.Component {
             </RubikText>
             )}
 
-            {!this.state.codigo && (
+
+            {!this.state.codigo && this.state.usuario && this.state.usuario.id_vestylle && (
             <TouchableHighlight
-            style={{
+            style={this.style.btnAtivar}
+            onPress={() => this.ativaCupom()}
+            >
+                <RubikText bold={true} style={{color: 'white'}}>ATIVAR CUPOM</RubikText>
+            </TouchableHighlight>
+            )}
+            {!this.state.usuario.cpf && !this.state.usuario.id_vestylle &&
+            <Link to="/meuperfil" style={{flexDirection: 'column', alignItems: 'center'}}>
+                <View style={this.style.btnDesativado}><RubikText bold={true}>ATUALIZAR CPF</RubikText></View>
+                <RubikText>Atualize seu CPF para habilitar a ativação de cupons.</RubikText>
+            </Link>
+            }
+            {this.state.usuario.cpf && !this.state.usuario.id_vestylle &&
+            <View style={{flexDirection: 'column', alignItems: 'center'}}>
+                <View style={this.style.btnDesativado}><RubikText bold={true}>ATIVAR CUPOM</RubikText></View>
+                <RubikText>Para utilizar seu cupom, faça seu cadastro em nossa loja!</RubikText>
+            </View>
+            }
+        </View>
+    )}
+
+    style = {
+        btnDesativado :{
+            backgroundColor: '#bdbabc',
+            padding: 15,
+            marginTop:20,
+            marginBottom:20,
+            paddingRight: 30,
+            paddingLeft: 30,
+            alignSelf: 'center',
+        },
+        btnAtivar:{
               backgroundColor: '#e20f17',
               padding: 15,
               marginTop:20,
@@ -52,19 +138,19 @@ class CodigoCupom extends React.Component {
               paddingLeft: 30,
               alignSelf: 'center',
               cursor: 'pointer'
-            }}
-            onPress={() => this.ativaCupom()}
-            >
-                <RubikText bold={true} style={{color: 'white'}}>ATIVAR CUPOM</RubikText>
-            </TouchableHighlight>
-            )}
-        </View>
-    )}
+        }
+    }
 
     ativaCupom() {
-        this.setState({
-            codigo : "#"+Math.round(Math.random()*10000000)
+        this.props.ativaCupom(this.state.cupomId)
+        .then(cupomAtivo => {
+            if(cupomAtivo && cupomAtivo.codigo_unico){
+                this.setState({
+                    codigo : cupomAtivo.codigo_unico
+                })
+            }
         })
+        .catch(e => console.error(e))
     }
 }
 class DadosCupom extends React.Component {
@@ -80,7 +166,6 @@ class DadosCupom extends React.Component {
 
 
             const cupom = props.cupons.find((cupom) => Number(cupom.id) === Number(props.cupomId))
-            console.log(cupom)
             return {
                 cupom,
                 loading: false
@@ -160,14 +245,15 @@ class DadosCupom extends React.Component {
         </View>
 
         <img
-            src={this.state.cupom.foto_caminho || this.state.cupom.oferta.urlFoto}
+            src={this.state.cupom.foto_caminho || (this.state.cupom.oferta && this.state.cupom.oferta.urlFoto)}
             alt={this.state.cupom.titulo}
             style={{
                 borderTop: 1,
                 borderBottom: 1,
                 borderStyle: 'solid',
                 borderColor: '#585756',
-                objectFit: 'cover'
+                objectFit: 'contain',
+                width: '100%'
             }}
         />
 
@@ -268,12 +354,16 @@ export default class CupomDetalhe extends React.Component {
         </View>
 
         <UserConsumer>
-        {({perfil}) => (
+        {({perfil, ativaCupom, atualizaCuponsUtilizados, cuponsUtilizados}) => {
+            return (
             <CodigoCupom
                 cupomId = {this.state.cupomId}
                 usuario={perfil}
+                ativaCupom={ativaCupom}
+                atualizaCuponsUtilizados={atualizaCuponsUtilizados}
+                cuponsUtilizados={cuponsUtilizados}
             />
-        )}
+        )}}
         </UserConsumer>
 
       <RodapeCompleto/>

@@ -6,6 +6,7 @@ import Header from '../components/Header';
 import { Link } from 'react-router-dom'
 import RodapeCompleto from '../components/RodapeCompleto';
 import { LojaConsumer } from '../LojaContext';
+import { UserConsumer } from '../UserContext';
 
 class ListaCupons extends React.Component {
     state = {
@@ -19,6 +20,12 @@ class ListaCupons extends React.Component {
         const month = date[1]
         const day = date[2]
         return day+"/"+month+"/"+year
+    }
+
+    componentDidMount() {
+        if(this.props.atualizaCupons) {
+            this.props.atualizaCupons()
+        }
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -64,7 +71,7 @@ class ListaCupons extends React.Component {
                         overflow: 'hidden',
                     }}>
                     <img
-                        src={cupom.oferta.urlFoto}
+                        src={cupom.foto_caminho || ((cupom.oferta && cupom.oferta.urlFoto) && cupom.oferta.urlFoto)}
                         alt={cupom.titulo}
                         style={{
                             width:'100%',
@@ -74,7 +81,7 @@ class ListaCupons extends React.Component {
                     />
                 </View>
                 <RubikText bold={true} style={this.style.bordaCentro}>
-                    {cupom.titulo.toUpperCase()}
+                    {cupom.titulo && cupom.titulo.toUpperCase()}
                 </RubikText>
                 <RubikText style={this.style.bordaCentro}>
                     {cupom.subtitulo}
@@ -123,37 +130,46 @@ class ListaCupons extends React.Component {
     }
 }
 
+class AtualizaCupons extends React.Component {
+
+    componentDidMount() {
+        if(this.props.atualizaInfosUser){
+            this.props.atualizaInfosUser()
+        }
+        if(this.props.atualizaCupons){
+            this.props.atualizaCupons()
+        }
+    }
+    render() {
+        return <></>
+    }
+}
 export default class MeusCupons extends React.Component {
 
 
   state = {
       cupons: 'ativos',
       cuponsAtivos: [],
-    cuponsUtilizados: [
-      {  
-         "id":2,
-         "oferta_id":1,
-         "data_validade":"2028-09-12 00:00:00",
-         "texto_cupom":"Cupom para promo\u00e7\u00e3o: c\u00f3digo 1",
-         "created_at":"2019-04-17 20:19:28",
-         "updated_at":"2019-04-17 20:19:28",
-         "deleted_at":null,
-         "foto_caminho":null,
-         "cupom_primeiro_login":false,
-         "titulo":"Cupom teste utilizado",
-         "subtitulo":"Cupom já utilizado",
-         "oferta":{  
-            "urlFoto":"\/\/via.placeholder.com\/500x500",
-         }
-      }
-
-    ]
- 
+      cuponsUtilizados: []
   }
 
   render() {
     return ( <View>
       <Header/>
+
+
+        <UserConsumer>
+        {({ atualizaInfosUser }) => (
+            <LojaConsumer>
+            {({atualizaCupons}) => (
+                <AtualizaCupons
+                    atualizaCupons={atualizaCupons}
+                    atualizaInfosUser={atualizaInfosUser}
+                />
+            )}
+            </LojaConsumer>
+        )}
+        </UserConsumer>
 
       <View style={{backgroundColor: "#585756", position: 'relative'}}>
 
@@ -217,18 +233,31 @@ export default class MeusCupons extends React.Component {
                 </RubikText>
             </View>
             { this.state.cupons === 'ativos' ?
-                <LojaConsumer>
-                  {({cupons}) => (
-                    <ListaCupons
-                    cupons={cupons}
-                    />
-                  )}
-                </LojaConsumer>
+                 <UserConsumer>
+                {({ cuponsUtilizados }) => (
+                    <LojaConsumer>
+                    {({cupons}) => {
+                       if(cupons) {
+                         cupons = cupons.filter(cupom => cuponsUtilizados.findIndex(cupomU => Number(cupomU.id) === Number(cupom.id)) < 0)
+                       }
+                       return (
+                        <ListaCupons
+                        cupons={cupons}
+                        />
+                    )}}
+                    </LojaConsumer>
+                )}
+                </UserConsumer>
                  : 
-                <ListaCupons
-                    cupons={this.state.cuponsUtilizados}
-                    fade={true}
-                />  
+                 <UserConsumer>
+                  {({cuponsUtilizados, atualizaCuponsUtilizados}) => (
+                    <ListaCupons
+                        cupons={cuponsUtilizados}
+                        atualizaCupons={atualizaCuponsUtilizados}
+                        fade={true}
+                    />  
+                  )}
+                 </UserConsumer>
             }
 
             <Link 

@@ -227,6 +227,7 @@ class FormMeuPerfil extends React.Component {
         const meuPerfil = res.data
         this.props.atualizaPerfil(meuPerfil)
       }
+      this.props.getData()
       this.setState({loading: false})
       this.setState({redirectTo: '/areacliente'})
     })
@@ -276,7 +277,7 @@ export default class MeuPerfil extends React.Component {
     return ( <View>
       <Header/>
       <UserConsumer>
-      {({ getDadosMeuPerfil, setDadosMeuPerfil, setPerfil }) => (<>
+      {({ getDadosMeuPerfil, setDadosMeuPerfil, atualizaInfosUser, setPerfil }) => (<>
       <ImageBackground
         source={require('../assets/fundologin.jpg')}
         style={{width: '100%', height: '100%'}}>
@@ -285,6 +286,7 @@ export default class MeuPerfil extends React.Component {
             getData={getDadosMeuPerfil}
             setData={setDadosMeuPerfil}
             atualizaPerfil={setPerfil}
+            atualizaInfosUser={atualizaInfosUser}
           />
         </View>
         <MiniRodape/>

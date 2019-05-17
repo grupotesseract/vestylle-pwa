@@ -58,7 +58,6 @@ class InfosLoja extends React.Component {
       <View style={{padding: 20 , marginBottom: 60}}>
         <Slider {...this.settings}>
         { this.state.dadosLoja && this.state.dadosLoja.fotos && this.state.dadosLoja.fotos.map((foto, key) => {
-          console.log(foto)
           return <View style={{width: '100%'}}>
             <View style={{  alignSelf: 'center', overflow:'hidden',width: '100%', display: 'flex'}} key={key}>
             <img 
