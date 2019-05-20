@@ -2,25 +2,27 @@ import React from 'react';
 import View from '../ui/View';
 import Header from '../components/Header'
 import RubikText from '../ui/RubikText';
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import Breadcrumb from '../ui/Breadcrumb';
 import RodapeCompleto from '../components/RodapeCompleto';
 import { FaCamera, FaArrowLeft, FaSpinner } from 'react-icons/fa';
 import QrReader from 'react-qr-reader'
 import Alert from '../ui/Alert';
+import { UserConsumer } from '../UserContext';
 
-export default class AdicionarCupom extends React.Component {
+class InputCupomQR extends React.Component {
 
   state = {
+    alertMessage: null,
+    cupom: '',
     status: 'display',
-    cupom: null,
     loadingCupom: false,
     redirectTo: null,
-    alertMessage: null
   }
 
   handleScan = cupomValue => {
     if (cupomValue) {
+      cupomValue = this.removeURI(cupomValue)
       this.setState({
         cupom: cupomValue,
         status: 'display'
@@ -29,24 +31,55 @@ export default class AdicionarCupom extends React.Component {
     }
   }
 
+  changeStatus = (status) => {
+    this.setState({
+      status
+    })
+  }
+
+  componentDidMount() {
+    this.setState({
+      atualizaValorCupom: this.atualizaValorCupom
+    })
+  }
+
   handleChangeCumpom = (e) => {
-    const cupomValue = e.target.value
+    let cupomValue = this.removeURI(e.target.value)
+    this.setState({cupom: cupomValue})
     this.findCupom(cupomValue)
   }
 
-  findCupom = (cupomValue) => {
+  removeURI(cupomValue) {
+    const valoresQR = cupomValue && cupomValue.split('/')
+    console.log(valoresQR)
+    if(valoresQR.length > 1){
+      return valoresQR[valoresQR.length-1]
+    }
+    return cupomValue
+  }
+
+
+  findCupom = async (cupomValue) => {
     if(cupomValue && cupomValue.length > 3) {
       if(!this.state.loadingCupom) {
         this.setState({ loadingCupom: true })
-        setTimeout(
-        ()=>{
-          console.log(cupomValue)
+        console.log(cupomValue)
+
+        this.props.buscaCupom(cupomValue)
+        .then(cupom => {
+          console.log(cupom)
+          if(cupom && cupom.id) {
+            this.setState({
+              redirectTo: 'cupom/'+cupom.id
+            })
+          }
+        })
+        .catch((e) => {
           this.setState({
-            alertMessage: 'Infelizmente este cupom não foi encontrado, verifique o código ou utilize um novo cupom.',
+            alertMessage: e,
             loadingCupom: false
           })
-        },
-        1000)
+        })
       }
     }
   }
@@ -58,36 +91,113 @@ export default class AdicionarCupom extends React.Component {
       })
   }
 
-  changeStatus = (status) => {
+  render() {
+    return <>
+
+      { this.state.redirectTo && (
+        <Redirect to={this.state.redirectTo}/>
+      )}
+
+      {this.state.status === 'read' && (
+        <div className="qr-reader">
+          <QrReader
+            delay={100}
+            onError={this.handleError}
+            onScan={this.handleScan}
+          />
+          <button 
+            onClick={() => this.changeStatus('display')}
+          >
+            <FaArrowLeft
+              size={36}
+              color='white'
+              />
+          </button>
+        </div>
+      )}
+
+      <button
+        style={{
+          backgroundColor: '#feca03',
+          padding: 10,
+          alignSelf:'center',
+          borderRadius: 5,
+          paddingRight: 20,
+          paddingLeft: 20,
+          boxShadow: '0 0 5px gray',
+          marginBottom: 30,
+        }}
+        onClick={() => this.changeStatus('read')}
+      >
+        <FaCamera style={{paddingRight: 5}}/>
+        <RubikText style={{fontSize: 20}}>
+          LER QR CODE
+        </RubikText>
+      </button>
+
+      <RubikText
+        bold={true} 
+        style={{
+          backgroundColor: '#55bcba',
+          padding: 10,
+          marginBottom: 10,
+          borderTopRightRadius: 5,
+          borderBottomRightRadius: 5,
+          paddingLeft: 20,
+          paddingRight: 20,
+          alignSelf: 'flex-start'
+        }}
+      >
+        Insira seu código no campo abaixo
+      </RubikText>
+
+      <input
+        type="text"
+        style={{
+          border: 2,
+          borderStyle: 'solid',
+          borderRadius: 7,
+          borderColor: '#bdbabc',
+          backgroundColor: '#ebeaeb',
+          alignSelf: 'center',
+          padding: 10,
+          fontSize: 20,
+          marginTop: 10,
+          marginBottom: 30,
+          textAlign: 'center'
+        }}
+        value={this.state.cupom}
+        onChange={(e) => this.handleChangeCumpom(e)}
+      />
+      { this.state.loadingCupom && (
+          <View style={{ alignItems: 'center', alignSelf: 'stretch', paddingBottom: 10}}>
+            <FaSpinner color="black" className="spin" style={{fontSize: 36}} />
+          </View>
+      )}
+      { this.state.alertMessage && (
+        <Alert
+          title = "Adicionando Cupom"
+          message = {this.state.alertMessage}
+          btnText = "OK"
+          onClickButton = {this.dismissAlertErro}
+          dismissAlert = {this.dismissAlertErro}
+        />
+      )}
+    </>
+  }
+
+  dismissAlertErro = () => {
     this.setState({
-      status
+      alertMessage: false
     })
   }
+}
 
-  componentDidMount() {
-
-  }
+export default class AdicionarCupom extends React.Component {
 
   render() {
     return ( <View>
       <Header/>
-      {this.state.status === 'read' && (
-              <div className="qr-reader">
-                <QrReader
-                  delay={100}
-                  onError={this.handleError}
-                  onScan={this.handleScan}
-                />
-                <button 
-                  onClick={() => this.changeStatus('display')}
-                >
-                    <FaArrowLeft
-                      size={36}
-                      color='white'
-                      />
-                </button>
-              </div>
-      )}
 
       <Breadcrumb>
         <Link to="/areacliente"><RubikText style={{color: '#585756'}}>Área do Cliente &gt;&nbsp;</RubikText></Link>
@@ -138,81 +248,17 @@ export default class AdicionarCupom extends React.Component {
         />
       </View>
 
-      <button
-        style={{
-          backgroundColor: '#feca03',
-          padding: 10,
-          alignSelf:'center',
-          borderRadius: 5,
-          paddingRight: 20,
-          paddingLeft: 20,
-          boxShadow: '0 0 5px gray',
-          marginBottom: 30,
-        }}
-        onClick={() => this.changeStatus('read')}
-      >
-        <FaCamera style={{paddingRight: 5}}/>
-        <RubikText style={{fontSize: 20}}>
-          LER QR CODE
-        </RubikText>
-      </button>
 
-      <RubikText
-        bold={true} 
-        style={{
-          backgroundColor: '#55bcba',
-          padding: 10,
-          marginBottom: 10,
-          borderTopRightRadius: 5,
-          borderBottomRightRadius: 5,
-          paddingLeft: 20,
-          paddingRight: 20,
-          alignSelf: 'flex-start'
-        }}
-      >
-        Insira seu código no campo abaixo
-      </RubikText>
-      <input
-        type="text"
-        style={{
-          border: 2,
-          borderStyle: 'solid',
-          borderRadius: 7,
-          borderColor: '#bdbabc',
-          backgroundColor: '#ebeaeb',
-          alignSelf: 'center',
-          padding: 10,
-          fontSize: 20,
-          marginTop: 10,
-          marginBottom: 30,
-          textAlign: 'center'
-        }}
-        value={this.state.cupom}
-        onChange={this.handleChangeCumpom}
-      />
-      { this.state.loadingCupom && (
-          <View style={{ alignItems: 'center', alignSelf: 'stretch', paddingBottom: 10}}>
-            <FaSpinner color="black" className="spin" style={{fontSize: 36}} />
-          </View>
-      )}
-      { this.state.alertMessage && (
-        <Alert
-          title = "Adicionando Cupom"
-          message = {this.state.alertMessage}
-          btnText = "OK"
-          onClickButton = {this.dismissAlertErro}
-          dismissAlert = {this.dismissAlertErro}
-        />
-      )}
+      <UserConsumer>
+        {({buscaCupom}) => (
+          <InputCupomQR
+            buscaCupom={buscaCupom}
+          />
+        )}
+      </UserConsumer>
 
       <RodapeCompleto/>
     </View>
     )
-  }
-
-  dismissAlertErro = () => {
-    this.setState({
-      alertMessage: false
-    })
   }
 }
