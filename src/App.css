@@ -73,6 +73,10 @@ body *{
   border-style: solid;
 }
 
+body script {
+  display: none;
+}
+
 .App {
   font-family: 'Rubik';
   text-align: center;
@@ -164,6 +168,32 @@ button {
 .faca-seu-cadastro {
   font-size: 14px;
 }
+
+.qr-reader {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  max-width: 85vh;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
+}
+.qr-reader > * {
+  max-height: 100vh;
+  max-width: 100vw;
+  width:100%;
+}
+.qr-reader > button {
+  position: absolute;
+  align-self: flex-start;
+  justify-self: flex-start;
+  width: auto;
+  top: 20px;
+  left: 20px;
+  z-index:2;
+}
+
 
 .sm-hide {
   display: none;

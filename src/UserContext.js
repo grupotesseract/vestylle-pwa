@@ -24,6 +24,7 @@ class UserProvider extends React.Component {
     this.setFacebookToken = this.setFacebookToken.bind(this)
     this.getOfertas = this.getOfertas.bind(this)
     this.toggleDesejo = this.toggleDesejo.bind(this)
+    this.receberNotificacoes = this.receberNotificacoes.bind(this)
   }
 
   loadFromLocalStorage() {
@@ -89,7 +90,6 @@ class UserProvider extends React.Component {
     return res;
   }
 
-  
 
   logout() {
     localStorage.clear();
@@ -292,6 +292,104 @@ class UserProvider extends React.Component {
     return objRes
   }
 
+  receberNotificacoes() {
+    // Pega registro do service worker
+    if(!('serviceWorker' in navigator)) {
+      console.log('sw not supported');
+    } 
+    if(('serviceWorker' in navigator)) {
+      console.log('sw available (not ready)');
+      navigator.serviceWorker.ready
+      .then((serviceWorkerRegistration) => {
+        console.log('sw ready, registration:');
+        console.log(serviceWorkerRegistration)
+
+        console.log("REACT_APP_VAPID_PUBLIC_KEY", process.env.REACT_APP_VAPID_PUBLIC_KEY)
+        // Pede permissão para exibir notificações
+        // (ou avisa que bloqueou)
+        if( Notification.permission === 'denied' ) {
+          alert('Você proibiu as notificações, redefina as configurações para receber mensagens')
+        }
+        Notification.requestPermission((status) => {
+          console.log('Notification status', status)
+          if(status === 'granted') {
+            let swReg = serviceWorkerRegistration;
+
+            const vapidPublicKey = process.env.REACT_APP_VAPID_PUBLIC_KEY;
+            const convertedVapidKey = this.urlBase64ToUint8Array(vapidPublicKey);
+      
+            swReg.pushManager.subscribe({
+              userVisibleOnly: true,
+              applicationServerKey: convertedVapidKey
+            }).then((subscription) => {
+              this.enviaSubscription(subscription)
+              this.registerOnPush(swReg);
+            }).catch((e) => console.error(e));
+          }
+        });
+      })
+      .catch(err => console.log('Erro no register do sw:', err))
+    }
+  }
+
+  enviaSubscription = async (subscription) => {
+    console.log(subscription);
+
+    const res = await fetch(process.env.REACT_APP_API_URL+'/pessoas/'+this.state.userId+'/subscription', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Authorization': 'Bearer '+this.state.userToken,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({"subscription":subscription})
+    })
+    .then(response => response.json())
+    .catch(erro => console.error('Erro no enviaSubscription',erro))
+    if(!res) {
+      return
+    }
+    if(res.success) {
+      console.log("sucesso no post subscription", res)
+    } else {
+      throw res.message
+    }
+  }
+
+  // Utility function
+  // Chrome doesnt support base64String
+  urlBase64ToUint8Array = (base64String) => {
+    var padding = '='.repeat((4 - base64String.length % 4) % 4);
+    var base64 = (base64String + padding)
+        .replace(/-/g, '+')
+        .replace(/_/g, '/');
+
+    var rawData = window.atob(base64);
+    var outputArray = new Uint8Array(rawData.length);
+
+    for (var i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+  }
+
+  registerOnPush = (swReg) => {
+    swReg.active.addEventListener("push", (event) => {
+      console.log("push received");
+      let title = (event.data && event.data.text()) || "Chegou uma mensagem!";
+      let body = "Recebemos uma mensagem por push :)";
+      let tag = "push-demo-tag";
+      let icon = '/assets/icon.png';
+
+      event.waitUntil(
+        swReg.showNotification(title, { body, icon, tag })
+      )
+    });
+
+    console.log(swReg)
+  }
+
   render() {
     return (
       <UserContext.Provider
@@ -308,6 +406,7 @@ class UserProvider extends React.Component {
           setFacebookToken: this.setFacebookToken,
           getOfertas: this.getOfertas,
           toggleDesejo: this.toggleDesejo,
+          receberNotificacoes: this.receberNotificacoes,
           listaDesejos: this.state.ofertas 
         }}
       >
