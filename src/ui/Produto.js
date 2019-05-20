@@ -106,7 +106,6 @@ class Produto extends Component {
           <UserConsumer>
             {({toggleDesejo}) => (
               <LikeBtn
-                likeCallback={this.props.likeCallback}
                 toggleDesejo={toggleDesejo}
                 id={this.props.id}
                 liked={this.props.liked}

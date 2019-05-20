@@ -155,7 +155,6 @@ class ListagemDesejos extends React.Component {
                 id={desejo.id}
                 img={desejo.urlFoto}
                 liked={true}
-                likeCallback={this.likeCallback}
                 titulo={desejo.titulo}
                 subtitulo={desejo.subtitulo}
               />
@@ -185,11 +184,10 @@ export default class ListaDesejos extends React.Component {
       </View>
 
       <UserConsumer>
-      {({ getOfertas, listaDesejos, toggleLikeOferta, isAuth }) => (<>
+      {({ getOfertas, listaDesejos, isAuth }) => (<>
           <ListagemDesejos
             getOfertas={getOfertas}
             listaDesejos={listaDesejos}
-            toggleLikeOferta={toggleLikeOferta}
             isAuth={isAuth}
           />
       </>

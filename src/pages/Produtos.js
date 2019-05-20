@@ -18,41 +18,48 @@ class ListaProdutos extends React.Component {
 
   state = {
     ofertas: [],
-    listaDesejosId: [],
-    visualizacao: 'full'
+    listaDesejos: [],
+    visualizacao: 'full',
+    atualizaOfertas: null
   }
 
-  atualizaOfertas() {
+  constructor() {
+    super();
+    this.atualizaOfertas = this.atualizaOfertas.bind(this)
+  }
+
+  atualizaOfertas(listaNova) {
+    if(!listaNova) {
+      listaNova = this.state.listaDesejos
+    }
     if(!this.props.getOfertasComLike) {
       return null
     }
 
-    let listaDesejosId = []
-    if(this.state.listaDesejos) {
-      listaDesejosId = this.state.listaDesejos.map((oferta) => oferta.id);
+    let listaDesejos = []
+    if(listaNova) {
+      listaDesejos = listaNova.map((oferta) => oferta.id);
     }
-    this.props.getOfertasComLike(listaDesejosId)
+    this.props.getOfertasComLike(listaDesejos)
     .then((ofertas) => {
       this.setState({ofertas})
     })
-    console.log('ataulizaofertas')
   }
 
   componentDidMount() {
+    this.setState({
+      atualizaOfertas: this.atualizaOfertas
+    })
     this.atualizaOfertas();
   }
-
-  componentDidUpdate(prevProps, prevState) {
-  if(prevProps.listaDesejosId!==this.props.someValue){
-    //Perform some operation here
-    this.atualizaOfertas();
-  }
-}
 
   static getDerivedStateFromProps(props, state) {
-    if (props.listaDesejosId !== state.listaDesejosId) {
+    if (props.listaDesejos !== state.listaDesejos) {
+      if(state.atualizaOfertas) {
+        state.atualizaOfertas(props.listaDesejos)
+      }
       return {
-        listaDesejosId: props.listaDesejosId,
+        listaDesejos: props.listaDesejos,
       };
     }
     if (props.visualizacao !== state.visualizacao) {
@@ -122,7 +129,6 @@ class ListaProdutos extends React.Component {
             id={oferta.id}
             img={oferta.urlFoto}
             liked={oferta.liked}
-            likeCallback={this.likeCallback}
             titulo={oferta.descricao_oferta}
             subtitulo={oferta.subtitulo}
           />
