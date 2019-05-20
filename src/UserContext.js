@@ -9,7 +9,8 @@ class UserProvider extends React.Component {
     fbData: null,
     userId: null,
     perfil: null,
-    ofertas: []
+    ofertas: [],
+    cuponsUtilizados: []
   }
 
   constructor() {
@@ -25,26 +26,101 @@ class UserProvider extends React.Component {
     this.getOfertas = this.getOfertas.bind(this)
     this.toggleDesejo = this.toggleDesejo.bind(this)
     this.receberNotificacoes = this.receberNotificacoes.bind(this)
+    this.ativaCupom = this.ativaCupom.bind(this)
+    this.atualizaCuponsUtilizados = this.atualizaCuponsUtilizados.bind(this)
+    this.atualizaInfosUser = this.atualizaInfosUser.bind(this)
   }
 
-  loadFromLocalStorage() {
+  async loadFromLocalStorage() {
     if(!this.state.isAuth) {
       const userToken = localStorage.getItem('userToken')
       const userId = localStorage.getItem('userId')
       if(userToken && userId) {
-        this.setState({userToken, userId, isAuth: true})
+        await this.setState({userToken, userId, isAuth: true})
         if(!this.state.perfil) {
           const perfil = JSON.parse(localStorage.getItem('perfil'))
           console.log("perfil carregado do localStorage", perfil)
           const ofertas = JSON.parse(localStorage.getItem('ofertas'))
-          this.setState({perfil, ofertas})
+          await this.setState({perfil, ofertas})
         }
       }
     }
   }
 
   componentDidMount() {
-    this.loadFromLocalStorage();
+    this.atualizaInfosUser()
+  }
+
+  async atualizaInfosUser() {
+
+    this.loadFromLocalStorage().then(() => {
+      this.atualizaCuponsUtilizados()
+    }
+    )
+  }
+
+  async atualizaCuponsUtilizados() {
+    if(!this.state.userId) {
+      return []
+    }
+
+    const res = await fetch(process.env.REACT_APP_API_URL+'/pessoas/'+this.state.userId+'/cupons', {
+      credentials: 'include',
+      headers: {
+        'Authorization': 'Bearer '+this.state.userToken,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => {
+      return response.json().then((jsonRes) => {
+        if(jsonRes.success) {
+          const cuponsUtilizados = jsonRes.data
+          const cuponsFormatados = cuponsUtilizados.map(cupom => {
+            let cupomFormatado = Object.assign({},cupom.cupom,{codigo_unico: cupom.codigo_unico});
+            return cupomFormatado
+          })
+          this.setState({cuponsUtilizados: cuponsFormatados})
+          return cuponsFormatados
+        } else {
+          throw jsonRes.message
+        }
+      })
+    })
+    .catch(error => console.error('Ativa cupom error', error));
+    return res;
+  }
+
+  async ativaCupom(idCupom) {
+    if(!this.state.userId || !idCupom) {
+      return {}
+    }
+    console.log(idCupom)
+    const params = JSON.stringify({
+      pessoa_id: this.state.userId
+    })
+    const res = await fetch(process.env.REACT_APP_API_URL+'/cupons/'+idCupom+'/ativar', {
+      method: 'POST', 
+      credentials: 'include',
+      headers: {
+        'Authorization': 'Bearer '+this.state.userToken,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: params
+    })
+    .then(response => {
+      return response.json().then((jsonRes) => {
+        if(jsonRes.success) {
+          const cupomAtivo = jsonRes.data
+          return cupomAtivo
+        } else {
+          throw jsonRes.message
+        }
+      })
+    })
+    .catch(error => console.error('Ativa cupom error', error));
+    return res;
   }
 
   async signup(login, passwd) {
@@ -252,6 +328,9 @@ class UserProvider extends React.Component {
     )
     .then(response => response.json())
     .catch(erro => console.error('Erro no getDadosMeuPerfil',erro))
+    if(!res) {
+      return
+    }
     if(res.success) {
       const meuPerfil = res.data
       this.setPerfil(meuPerfil)
@@ -407,7 +486,11 @@ class UserProvider extends React.Component {
           getOfertas: this.getOfertas,
           toggleDesejo: this.toggleDesejo,
           receberNotificacoes: this.receberNotificacoes,
-          listaDesejos: this.state.ofertas 
+          listaDesejos: this.state.ofertas,
+          ativaCupom: this.ativaCupom,
+          cuponsUtilizados: this.state.cuponsUtilizados,
+          atualizaCuponsUtilizados: this.atualizaCuponsUtilizados,
+          atualizaInfosUser: this.atualizaInfosUser
         }}
       >
         {this.props.children}

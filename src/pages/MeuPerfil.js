@@ -146,9 +146,9 @@ class FormMeuPerfil extends React.Component {
             fontSize: 15
           }}
         >
-          <option value="Prefiro Não Informar" selected={"Prefiro Não Informar"===this.state.genero}>Prefiro Não Informar</option>
-          <option value="Feminino" selected={"Feminino"===this.state.genero}>Feminino</option>
-          <option value="Masculino" selected={"Masculino"===this.state.genero}>Masculino</option>
+          <option style={{backgroundColor:'#33302b'}} value="Prefiro Não Informar" selected={"Prefiro Não Informar"===this.state.genero}>Prefiro Não Informar</option>
+          <option style={{backgroundColor:'#33302b'}} value="Feminino" selected={"Feminino"===this.state.genero}>Feminino</option>
+          <option style={{backgroundColor:'#33302b'}} value="Masculino" selected={"Masculino"===this.state.genero}>Masculino</option>
         </select>
       </View>
       <InputValidacao 
@@ -227,6 +227,7 @@ class FormMeuPerfil extends React.Component {
         const meuPerfil = res.data
         this.props.atualizaPerfil(meuPerfil)
       }
+      this.props.getData()
       this.setState({loading: false})
       this.setState({redirectTo: '/areacliente'})
     })
@@ -276,7 +277,7 @@ export default class MeuPerfil extends React.Component {
     return ( <View>
       <Header/>
       <UserConsumer>
-      {({ getDadosMeuPerfil, setDadosMeuPerfil, setPerfil }) => (<>
+      {({ getDadosMeuPerfil, setDadosMeuPerfil, atualizaInfosUser, setPerfil }) => (<>
       <ImageBackground
         source={require('../assets/fundologin.jpg')}
         style={{width: '100%', height: '100%'}}>
@@ -285,6 +286,7 @@ export default class MeuPerfil extends React.Component {
             getData={getDadosMeuPerfil}
             setData={setDadosMeuPerfil}
             atualizaPerfil={setPerfil}
+            atualizaInfosUser={atualizaInfosUser}
           />
         </View>
         <MiniRodape/>

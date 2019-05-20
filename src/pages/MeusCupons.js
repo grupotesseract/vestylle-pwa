@@ -5,6 +5,8 @@ import RubikText from '../ui/RubikText';
 import Header from '../components/Header';
 import { Link } from 'react-router-dom'
 import RodapeCompleto from '../components/RodapeCompleto';
+import { LojaConsumer } from '../LojaContext';
+import { UserConsumer } from '../UserContext';
 
 class ListaCupons extends React.Component {
     state = {
@@ -20,6 +22,12 @@ class ListaCupons extends React.Component {
         return day+"/"+month+"/"+year
     }
 
+    componentDidMount() {
+        if(this.props.atualizaCupons) {
+            this.props.atualizaCupons()
+        }
+    }
+
     static getDerivedStateFromProps(props, state) {
         if (props.cupons !== state.cupons) {
             return {
@@ -33,18 +41,22 @@ class ListaCupons extends React.Component {
 
     render() {
         return <>
-        {this.state.cupons.map((cupom,key) => {
+        {this.state.cupons && 
+         this.state.cupons.map((cupom,key) => {
             return <View 
             key={key}
-            style={{
+            style={Object.assign({},{
                 backgroundColor: 'white',
                 borderRadius: 3,
                 boxShadow: '0 0 5px black',
                 margin: 20,
                 alignSelf: 'stretch',
                 alignItems: 'stretch',
-                padding: 10
-            }}>
+                padding: 10,
+            },this.props.fade && {
+                opacity: 0.7,
+                filter: 'grayscale(100%)'
+            })}>
             
                 <View
                     style={{
@@ -59,7 +71,7 @@ class ListaCupons extends React.Component {
                         overflow: 'hidden',
                     }}>
                     <img
-                        src={cupom.oferta.urlFoto}
+                        src={cupom.foto_caminho || ((cupom.oferta && cupom.oferta.urlFoto) && cupom.oferta.urlFoto)}
                         alt={cupom.titulo}
                         style={{
                             width:'100%',
@@ -69,7 +81,7 @@ class ListaCupons extends React.Component {
                     />
                 </View>
                 <RubikText bold={true} style={this.style.bordaCentro}>
-                    {cupom.titulo.toUpperCase()}
+                    {cupom.titulo && cupom.titulo.toUpperCase()}
                 </RubikText>
                 <RubikText style={this.style.bordaCentro}>
                     {cupom.subtitulo}
@@ -118,90 +130,46 @@ class ListaCupons extends React.Component {
     }
 }
 
+class AtualizaCupons extends React.Component {
+
+    componentDidMount() {
+        if(this.props.atualizaInfosUser){
+            this.props.atualizaInfosUser()
+        }
+        if(this.props.atualizaCupons){
+            this.props.atualizaCupons()
+        }
+    }
+    render() {
+        return <></>
+    }
+}
 export default class MeusCupons extends React.Component {
 
 
   state = {
       cupons: 'ativos',
-      cuponsAtivos: [
-      {  
-         "id":1,
-         "oferta_id":2,
-         "data_validade":"2026-10-03 00:00:00",
-         "texto_cupom":"Cupom para promo\u00e7\u00e3o: c\u00f3digo 2",
-         "created_at":"2019-04-17 20:19:28",
-         "updated_at":"2019-04-17 20:19:28",
-         "deleted_at":null,
-         "foto_caminho":null,
-         "cupom_primeiro_login":false,
-         "titulo":"Cupom para testes",
-         "subtitulo":"Cupom de teste",
-         "oferta":{  
-            "id":2,
-            "descricao_oferta":"Oferta de Cal\u00e7as",
-            "created_at":"2019-04-17 20:19:28",
-            "updated_at":"2019-04-17 20:19:28",
-            "deleted_at":null,
-            "texto_oferta":"Cal\u00e7as em oferta s\u00f3 hoje",
-            "titulo":"Cal\u00e7as",
-            "subtitulo":"Oferta f\u00edcticia simulando pe\u00e7as do tipo Cal\u00e7as",
-            "preco":"592,40",
-            "urlFoto":"\/\/via.placeholder.com\/500x500",
-            "foto":null
-         }
-      },
-      {  
-         "id":2,
-         "oferta_id":1,
-         "data_validade":"2028-09-12 00:00:00",
-         "texto_cupom":"Cupom para promo\u00e7\u00e3o: c\u00f3digo 1",
-         "created_at":"2019-04-17 20:19:28",
-         "updated_at":"2019-04-17 20:19:28",
-         "deleted_at":null,
-         "foto_caminho":null,
-         "cupom_primeiro_login":false,
-         "titulo":"Cupom para testes",
-         "subtitulo":"e-enable 24\/365 synergies",
-         "oferta":{  
-            "id":1,
-            "descricao_oferta":"Oferta de Cal\u00e7as",
-            "created_at":"2019-04-17 20:19:28",
-            "updated_at":"2019-04-17 20:19:28",
-            "deleted_at":null,
-            "texto_oferta":"Cal\u00e7as da esta\u00e7\u00e3o em liquida\u00e7\u00e3o",
-            "titulo":"Cal\u00e7as",
-            "subtitulo":"Oferta f\u00edcticia simulando pe\u00e7as do tipo Cal\u00e7as",
-            "preco":"364,50",
-            "urlFoto":"\/\/via.placeholder.com\/500x500",
-            "foto":null
-         }
-      }
-        ],
-    cuponsUtilizados: [
-      {  
-         "id":2,
-         "oferta_id":1,
-         "data_validade":"2028-09-12 00:00:00",
-         "texto_cupom":"Cupom para promo\u00e7\u00e3o: c\u00f3digo 1",
-         "created_at":"2019-04-17 20:19:28",
-         "updated_at":"2019-04-17 20:19:28",
-         "deleted_at":null,
-         "foto_caminho":null,
-         "cupom_primeiro_login":false,
-         "titulo":"Cupom teste utilizado",
-         "subtitulo":"Cupom já utilizado",
-         "oferta":{  
-            "urlFoto":"\/\/via.placeholder.com\/500x500",
-         }
-      }
-
-    ]
- 
+      cuponsAtivos: [],
+      cuponsUtilizados: []
   }
 
   render() {
     return ( <View>
       <Header/>
+
+
+        <UserConsumer>
+        {({ atualizaInfosUser }) => (
+            <LojaConsumer>
+            {({atualizaCupons}) => (
+                <AtualizaCupons
+                    atualizaCupons={atualizaCupons}
+                    atualizaInfosUser={atualizaInfosUser}
+                />
+            )}
+            </LojaConsumer>
+        )}
+        </UserConsumer>
 
       <View style={{backgroundColor: "#585756", position: 'relative'}}>
 
@@ -249,7 +217,7 @@ export default class MeusCupons extends React.Component {
                             this.style.toggleInativo) 
                     }
                 >
-                    ATIVOS
+                    DISPONÍVEIS
                 </RubikText>
                 <RubikText
                     style={ 
@@ -261,19 +229,40 @@ export default class MeusCupons extends React.Component {
                             this.style.toggleInativo) 
                     }
                 >
-                    UTILIZADOS
+                    ATIVADOS
                 </RubikText>
             </View>
             { this.state.cupons === 'ativos' ?
-                <ListaCupons
-                    cupons={this.state.cuponsAtivos}
-                /> : 
-                <ListaCupons
-                    cupons={this.state.cuponsUtilizados}
-                />  
+                 <UserConsumer>
+                {({ cuponsUtilizados }) => (
+                    <LojaConsumer>
+                    {({cupons}) => {
+                       if(cupons) {
+                         cupons = cupons.filter(cupom => cuponsUtilizados.findIndex(cupomU => Number(cupomU.id) === Number(cupom.id)) < 0)
+                       }
+                       return (
+                        <ListaCupons
+                        cupons={cupons}
+                        />
+                    )}}
+                    </LojaConsumer>
+                )}
+                </UserConsumer>
+                 : 
+                 <UserConsumer>
+                  {({cuponsUtilizados, atualizaCuponsUtilizados}) => (
+                    <ListaCupons
+                        cupons={cuponsUtilizados}
+                        atualizaCupons={atualizaCuponsUtilizados}
+                        fade={true}
+                    />  
+                  )}
+                 </UserConsumer>
             }
 
-            <View style={{
+            <Link 
+            to="/adicionarcupom"
+            style={{
                 backgroundColor: "#feca03",
                 margin: 30,
                 padding: 30,
@@ -296,7 +285,7 @@ export default class MeusCupons extends React.Component {
                         Insira seu código promocional ou faça a leitura do QR Code e ganhe descontos especiais em suas compras
                     </RubikText>
                 </View>
-            </View>
+            </Link>
 
         </View>
       </View>
@@ -319,7 +308,7 @@ export default class MeusCupons extends React.Component {
         <View style={{flexDirection: 'row', alignSelf: 'stretch', backgroundColor: 'black', marginBottom: 50}}>
             <View>
                 <RubikText style={{ color: 'white',padding: 20, textAlign: 'left'}}>
-                    Para utilizar seu cupom basta <b style={{display: 'inline',color: "#feca03"}}>ativar e mostrar a tela do seu celular</b> para a pessoa que te atender na loja Vestylle Megastore Jaú
+                    Para utilizar seu cupom basta <b style={{display: 'inline',color: "#feca03"}}>ativar e mostrar a tela do seu celular</b> para um(a) atendente da loja Vestylle Megastore Jaú
                 </RubikText>
             </View>
             <img
@@ -356,8 +345,8 @@ export default class MeusCupons extends React.Component {
         borderWidth: 0,
         borderStyle: 'solid',
         padding: 5,
-        paddingRight: 23,
-        paddingLeft: 23,
+        paddingRight: 10,
+        paddingLeft: 10,
         cursor: 'pointer'
       },
       toggleLeftBtn: {

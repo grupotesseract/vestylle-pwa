@@ -19,12 +19,20 @@ class AreaCliente extends Component {
         <View style={{flexDirection:'row', textAlign: 'center'}}>
           <View style={{width: '20%'}}>
           </View>
-
           <UserConsumer>
           {({perfil}) => (
           <View style={{width:'60%',justifyContent: 'center', alignItems:'center', padding: 5}}>
-            <RubikText style={{color: 'white', fontSize: 20}}>Olá {perfil.nomeSimples || perfil.nome}!</RubikText>
-            {/* <RubikText style={{color: 'white', fontSize: 20}}>seja bem-vinda</RubikText> */}
+            <RubikText style={{color: 'white', fontSize: 20}}>Olá {perfil.nomeSimples || perfil.nome}{perfil.genero !== '' ? ",":"!"}</RubikText>
+            {perfil.genero && perfil.genero === 'Feminino' &&
+              <RubikText style={{color: 'white', fontSize: 20}}>
+                seja bem-vinda!
+              </RubikText>
+            }
+            {perfil.genero && perfil.genero === 'Masculino' &&
+              <RubikText style={{color: 'white', fontSize: 20}}>
+                seja bem-vindo!
+              </RubikText>
+            }
           </View>
           )}
           </UserConsumer>

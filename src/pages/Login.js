@@ -29,6 +29,7 @@ export default class LoginScreen extends React.Component {
         )}
         <View
           style={{width: '80%', flexGrow:1, marginBottom: 'auto', justifyContent: 'center'}}>
+        <Link to="/" style={{flexDirection:'column'}}>
           <img
             alt="Vestylle"
             src={require('../assets/logobranco.png')}
@@ -36,6 +37,7 @@ export default class LoginScreen extends React.Component {
           />
           <RubikText style={styles.textoBranco}>Faça seu cadastro </RubikText>
           <RubikText style={styles.textoBranco}>e receba benefícios exclusivos</RubikText>
+        </Link>
         </View>
 
         <View
