@@ -29,6 +29,7 @@ class UserProvider extends React.Component {
     this.ativaCupom = this.ativaCupom.bind(this)
     this.atualizaCuponsUtilizados = this.atualizaCuponsUtilizados.bind(this)
     this.atualizaInfosUser = this.atualizaInfosUser.bind(this)
+    this.buscaCupom = this.buscaCupom.bind(this)
   }
 
   async loadFromLocalStorage() {
@@ -91,11 +92,38 @@ class UserProvider extends React.Component {
     return res;
   }
 
+  async buscaCupom(codigoCupom) {
+    if(!codigoCupom) {
+      const msgErro = { erro: "Sem código cupom" }
+      throw msgErro
+    }
+
+    const res = await fetch(process.env.REACT_APP_API_URL+'/cupons/encrypt/'+codigoCupom,
+      {
+        credentials: 'include',
+        headers: {
+          'Authorization': 'Bearer '+this.state.userToken
+        }
+      }
+    )
+    .then(response => response.json())
+    .catch(erro => console.error('Erro no buscaCupom',erro))
+    if(!res) {
+      return
+    }
+    if(res.success) {
+      const cupom = res.data
+      return cupom
+    } else {
+      throw res.message
+    }
+
+  }
+
   async ativaCupom(idCupom) {
     if(!this.state.userId || !idCupom) {
       return {}
     }
-    console.log(idCupom)
     const params = JSON.stringify({
       pessoa_id: this.state.userId
     })
@@ -490,7 +518,8 @@ class UserProvider extends React.Component {
           ativaCupom: this.ativaCupom,
           cuponsUtilizados: this.state.cuponsUtilizados,
           atualizaCuponsUtilizados: this.atualizaCuponsUtilizados,
-          atualizaInfosUser: this.atualizaInfosUser
+          atualizaInfosUser: this.atualizaInfosUser,
+          buscaCupom: this.buscaCupom
         }}
       >
         {this.props.children}

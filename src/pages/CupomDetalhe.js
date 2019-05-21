@@ -32,6 +32,9 @@ class CodigoCupom extends React.Component {
                 this.setState({loadingCodigo: true})
                 const cupom = await this.props.atualizaCuponsUtilizados()
                 .then(cuponsUtilizados => {
+                    if(!cuponsUtilizados){
+                        return null
+                    }
                     const cupom = cuponsUtilizados.find(c => Number(c.id) === Number(this.state.cupomId) )
                     return cupom
                 })
