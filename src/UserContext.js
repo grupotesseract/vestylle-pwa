@@ -112,8 +112,7 @@ class UserProvider extends React.Component {
       return
     }
     if(res.success) {
-      const cupom = res.data.cupom
-      console.log("cupomencontrado",cupom)
+      const cupom = res.data
       return cupom
     } else {
       throw res.message
