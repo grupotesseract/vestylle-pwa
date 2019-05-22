@@ -40,7 +40,7 @@ class ListaProdutos extends React.Component {
     if(listaNova) {
       listaDesejos = listaNova.map((oferta) => oferta.id);
     }
-    this.props.getOfertasComLike(listaDesejos)
+    this.props.getOfertasComLike(listaDesejos, this.props.userToken)
     .then((ofertas) => {
       this.setState({ofertas})
     })
@@ -204,12 +204,13 @@ export default class Produtos extends React.Component {
 
       <View>
         <UserConsumer>
-        {({listaDesejos}) => (
+        {({listaDesejos, userToken}) => (
           <LojaConsumer>
           {({getOfertasComLike}) => (
             <ListaProdutos
               getOfertasComLike={getOfertasComLike}
               listaDesejos={listaDesejos}
+              userToken={userToken}
               visualizacao={this.state.visualizacao}
             />
           )}

@@ -502,6 +502,7 @@ class UserProvider extends React.Component {
       <UserContext.Provider
         value={{ 
           isAuth: this.state.isAuth,
+          userToken: this.state.userToken,
           perfil: this.state.perfil,
           login: this.login,
           logout: this.logout,

@@ -25,7 +25,7 @@ class ListaOfertas extends React.Component {
 
   atualizaOfertas(props) {
     const listaDesejosIds = props.listaDesejos ? props.listaDesejos.map((produto)=> produto.id) : []
-    this.props.getOfertasComLike(listaDesejosIds)
+    this.props.getOfertasComLike(listaDesejosIds, props.userToken)
     .then((ofertas)=>{
       ofertas = ofertas.slice(0,10)
       this.setState({ofertas})
@@ -101,7 +101,7 @@ export default class SliderOfertas extends React.Component {
       }}>
 
       <UserConsumer>
-        {( {listaDesejos} ) => (
+        {( {listaDesejos, userToken} ) => (
         <LojaConsumer>
           {({getOfertasComLike, ofertas}) => (
 
@@ -109,6 +109,7 @@ export default class SliderOfertas extends React.Component {
             getOfertasComLike={getOfertasComLike}
             ofertas={ofertas}
             listaDesejos={listaDesejos}
+            userToken={userToken}
           />
           )}
         </LojaConsumer>

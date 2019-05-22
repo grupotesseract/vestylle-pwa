@@ -36,8 +36,19 @@ class LojaProvider extends React.Component {
     }
   } 
   
-  async atualizaOfertas() {
-    const res = await fetch(process.env.REACT_APP_API_URL+'/ofertas')
+  async atualizaOfertas(userToken) {
+    let auth = null
+    if(userToken) {
+      auth = {
+        credentials: 'include',
+        headers: {
+          'Authorization': 'Bearer '+userToken,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      }
+    }
+    const res = await fetch(process.env.REACT_APP_API_URL+'/ofertas', auth)
     .then(response => response.json())
     .catch(erro => console.error('Erro no atualizaOfertas',erro))
     if(res && res.success) {
@@ -54,9 +65,9 @@ class LojaProvider extends React.Component {
    * e retorna todas as ofertas marcando as 
    * recebidas com like = true 
    */
-  async getOfertasComLike(idsOfertas) {
+  async getOfertasComLike(idsOfertas, userToken) {
     if(this.state.ofertas === null) {
-      await this.atualizaOfertas()
+      await this.atualizaOfertas(userToken)
     }
     const ofertasComLike = this.state.ofertas.map((oferta) => {
       if(idsOfertas.indexOf(oferta.id) !== -1) {
@@ -70,9 +81,9 @@ class LojaProvider extends React.Component {
     return ofertasComLike
   }
 
-  async getOfertaById(idOferta) {
+  async getOfertaById(idOferta, userToken) {
     if(!this.state.ofertas) {
-      await this.atualizaOfertas()
+      await this.atualizaOfertas(userToken)
     }
     const oferta = this.state.ofertas.find((oferta) => {
       return Number(oferta.id) === Number(idOferta)
@@ -80,8 +91,19 @@ class LojaProvider extends React.Component {
     return oferta
   }
 
-  async atualizaCupons() {
-    const res = await fetch(process.env.REACT_APP_API_URL+'/cupons')
+  async atualizaCupons(userToken) {
+    let auth = null
+    if(userToken) {
+      auth = {
+        credentials: 'include',
+        headers: {
+          'Authorization': 'Bearer '+userToken,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      }
+    }
+    const res = await fetch(process.env.REACT_APP_API_URL+'/cupons', auth)
     .then(response => response.json())
     .catch(erro => console.error('Erro no atualizacupons',erro))
     if(res && res.success) {

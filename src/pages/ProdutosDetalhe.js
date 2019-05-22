@@ -7,6 +7,7 @@ import Breadcrumb from '../ui/Breadcrumb';
 import { Link } from 'react-router-dom'
 import { LojaConsumer } from '../LojaContext';
 import CupomBoasVindas from '../components/CupomBoasVindas';
+import { UserConsumer } from '../UserContext';
 
 class ProdutoDetalhado extends React.Component {
 
@@ -16,7 +17,7 @@ class ProdutoDetalhado extends React.Component {
 
   componentDidMount() {
     if(this.props.produtoId) {
-      this.props.getOfertaById(this.props.produtoId)
+      this.props.getOfertaById(this.props.produtoId, this.props.userToken)
       .then((oferta) => {
         this.setState({oferta})
       })
@@ -25,7 +26,7 @@ class ProdutoDetalhado extends React.Component {
 
   componentWillReceiveProps(props) {
     if(props.produtoId) {
-      props.getOfertaById(props.produtoId)
+      props.getOfertaById(props.produtoId, props.userToken)
       .then((oferta) => {
         this.setState({oferta})
       })
@@ -157,14 +158,19 @@ export default class ProdutosDetalhe extends React.Component {
       </Breadcrumb>
 
       <View>
-        <LojaConsumer>
-          {({getOfertaById}) => (
-            <ProdutoDetalhado
-              getOfertaById={getOfertaById}
-              produtoId={this.state.produtoId}
-            />
+        <UserConsumer>
+          {({userToken}) => (
+          <LojaConsumer>
+            {({getOfertaById}) => (
+              <ProdutoDetalhado
+                getOfertaById={getOfertaById}
+                produtoId={this.state.produtoId}
+                userToken={userToken}
+              />
+            )}
+          </LojaConsumer>
           )}
-        </LojaConsumer>
+        </UserConsumer>
       </View>
 
       <CupomBoasVindas/>

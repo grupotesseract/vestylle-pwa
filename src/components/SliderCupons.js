@@ -5,6 +5,7 @@ import RubikText from "../ui/RubikText";
 import View from "../ui/View";
 import { LojaConsumer } from "../LojaContext";
 import { FaSpinner } from "react-icons/fa";
+import { UserConsumer } from "../UserContext";
 
 class Cupom extends React.Component {
 
@@ -53,7 +54,8 @@ class ListaCupons extends React.Component {
 
   componentDidMount() {
     this.setState({cupons: this.props.cupons})
-    this.props.atualizaCupons()
+    const token = this.props.userToken
+    this.props.atualizaCupons(token)
     .then((cupons)=>{
       cupons = cupons.slice(0,10)
       this.setState({cupons})
@@ -103,14 +105,19 @@ export default class SliderCupons extends React.Component {
         alignSelf:'center',
         marginBottom: '100px',
       }}>
-      <LojaConsumer>
-        {({atualizaCupons, cupons}) => (
-        <ListaCupons
-          atualizaCupons={atualizaCupons}
-          cupons={cupons}
-        />
+      <UserConsumer>
+        {({userToken}) => (
+        <LojaConsumer>
+          {({atualizaCupons, cupons}) => (
+          <ListaCupons
+            atualizaCupons={atualizaCupons}
+            cupons={cupons}
+            userToken={userToken}
+          />
+          )}
+        </LojaConsumer>
         )}
-      </LojaConsumer>
+      </UserConsumer>
       </View>
     );
   }
