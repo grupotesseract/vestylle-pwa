@@ -1,4 +1,5 @@
 import React from 'react';
+import Slider from "react-slick";
 import View from '../ui/View';
 import Header from '../components/Header'
 import RubikText from '../ui/RubikText';
@@ -14,6 +15,16 @@ class ProdutoDetalhado extends React.Component {
   state = {
     oferta: null
   }
+
+  sliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: false,
+  };
+
 
   componentDidMount() {
     if(this.props.produtoId) {
@@ -72,27 +83,49 @@ class ProdutoDetalhado extends React.Component {
       </View>
       
       <View style={{
-        alignItems: 'center',
-        marginBottom: 20
+        marginBottom: 20,
       }}>
-        <RubikText>{oferta.subtitulo}</RubikText>
+        <RubikText style={{alignSelf: 'center', marginTop: 10, marginBottom: 10}}>{oferta.subtitulo}</RubikText>
 
-        <img 
-          style={{
-            objectFit:'cover', 
-            height: '100%',
-            margin:30
-          }} 
-          alt={oferta.titulo}
-          className="img-slider"
-          src={oferta.urlFoto}/>
+        { oferta.fotos && oferta.fotos.length > 0 &&
+          <View style={{marginBottom: 50}}>
+            <Slider {...this.sliderSettings}>
+              {oferta.fotos.map((foto, key) => (
+                <div style={{ position: 'relative' }}>
+                <div style={{ display: 'flex' }}>
+                    <img 
+                      style={{
+                        objectFit:'cover', 
+                      }} 
+                      alt={oferta.titulo}
+                      className="img-slider"
+                      key={key}
+                      src={foto.urlCloudinary}/>
+                </div>
+                </div>
+              ))}
+            </Slider> 
+          </View>
+        }
+
+        { (!oferta.fotos || oferta.fotos.length === 0) &&
+          <img 
+            style={{
+              objectFit:'cover', 
+              height: '100%',
+              margin:30
+            }} 
+            alt={oferta.titulo}
+            className="img-slider"
+            src={oferta.urlFoto}/>
+        }
 
         <View style={{
           backgroundColor: 'black',
           alignItems: 'left',
           alignSelf: 'stretch',
           padding: 20,
-          marginTop: 5
+          marginTop: 15
         }}>
           <RubikText style={{
             color: 'white',

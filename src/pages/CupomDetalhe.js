@@ -1,6 +1,6 @@
-
 import React from 'react';
 import View from '../ui/View';
+import Slider from "react-slick";
 import Breadcrumb from '../ui/Breadcrumb';
 import RubikText from '../ui/RubikText';
 import Header from '../components/Header';
@@ -162,6 +162,15 @@ class DadosCupom extends React.Component {
         loading: true
     }
 
+  sliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: false,
+  };
+
     static getDerivedStateFromProps(props, state) {
         if (props.cupomId && 
             props.cupons && 
@@ -219,6 +228,7 @@ class DadosCupom extends React.Component {
                 </RubikText>
             }
         }
+        console.log(this.state)
         return <>
         <View style={{alignItems: 'center', marginTop: 30, marginBottom: 20}}>
           <View style={{alignItems: 'center'}} >
@@ -247,18 +257,41 @@ class DadosCupom extends React.Component {
           </View>
         </View>
 
-        <img
-            src={this.state.cupom.foto_caminho || (this.state.cupom.oferta && this.state.cupom.oferta.urlFoto)}
-            alt={this.state.cupom.titulo}
-            style={{
-                borderTop: 1,
-                borderBottom: 1,
-                borderStyle: 'solid',
-                borderColor: '#585756',
-                objectFit: 'contain',
-                width: '100%'
-            }}
-        />
+
+        { this.state.cupom.fotos && this.state.cupom.fotos.length > 0 &&
+          <View style={{marginBottom: 50}}>
+            <Slider {...this.sliderSettings}>
+              {this.state.cupom.fotos.map((foto, key) => (
+                <div style={{ position: 'relative'}}>
+                    <div style={{display:'flex'}}>
+                    <img 
+                      style={{
+                        objectFit:'cover', 
+                      }} 
+                      alt={this.state.cupom.titulo}
+                      className="img-slider"
+                      key={key}
+                      src={foto.urlCloudinary}/>
+                    </div>
+                </div>
+              ))}
+            </Slider> 
+          </View>
+        }
+        { (!this.state.cupom.fotos || this.state.cupom.fotos.length === 0) &&
+            <img
+                src={this.state.cupom.foto_caminho || (this.state.cupom.oferta && this.state.cupom.oferta.urlFoto)}
+                alt={this.state.cupom.titulo}
+                style={{
+                    borderTop: 1,
+                    borderBottom: 1,
+                    borderStyle: 'solid',
+                    borderColor: '#585756',
+                    objectFit: 'contain',
+                    width: '100%'
+                }}
+            />
+        }
 
         <View style={{padding: 15, marginRight: 20, marginLeft: 20, textAlign: 'left'}}>
             <RubikText style={{fontSize: 18, marginBottom: 5}}>
