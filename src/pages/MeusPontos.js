@@ -123,14 +123,17 @@ export default class MeusPontos extends React.Component {
           <LaughingSmiling style={{color: 'white', fontSize: 26, marginBottom: 10}}>acumulam pontos</LaughingSmiling>
 
           <UserConsumer>
-          {({ perfil, getDadosMeuPerfil }) => (
-            <DisplayPontos 
+          {({ perfil, getDadosMeuPerfil }) => {
+            if(!perfil) {
+              return <></>
+            }
+            return <DisplayPontos 
               qtdPontos={perfil.saldo_pontos}
               data_vencimento={perfil.data_vencimento_pontos}
               nome={perfil.nomeSimples || perfil.nome}
               atualizaPerfil={getDadosMeuPerfil}
             />
-          )}
+          }}
           </UserConsumer>
 
         </View>

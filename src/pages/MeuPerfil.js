@@ -94,18 +94,20 @@ class FormMeuPerfil extends React.Component {
     loading: true
   }
 
-  componentDidMount() {
-    this.props.getData()
-    .then(perfil => {
-      if(perfil.data_nascimento) {
-        perfil.data_nascimento = this.utf2ddmmaaaa(perfil.data_nascimento)
-      }
-      this.setState({
-        ...perfil,
-        loading: false
+  componentDidUpdate() {
+    if(this.state.loading) {
+      this.props.getData()
+      .then(perfil => {
+        if(perfil.data_nascimento) {
+          perfil.data_nascimento = this.utf2ddmmaaaa(perfil.data_nascimento)
+        }
+        this.setState({
+          ...perfil,
+          loading: false
+        })
       })
-    })
     .catch(erro => console.error('Erro no form de meu perfil',erro))
+    }
   }
 
   render() {
@@ -277,7 +279,7 @@ export default class MeuPerfil extends React.Component {
     return ( <View>
       <Header/>
       <UserConsumer>
-      {({ getDadosMeuPerfil, setDadosMeuPerfil, atualizaInfosUser, setPerfil }) => (<>
+      {({ getDadosMeuPerfil, setDadosMeuPerfil, setPerfil }) => (<>
       <ImageBackground
         source={require('../assets/fundologin.jpg')}
         style={{width: '100%', height: '100%'}}>
@@ -286,7 +288,6 @@ export default class MeuPerfil extends React.Component {
             getData={getDadosMeuPerfil}
             setData={setDadosMeuPerfil}
             atualizaPerfil={setPerfil}
-            atualizaInfosUser={atualizaInfosUser}
           />
         </View>
         <MiniRodape/>

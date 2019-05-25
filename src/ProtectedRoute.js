@@ -4,7 +4,23 @@ import { UserConsumer } from './UserContext';
 
 const ProtectedRoute = ({ component: Component, ...rest }) => (
   <UserConsumer>
-    {({ isAuth }) => (
+    { ({ isAuth, loadFromLocalStorage }) => {
+
+    if(!isAuth) {
+      let auth = loadFromLocalStorage()
+      return (
+        <Route
+          render={
+            props =>
+              auth 
+              ? <Component {...props} /> 
+              : <Redirect to="/cadastro" />
+          }
+          {...rest}
+        />
+      )
+    } else {
+      return (
       <Route
         render={
           props =>
@@ -14,7 +30,9 @@ const ProtectedRoute = ({ component: Component, ...rest }) => (
         }
         {...rest}
       />
-    )}
+      )
+    }
+    }}
   </UserConsumer>
 )
 

@@ -37,10 +37,18 @@ class InputCupomQR extends React.Component {
     })
   }
 
-  componentDidMount() {
+  componentDidUpdate() {
+    /*
     this.setState({
       atualizaValorCupom: this.atualizaValorCupom
     })
+    */
+    const codigoCupom = this.props.codigoCupom
+    if(codigoCupom && !this.state.cupom)
+    if(codigoCupom){
+      this.setState({ cupom: codigoCupom })
+      this.findCupom(codigoCupom)
+    }
   }
 
   handleChangeCumpom = (e) => {
@@ -195,6 +203,18 @@ class InputCupomQR extends React.Component {
 
 export default class AdicionarCupom extends React.Component {
 
+  state = {
+    codigoCupom: null
+  }
+
+  componentDidMount() {
+    const { match: { params } } = this.props;
+    const codigoCupom = params.codigoCupom
+    this.setState({
+      codigoCupom
+    })
+  }
+
   render() {
     return ( <View>
       <Header/>
@@ -253,6 +273,7 @@ export default class AdicionarCupom extends React.Component {
         {({buscaCupom}) => (
           <InputCupomQR
             buscaCupom={buscaCupom}
+            codigoCupom={this.state.codigoCupom}
           />
         )}
       </UserConsumer>

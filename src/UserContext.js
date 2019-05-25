@@ -30,22 +30,25 @@ class UserProvider extends React.Component {
     this.atualizaCuponsUtilizados = this.atualizaCuponsUtilizados.bind(this)
     this.atualizaInfosUser = this.atualizaInfosUser.bind(this)
     this.buscaCupom = this.buscaCupom.bind(this)
+    this.loadFromLocalStorage = this.loadFromLocalStorage.bind(this)
   }
 
-  async loadFromLocalStorage() {
+  loadFromLocalStorage() {
     if(!this.state.isAuth) {
       const userToken = localStorage.getItem('userToken')
       const userId = localStorage.getItem('userId')
       if(userToken && userId) {
-        await this.setState({userToken, userId, isAuth: true})
+        this.setState({userToken, userId, isAuth: true})
         if(!this.state.perfil) {
           const perfil = JSON.parse(localStorage.getItem('perfil'))
           console.log("perfil carregado do localStorage", perfil)
           const ofertas = JSON.parse(localStorage.getItem('ofertas'))
-          await this.setState({perfil, ofertas})
+          this.setState({perfil, ofertas})
         }
+        return true
       }
     }
+    return this.state.isAuth
   }
 
   componentDidMount() {
@@ -53,11 +56,8 @@ class UserProvider extends React.Component {
   }
 
   async atualizaInfosUser() {
-
-    this.loadFromLocalStorage().then(() => {
-      this.atualizaCuponsUtilizados()
-    }
-    )
+    this.loadFromLocalStorage()
+    this.atualizaCuponsUtilizados()
   }
 
   async atualizaCuponsUtilizados() {
@@ -88,7 +88,7 @@ class UserProvider extends React.Component {
         }
       })
     })
-    .catch(error => console.error('Ativa cupom error', error));
+    .catch(error => console.error('Atualiza cupons utilizados error', error));
     return res;
   }
 
@@ -346,6 +346,7 @@ class UserProvider extends React.Component {
   }
 
   async getDadosMeuPerfil() {
+    console.log(this.state)
     const res = await fetch(process.env.REACT_APP_API_URL+'/pessoas/'+this.state.userId,
       {
         credentials: 'include',
@@ -520,6 +521,7 @@ class UserProvider extends React.Component {
           cuponsUtilizados: this.state.cuponsUtilizados,
           atualizaCuponsUtilizados: this.atualizaCuponsUtilizados,
           atualizaInfosUser: this.atualizaInfosUser,
+          loadFromLocalStorage: this.loadFromLocalStorage,
           buscaCupom: this.buscaCupom
         }}
       >
