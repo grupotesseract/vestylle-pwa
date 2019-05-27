@@ -80,7 +80,7 @@ class UserProvider extends React.Component {
         if(jsonRes.success) {
           const cuponsUtilizados = jsonRes.data
           const cuponsFormatados = cuponsUtilizados.map(cupom => {
-            let cupomFormatado = Object.assign({},cupom.cupom,{codigo_unico: cupom.codigo_unico});
+            let cupomFormatado = Object.assign({},cupom,{codigo_unico: cupom.codigo_unico});
             return cupomFormatado
           })
           this.setState({cuponsUtilizados: cuponsFormatados})
