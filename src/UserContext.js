@@ -10,7 +10,8 @@ class UserProvider extends React.Component {
     userId: null,
     perfil: null,
     ofertas: [],
-    cuponsUtilizados: []
+    cuponsUtilizados: [],
+    isLoadingUser: true
   }
 
   constructor() {
@@ -55,9 +56,10 @@ class UserProvider extends React.Component {
     this.atualizaInfosUser()
   }
 
-  async atualizaInfosUser() {
+  atualizaInfosUser() {
     this.loadFromLocalStorage()
     this.atualizaCuponsUtilizados()
+    this.setState({ isLoadingUser: false })
   }
 
   async atualizaCuponsUtilizados() {
@@ -522,6 +524,7 @@ class UserProvider extends React.Component {
           atualizaCuponsUtilizados: this.atualizaCuponsUtilizados,
           atualizaInfosUser: this.atualizaInfosUser,
           loadFromLocalStorage: this.loadFromLocalStorage,
+          isLoadingUser: this.state.isLoadingUser,
           buscaCupom: this.buscaCupom
         }}
       >

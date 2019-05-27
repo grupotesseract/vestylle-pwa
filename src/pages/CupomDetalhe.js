@@ -258,12 +258,41 @@ class DadosCupom extends React.Component {
         </View>
 
 
+        <View style={{position:'relative'}}>
+
+            {Number(this.state.cupom.porcentagem_off) > 0 &&
+            <View style={{
+                backgroundColor: '#e20f17',
+                position: 'absolute',
+                top: -3,
+                right: 45,
+                padding: 10,
+                paddingBottom: 0,
+                zIndex: 3
+            }}
+            className="bandeirola">
+                <RubikText bold={true} 
+                style={{
+                    fontSize:22,
+                    color: 'white'
+                }}>{this.state.cupom.porcentagem_off}%</RubikText>
+                <RubikText bold={true} 
+                style={{
+                    fontSize:20,
+                    color: 'white',
+                    flexDirection: 'column',
+                    marginTop: -2
+                }}>OFF</RubikText>
+            </View>
+            }
+            
         { this.state.cupom.fotos && this.state.cupom.fotos.length > 0 &&
           <View style={{marginBottom: 50}}>
             <Slider {...this.sliderSettings}>
               {this.state.cupom.fotos.map((foto, key) => (
                 <div style={{ position: 'relative'}}>
                     <div style={{display:'flex'}}>
+
                     <img 
                       style={{
                         objectFit:'cover', 
@@ -292,6 +321,7 @@ class DadosCupom extends React.Component {
                 }}
             />
         }
+        </View>
 
         <View style={{padding: 15, marginRight: 20, marginLeft: 20, textAlign: 'left'}}>
             <RubikText style={{fontSize: 18, marginBottom: 5}}>

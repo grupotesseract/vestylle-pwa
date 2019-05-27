@@ -46,12 +46,13 @@ class ProdutoDetalhado extends React.Component {
 
   render() {
     const oferta = this.state.oferta
+    if (!oferta) return <></>
     const cupom = oferta && oferta.cupons && oferta.cupons.length > 0 ? oferta.cupons[0] : null
+    const porcentagem_off = cupom && cupom.id ? cupom.porcentagem_off : oferta.porcentagem_off
     console.log(oferta)
-    if (!oferta) return <>Oferta não encontrada</>
     return (
       <>
-      {cupom && cupom.id && (
+      {Number(porcentagem_off) > 0 && (
       <View style={{
         alignItems: 'center',
         backgroundColor: '#e20f17',
@@ -60,11 +61,14 @@ class ProdutoDetalhado extends React.Component {
         marginBottom:-15
       }}>
         <RubikText bold={true} style={{ fontSize: 20, color: 'white' }}>
-          {cupom.porcentagem_off && 
-            cupom.porcentagem_off+"% OFF COM CUPOM"
+          {cupom && cupom.id && 
+            porcentagem_off+"% OFF COM CUPOM"
           }
-          {!cupom.porcentagem_off && 
+          {cupom && cupom.id && !cupom.porcentagem_off && 
             "DESCONTO COM CUPOM"
+          }
+          {(!cupom || !cupom.id) && 
+            porcentagem_off+"% OFF"
           }
         </RubikText>
       </View>
@@ -141,11 +145,23 @@ class ProdutoDetalhado extends React.Component {
           </RubikText>
 
         </View>
+        {oferta.codigo_promocional &&
+          <View style={{
+            backgroundColor: "#ebebeb",
+            padding:10,
+            paddingLeft: 20,
+            flexDirection: 'row',
+            alignItems: 'flex-start'
+          }}>
+            <RubikText bold={true}>CÓDIGO DO PRODUTO:</RubikText>
+            <RubikText style={{marginLeft: 5}}> {oferta.codigo_promocional}</RubikText>
+          </View>
+        }
       
         {cupom && cupom.id && (
           <Link
             to={"/cupom/"+cupom.id}
-            title="VER DETALHES"
+            title="ATIVAR CUPOM"
             style={{
               backgroundColor: '#e20f17',
               color: 'white',

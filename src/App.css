@@ -151,7 +151,7 @@ button {
   content:'';
   position:absolute;
   right: 0;
-  bottom: -15px;
+  bottom: -14px;
   width: 0;
   height: 0;
   border-right: 50px solid #e20f17;
@@ -162,7 +162,7 @@ button {
   content:'';
   position:absolute;
   left: 0;
-  bottom: -15px;
+  bottom: -14px;
   width: 0;
   height: 0;
   border-left: 50px solid #e20f17;

@@ -95,6 +95,7 @@ class ListaProdutos extends React.Component {
           <ProdutoThumb
             id={oferta.id}
             img={oferta.urlFoto}
+            porcentagem_off={oferta.porcentagem_off}
           />
         </View>
         )
@@ -131,6 +132,7 @@ class ListaProdutos extends React.Component {
             liked={oferta.liked}
             titulo={oferta.descricao_oferta}
             subtitulo={oferta.subtitulo}
+            porcentagem_off={oferta.porcentagem_off}
           />
         </View>
       </View>
