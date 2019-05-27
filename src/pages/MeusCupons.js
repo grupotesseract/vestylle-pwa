@@ -171,7 +171,6 @@ class AtualizaCupons extends React.Component {
         }
 
         if(props.cupons !== state.cupons) {
-            console.log(props, state)
             return {
                 cupons: props.cupons
             }
