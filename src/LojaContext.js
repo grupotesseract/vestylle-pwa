@@ -103,25 +103,20 @@ class LojaProvider extends React.Component {
         }
       }
     }
-    const res = await fetch(process.env.REACT_APP_API_URL+'/cupons', auth)
+    await fetch(process.env.REACT_APP_API_URL+'/cupons', auth)
     .then(response => {
       response.json()
       .then(res => {
-        const cupons = res.data
-        console.log(cupons)
-        this.setState({
-          cupons
-        })
+        if(res && res.success) {
+          const cupons = res.data
+          console.log(cupons)
+          this.setState({
+            cupons
+          })
+        }
       })
     })
     .catch(erro => console.error('Erro no atualizacupons',erro))
-    if(res && res.success) {
-      const cupons = res.data;
-      this.setState({cupons})
-      return cupons
-    } else {
-      throw res.message
-    }
   }
 
   async faleConosco(pessoa_id, nome, contato, assunto, mensagem) {
