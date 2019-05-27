@@ -159,13 +159,26 @@ class ListaCupons extends React.Component {
 
 class AtualizaCupons extends React.Component {
 
-    componentDidMount() {
-        if(this.props.atualizaInfosUser){
-            this.props.atualizaInfosUser()
+    state = {
+        cupons: null
+    }
+
+    static getDerivedStateFromProps(props, state) {
+
+        if (!props.isLoadingUser && !state.cupons && !props.cupons) {
+            const token = props.userToken
+            props.atualizaCupons(token)
         }
-        if(this.props.atualizaCupons){
-            this.props.atualizaCupons()
+
+        if(props.cupons !== state.cupons) {
+            console.log(props, state)
+            return {
+                cupons: props.cupons
+            }
         }
+
+        // Return null to indicate no change to state.
+        return null;
     }
     render() {
         return <></>
@@ -186,12 +199,14 @@ export default class MeusCupons extends React.Component {
 
 
         <UserConsumer>
-        {({ atualizaInfosUser }) => (
+        {({ atualizaInfosUser, isLoadingUser }) => (
             <LojaConsumer>
-            {({atualizaCupons}) => (
+            {({atualizaCupons, cupons}) => (
                 <AtualizaCupons
                     atualizaCupons={atualizaCupons}
                     atualizaInfosUser={atualizaInfosUser}
+                    isLoadingUser={isLoadingUser}
+                    cupons={cupons}
                 />
             )}
             </LojaConsumer>
