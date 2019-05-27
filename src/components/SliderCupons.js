@@ -5,6 +5,7 @@ import RubikText from "../ui/RubikText";
 import View from "../ui/View";
 import { LojaConsumer } from "../LojaContext";
 import { FaSpinner } from "react-icons/fa";
+import { UserConsumer } from "../UserContext";
 
 class Cupom extends React.Component {
 
@@ -51,14 +52,31 @@ class ListaCupons extends React.Component {
     cupons: null
   }
 
+  static getDerivedStateFromProps(props, state) {
+    if (!props.isLoadingUser && (!state.cupons && !props.cupons)) {
+
+      const token = props.userToken
+      props.atualizaCupons(token)
+    }
+
+    if(props.cupons !== state.cupons) {
+      console.log(props, state)
+      return {
+        cupons: props.cupons
+      }
+    }
+
+    // Return null to indicate no change to state.
+    return null;
+  }
+
+
   componentDidMount() {
     this.setState({cupons: this.props.cupons})
-    this.props.atualizaCupons()
-    .then((cupons)=>{
-      cupons = cupons.slice(0,10)
-      this.setState({cupons})
-    })
+
   }
+
+  
 
   render() {
     if(this.state.cupons === null) {
@@ -103,14 +121,20 @@ export default class SliderCupons extends React.Component {
         alignSelf:'center',
         marginBottom: '100px',
       }}>
-      <LojaConsumer>
-        {({atualizaCupons, cupons}) => (
-        <ListaCupons
-          atualizaCupons={atualizaCupons}
-          cupons={cupons}
-        />
+      <UserConsumer>
+        {({userToken, isLoadingUser}) => (
+        <LojaConsumer>
+          {({atualizaCupons, cupons}) => (
+          <ListaCupons
+            atualizaCupons={atualizaCupons}
+            cupons={cupons}
+            userToken={userToken}
+            isLoadingUser={isLoadingUser}
+          />
+          )}
+        </LojaConsumer>
         )}
-      </LojaConsumer>
+      </UserConsumer>
       </View>
     );
   }

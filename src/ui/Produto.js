@@ -39,12 +39,12 @@ class Produto extends Component {
 
   render() {
     return <div style={{ overflow: 'visible', position: 'relative', alignSelf: 'center', width: '100%'}}>
-        {(this.props.porcentagem_off) &&
+        {Number(this.props.porcentagem_off) > 0 &&
         <View style={{
             backgroundColor: '#e20f17',
             position: 'absolute',
             top: -3,
-            right: 30,
+            right: 45,
             padding: 10,
             paddingBottom: 0
           }}
@@ -53,7 +53,7 @@ class Produto extends Component {
               style={{
                 fontSize:22,
                 color: 'white'
-              }}>10%</RubikText>
+              }}>{this.props.porcentagem_off}%</RubikText>
             <RubikText bold={true} 
               style={{
                 fontSize:20,

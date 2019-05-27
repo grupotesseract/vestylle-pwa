@@ -53,10 +53,37 @@ class ListaCupons extends React.Component {
                 alignSelf: 'stretch',
                 alignItems: 'stretch',
                 padding: 10,
+                position: 'relative'
             },this.props.fade && {
                 opacity: 0.7,
                 filter: 'grayscale(100%)'
             })}>
+
+                {Number(cupom.porcentagem_off) > 0 &&
+                <View style={{
+                    backgroundColor: '#e20f17',
+                    position: 'absolute',
+                    top: -3,
+                    left: 45,
+                    padding: 10,
+                    paddingBottom: 0,
+                    zIndex: 3
+                }}
+                className="bandeirola">
+                    <RubikText bold={true} 
+                    style={{
+                        fontSize:22,
+                        color: 'white'
+                    }}>{cupom.porcentagem_off}%</RubikText>
+                    <RubikText bold={true} 
+                    style={{
+                        fontSize:20,
+                        color: 'white',
+                        flexDirection: 'column',
+                        marginTop: -2
+                    }}>OFF</RubikText>
+                </View>
+                }
             
                 <View
                     style={{
@@ -96,7 +123,7 @@ class ListaCupons extends React.Component {
                 </RubikText>
                 <Link
                     to={"/cupom/"+cupom.id}
-                    title="VER DETALHES"
+                    title="ATIVAR CUPOM"
                     style={{
                         backgroundColor: '#e20f17',
                         color: 'white',
@@ -108,7 +135,7 @@ class ListaCupons extends React.Component {
                         alignSelf: 'center'
                     }}
                 >
-                    <RubikText>VER DETALHES</RubikText>
+                    <RubikText>ATIVAR CUPOM</RubikText>
                 </Link>
             </View>
         })}

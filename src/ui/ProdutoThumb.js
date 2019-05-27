@@ -15,7 +15,7 @@ class ProdutoThumb extends Component {
           marginTop: 10,
           width: '100%'
         }}>
-        {(this.props.porcentagem_off) &&
+        {Number(this.props.porcentagem_off) > 0 &&
         <View style={{
             backgroundColor: '#e20f17',
             position: 'absolute',

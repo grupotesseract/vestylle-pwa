@@ -40,7 +40,7 @@ class ListaProdutos extends React.Component {
     if(listaNova) {
       listaDesejos = listaNova.map((oferta) => oferta.id);
     }
-    this.props.getOfertasComLike(listaDesejos)
+    this.props.getOfertasComLike(listaDesejos, this.props.userToken)
     .then((ofertas) => {
       this.setState({ofertas})
     })
@@ -95,6 +95,7 @@ class ListaProdutos extends React.Component {
           <ProdutoThumb
             id={oferta.id}
             img={oferta.urlFoto}
+            porcentagem_off={oferta.porcentagem_off}
           />
         </View>
         )
@@ -131,6 +132,7 @@ class ListaProdutos extends React.Component {
             liked={oferta.liked}
             titulo={oferta.descricao_oferta}
             subtitulo={oferta.subtitulo}
+            porcentagem_off={oferta.porcentagem_off}
           />
         </View>
       </View>
@@ -204,12 +206,13 @@ export default class Produtos extends React.Component {
 
       <View>
         <UserConsumer>
-        {({listaDesejos}) => (
+        {({listaDesejos, userToken}) => (
           <LojaConsumer>
           {({getOfertasComLike}) => (
             <ListaProdutos
               getOfertasComLike={getOfertasComLike}
               listaDesejos={listaDesejos}
+              userToken={userToken}
               visualizacao={this.state.visualizacao}
             />
           )}
