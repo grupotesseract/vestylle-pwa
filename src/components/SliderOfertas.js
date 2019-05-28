@@ -34,7 +34,6 @@ class ListaOfertas extends React.Component {
         return {
           ofertas: ofertas
         }
-
       })
     }
 
