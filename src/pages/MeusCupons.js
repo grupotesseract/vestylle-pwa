@@ -54,7 +54,7 @@ class ListaCupons extends React.Component {
                 alignItems: 'stretch',
                 padding: 10,
                 position: 'relative'
-            },this.props.fade && {
+            },this.props.inativo && {
                 opacity: 0.7,
                 filter: 'grayscale(100%)'
             })}>
@@ -135,7 +135,7 @@ class ListaCupons extends React.Component {
                         alignSelf: 'center'
                     }}
                 >
-                    <RubikText>ATIVAR CUPOM</RubikText>
+                    <RubikText>{ this.props.inativo ? "VER DETALHES" : "ATIVAR CUPOM"} </RubikText>
                 </Link>
             </View>
         })}
@@ -168,6 +168,7 @@ class AtualizaCupons extends React.Component {
         if (!props.isLoadingUser && !state.cupons && !props.cupons) {
             const token = props.userToken
             props.atualizaCupons(token)
+            props.atualizaCuponsUtilizados()
         }
 
         if(props.cupons !== state.cupons) {
@@ -198,11 +199,12 @@ export default class MeusCupons extends React.Component {
 
 
         <UserConsumer>
-        {({ atualizaInfosUser, isLoadingUser }) => (
+        {({ atualizaInfosUser, isLoadingUser, atualizaCuponsUtilizados }) => (
             <LojaConsumer>
             {({atualizaCupons, cupons}) => (
                 <AtualizaCupons
                     atualizaCupons={atualizaCupons}
+                    atualizaCuponsUtilizados={atualizaCuponsUtilizados}
                     atualizaInfosUser={atualizaInfosUser}
                     isLoadingUser={isLoadingUser}
                     cupons={cupons}
@@ -275,7 +277,7 @@ export default class MeusCupons extends React.Component {
             </View>
             { this.state.cupons === 'ativos' ?
                  <UserConsumer>
-                {({ cuponsUtilizados }) => (
+                {({ cuponsUtilizados, atualizaCuponsUtilizados }) => (
                     <LojaConsumer>
                     {({cupons}) => {
                        if(cupons) {
@@ -284,6 +286,7 @@ export default class MeusCupons extends React.Component {
                        return (
                         <ListaCupons
                         cupons={cupons}
+                        atualizaCupons={atualizaCuponsUtilizados}
                         />
                     )}}
                     </LojaConsumer>
@@ -295,7 +298,7 @@ export default class MeusCupons extends React.Component {
                     <ListaCupons
                         cupons={cuponsUtilizados}
                         atualizaCupons={atualizaCuponsUtilizados}
-                        fade={true}
+                        inativo={true}
                     />  
                   )}
                  </UserConsumer>

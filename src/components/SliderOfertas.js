@@ -23,17 +23,28 @@ class ListaOfertas extends React.Component {
     error: null
   }
 
-  atualizaOfertas(props) {
-    const listaDesejosIds = props.listaDesejos ? props.listaDesejos.map((produto)=> produto.id) : []
-    this.props.getOfertasComLike(listaDesejosIds, props.userToken)
-    .then((ofertas)=>{
-      ofertas = ofertas.slice(0,10)
-      this.setState({ofertas})
-    })
-    .catch((e) => {
-      const error = "Erro ao carregar ofertas."
-      this.setState({error})
-    })
+  static getDerivedStateFromProps(props, state) {
+
+    console.log("props", props, state)
+    if (!props.isLoadingUser && !state.ofertas && !props.ofertas) {
+      const listaDesejosIds = props.listaDesejos ? props.listaDesejos.map((produto)=> produto.id) : []
+      props.getOfertasComLike(listaDesejosIds, props.userToken)
+      .then(ofertas => {
+      console.log("ofertas",ofertas)
+        return {
+          ofertas: ofertas
+        }
+      })
+    }
+
+    if(props.ofertas !== state.ofertas) {
+      return {
+        ofertas: props.ofertas
+      }
+    }
+
+    // Return null to indicate no change to state.
+    return null;
   }
 
   componentDidMount() {
@@ -43,12 +54,8 @@ class ListaOfertas extends React.Component {
     this.setState({
       ofertas: this.props.ofertas.slice(0,10)
     })
-    this.atualizaOfertas(this.props)
   }
   
-  componentWillReceiveProps(props) {
-    this.atualizaOfertas(props)
-  }
 
   render() {
     if(this.state.ofertas === null) {
@@ -75,7 +82,7 @@ class ListaOfertas extends React.Component {
     }
     return(<Slider {...this.settings}>
         {this.state.ofertas.map((oferta, key) => (
-          <div style={{position: 'relative'}}>
+          <div style={{position: 'relative'}} key={key}>
           <div style={{paddingTop: 5}}>
             <Produto
               key={key}
@@ -101,7 +108,7 @@ export default class SliderOfertas extends React.Component {
       }}>
 
       <UserConsumer>
-        {( {listaDesejos, userToken} ) => (
+        {( {listaDesejos, userToken, isLoadingUser} ) => (
         <LojaConsumer>
           {({getOfertasComLike, ofertas}) => (
 
@@ -110,6 +117,7 @@ export default class SliderOfertas extends React.Component {
             ofertas={ofertas}
             listaDesejos={listaDesejos}
             userToken={userToken}
+            isLoadingUser={isLoadingUser}
           />
           )}
         </LojaConsumer>
