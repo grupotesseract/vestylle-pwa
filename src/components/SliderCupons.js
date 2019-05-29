@@ -25,11 +25,11 @@ class Cupom extends React.Component {
           to={"/cupom/"+this.props.id}
           style={{
             backgroundColor: "#feca03",
-            padding: 10,
+            padding: 9,
             position: "absolute",
             display: 'block',
             alignSelf: 'center',
-            bottom: '40px'
+            bottom: '30px'
           }}
         >
           <RubikText bold={true}>ATIVAR CUPOM</RubikText>
@@ -93,7 +93,7 @@ class ListaCupons extends React.Component {
         style={{
           color: 'white',
           alignSelf: 'center',
-          marginTop: 80,
+          marginTop: 60,
           zIndex: 2
         }}
         >Nenhum cupom encontrado.</RubikText>
@@ -117,7 +117,7 @@ export default class SliderCupons extends React.Component {
       <View style={{
         width:'93%', 
         alignSelf:'center',
-        marginBottom: '100px',
+        marginBottom: '70px',
       }}>
       <UserConsumer>
         {({userToken, isLoadingUser}) => (

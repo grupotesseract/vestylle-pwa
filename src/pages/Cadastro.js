@@ -128,7 +128,7 @@ class Cadastro extends Component {
         ):(
         <>
           <View style={this.styles.rightAlign}>
-            <RubikText style={{color:'#FFFFFF', textAlign: 'left'}}>Faça seu cadastro e receba benefícios exclusivos</RubikText>
+            <RubikText style={{color:'#FFFFFF', textAlign: 'left', paddingRight: 20}}>Faça seu cadastro e receba benefícios exclusivos</RubikText>
             <UserConsumer>
             {({ setFacebookToken }) => (
               <FBButton
@@ -149,13 +149,6 @@ class Cadastro extends Component {
               />
               <RubikText style={this.styles.fontBotao}> Cadastrar com CPF ou E-MAIL</RubikText>
             </Link>
-            <View style={this.styles.fullCenter}>
-              <Link
-                to="/"
-                style={this.styles.textoSmall}
-              >Sobre o programa Cliente Vestylle Megastore Jaú
-              </Link>
-            </View>
           </View>
 
           <View style={this.styles.fullCenter}>
@@ -193,7 +186,7 @@ class Cadastro extends Component {
       flexDirection: 'column',
       width: '80%',
       color: '#FFFFFF',
-      paddingBottom: 40
+      paddingBottom: 30,
     },
     fullCenter: {
       alignSelf: 'stretch',

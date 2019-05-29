@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import View from '../ui/View';
 import { IoMdHome, IoMdQrScanner, IoMdShirt, IoMdPin } from 'react-icons/io'
 import { MdPerson } from 'react-icons/md';
-import { FaStar, FaHeart, FaWhatsapp, FaArrowLeft, FaPowerOff } from 'react-icons/fa'
+import { FaStar, FaHeart, FaWhatsapp, FaArrowLeft, FaPowerOff, FaWallet } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import { UserConsumer } from '../UserContext';
 
@@ -70,6 +70,12 @@ class Menu extends Component {
                 label="Meus Pontos"
                 page="/meuspontos"
                 icon={FaStar}
+            />
+            <MenuButton 
+                toggleMenu={this.props.toggleMenu} 
+                label="Meus Cupons"
+                page="/meuscupons"
+                icon={FaWallet}
             />
             <MenuButton 
                 toggleMenu={this.props.toggleMenu} 
