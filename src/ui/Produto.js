@@ -39,6 +39,8 @@ class Produto extends Component {
 
   render() {
     return <div style={{ overflow: 'visible', position: 'relative', alignSelf: 'center', width: '100%'}}>
+        <Link 
+          to={"/produtos/"+this.props.id}>
         {Number(this.props.porcentagem_off) > 0 &&
         <View style={{
             backgroundColor: '#e20f17',
@@ -69,11 +71,11 @@ class Produto extends Component {
             height: '100%',
             borderWidth: 2,
             borderColor: '#bdbabc',
-            borderRadius: 10
         }} 
           alt={this.props.id}
           className="img-slider"
           src={this.props.img}/>
+        </Link>
         <View style={{
           flexDirection: 'row'
         }}>

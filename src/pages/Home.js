@@ -32,7 +32,7 @@ class Home extends Component {
           alignItems:'center',
         }}>
           <RubikText bold={true} style={{fontSize: 25}}>
-          preparamos
+          Preparamos
           </RubikText>
           <LaughingSmiling style={{fontSize: 30}}>
           benefícios exclusivos
@@ -86,7 +86,7 @@ class Home extends Component {
           <div style={{
             position: 'absolute',
             height: '55%',
-            minHeight: '150px',
+            maxHeight: 220,
             width: '100%',
             backgroundColor: '#55bcba',
             top: '10%',

@@ -27,17 +27,18 @@ class CupomContent extends Component {
             position: 'absolute',
             top: -25,
             padding: 10,
-            paddingTop: 40
+            paddingTop: 20
           }}
           className="bandeirola">
             <RubikText bold={true} 
               style={{
-                fontSize:42,
+                fontSize:32,
                 color: 'white'
               }}>10%</RubikText>
             <RubikText bold={true} 
               style={{
-                fontSize:32,
+                marginTop: -5,
+                fontSize:28,
                 color: 'white',
                 flexDirection: 'column'
               }}>OFF</RubikText>

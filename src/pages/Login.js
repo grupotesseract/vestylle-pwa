@@ -28,7 +28,7 @@ export default class LoginScreen extends React.Component {
           <Redirect to={this.state.redirectTo}/>
         )}
         <View
-          style={{width: '80%', flexGrow:1, marginBottom: 'auto', justifyContent: 'center'}}>
+          style={{width: '80%', flexGrow:3, marginBottom: 'auto', justifyContent: 'center'}}>
         <Link to="/" style={{flexDirection:'column'}}>
           <img
             alt="Vestylle"
@@ -41,7 +41,7 @@ export default class LoginScreen extends React.Component {
         </View>
 
         <View
-          style={{width: '80%'}}>
+          style={{width: '80%', justifyItems: 'center', flexGrow: 1}}>
 
           <RubikText style={styles.label}>CPF ou E-mail</RubikText>
           <UserConsumer>
@@ -73,14 +73,6 @@ export default class LoginScreen extends React.Component {
           )}
           </UserConsumer>
         </View>
-        <Link 
-          navigation={this.props.navigation}
-          to="/"
-          fontSize="12"
-          style={{marginTop: 100, marginBottom: 25, color: "#feca03", fontSize: 12}}
-        >
-          Saiba mais sobre o aplicativo Megastore Jaú
-        </Link>
         { this.state.erroLogin && (
           <Alert
             title = "Erro"
