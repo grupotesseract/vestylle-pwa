@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import View from '../ui/View';
 import { IoMdHome, IoMdQrScanner, IoMdShirt, IoMdPin } from 'react-icons/io'
 import { MdPerson } from 'react-icons/md';
-import { FaStar, FaHeart, FaWhatsapp, FaArrowLeft, FaPowerOff, FaWallet } from 'react-icons/fa'
+import { FaStar, FaHeart, FaWhatsapp, FaArrowLeft, FaWallet } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import { UserConsumer } from '../UserContext';
 import RubikText from '../ui/RubikText';

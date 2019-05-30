@@ -10,6 +10,7 @@ class UserProvider extends React.Component {
     userId: null,
     perfil: null,
     ofertas: [],
+    cupons: [],
     cuponsUtilizados: [],
     isLoadingUser: true
   }
@@ -31,6 +32,7 @@ class UserProvider extends React.Component {
     this.atualizaCuponsUtilizados = this.atualizaCuponsUtilizados.bind(this)
     this.atualizaInfosUser = this.atualizaInfosUser.bind(this)
     this.buscaCupom = this.buscaCupom.bind(this)
+    this.atualizaCupons = this.atualizaCupons.bind(this)
     this.loadFromLocalStorage = this.loadFromLocalStorage.bind(this)
     this.faleConosco = this.faleConosco.bind(this)
   }
@@ -43,7 +45,7 @@ class UserProvider extends React.Component {
         this.setState({userToken, userId, isAuth: true})
         if(!this.state.perfil) {
           const perfil = JSON.parse(localStorage.getItem('perfil'))
-          console.log("perfil carregado do localStorage", perfil)
+          // console.log("perfil carregado do localStorage", perfil)
           const ofertas = JSON.parse(localStorage.getItem('ofertas'))
           this.setState({perfil, ofertas})
         }
@@ -57,10 +59,42 @@ class UserProvider extends React.Component {
     this.atualizaInfosUser()
   }
 
-  atualizaInfosUser() {
-    this.loadFromLocalStorage()
-    this.atualizaCuponsUtilizados()
-    this.setState({ isLoadingUser: false })
+  async atualizaInfosUser() {
+    await this.loadFromLocalStorage()
+    await this.atualizaCuponsUtilizados()
+    await this.setState({ isLoadingUser: false })
+  }
+
+  async atualizaCupons() {
+    if(this.state.isLoadingUser) {
+      await this.atualizaInfosUser()
+    }
+    const userToken = this.state.userToken
+    let auth = null
+    if(userToken) {
+      auth = {
+        credentials: 'include',
+        headers: {
+          'Authorization': 'Bearer '+userToken,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      }
+    }
+    await fetch(process.env.REACT_APP_API_URL+'/cupons', auth)
+    .then(response => {
+      response.json()
+      .then(res => {
+        if(res && res.success) {
+          const cupons = res.data
+          console.log("cupons",cupons)
+          this.setState({
+            cupons
+          })
+        }
+      })
+    })
+    .catch(erro => console.error('Erro no atualizacupons',erro))
   }
 
   async atualizaCuponsUtilizados() {
@@ -541,6 +575,7 @@ class UserProvider extends React.Component {
     return (
       <UserContext.Provider
         value={{ 
+          cupons: this.state.cupons,
           isAuth: this.state.isAuth,
           userToken: this.state.userToken,
           perfil: this.state.perfil,
@@ -563,6 +598,7 @@ class UserProvider extends React.Component {
           loadFromLocalStorage: this.loadFromLocalStorage,
           isLoadingUser: this.state.isLoadingUser,
           faleConosco: this.faleConosco, 
+          atualizaCupons: this.atualizaCupons,
           buscaCupom: this.buscaCupom
         }}
       >
