@@ -32,6 +32,7 @@ class UserProvider extends React.Component {
     this.atualizaInfosUser = this.atualizaInfosUser.bind(this)
     this.buscaCupom = this.buscaCupom.bind(this)
     this.loadFromLocalStorage = this.loadFromLocalStorage.bind(this)
+    this.faleConosco = this.faleConosco.bind(this)
   }
 
   loadFromLocalStorage() {
@@ -390,6 +391,42 @@ class UserProvider extends React.Component {
     return res;
   }
 
+  async faleConosco(nome, contato, assunto, mensagem) {
+    const params = JSON.stringify({
+      nome,
+      assunto,
+      mensagem,
+      contato
+    })
+    const options = this.state.userToken ?
+      {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Bearer '+this.state.userToken,
+          'Content-Type': 'application/json'
+        },
+        body: params
+      } :
+      {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: params
+      }
+    const res = await fetch(process.env.REACT_APP_API_URL+'/fale_conoscos', options)
+    .then(response => {
+      return response.json().then((jsonRes) => {
+        return jsonRes
+      })
+    })
+    .catch(error => console.error('Erro no fale conosco', error));
+    return res;
+  }
+
   null2emptystring = (obj) => {
     const objRes = obj
     for (var prop in obj) {
@@ -525,6 +562,7 @@ class UserProvider extends React.Component {
           atualizaInfosUser: this.atualizaInfosUser,
           loadFromLocalStorage: this.loadFromLocalStorage,
           isLoadingUser: this.state.isLoadingUser,
+          faleConosco: this.faleConosco, 
           buscaCupom: this.buscaCupom
         }}
       >

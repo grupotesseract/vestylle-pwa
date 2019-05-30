@@ -5,6 +5,7 @@ import { MdPerson } from 'react-icons/md';
 import { FaStar, FaHeart, FaWhatsapp, FaArrowLeft, FaPowerOff, FaWallet } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import { UserConsumer } from '../UserContext';
+import RubikText from '../ui/RubikText';
 
 class MenuButton extends React.Component {
   render() {
@@ -123,11 +124,7 @@ class Menu extends Component {
             <button 
                 onClick={() => this.logoutAndClose(logout)}
             >
-                <FaPowerOff
-                style={{padding: 10, justifyContent: 'center', width: 46 }}
-                size={26}
-                color="white"
-                />
+                <RubikText style={{color: 'white', cursor: 'pointer'}}>Sair</RubikText>
             </button>
             </>
             )}

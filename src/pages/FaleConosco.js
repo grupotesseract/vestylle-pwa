@@ -11,6 +11,7 @@ import { Redirect } from 'react-router-dom'
 import ButtonBorder from '../ui/ButtonBorder';
 import { LojaConsumer } from '../LojaContext';
 import Alert from '../ui/Alert';
+import { UserConsumer } from '../UserContext';
 
 class FormContato extends React.Component {
   state = {
@@ -145,14 +146,72 @@ class FormContato extends React.Component {
   }
 }
 
+class FaleConoscoInfosLoja extends React.Component {
+
+  onlyNumbers(str) {
+    return str.replace(/\D/g, '');
+  }
+
+  render() {
+    const dadosLoja = this.props.dadosLoja
+    if(!dadosLoja) {
+      return <> </>
+    }
+    console.log("Dados da loja", this.props.dadosLoja)
+    return <>
+      <View style={{flexDirection:'column', justifyContent: 'space-evenly'}}>
+        {dadosLoja.whatsapp &&
+        <TouchableHighlight onPress={() => window.open("http://api.whatsapp.com/send?phone=55"+this.onlyNumbers(dadosLoja.whatsapp))}>
+          <RubikText style={{ color: "black", textDecorationLine: 'underline',  flexGrow: 0, marginTop: 5 }}>
+          <FaWhatsapp
+            size={14}
+          />{dadosLoja.whatsapp}
+          </RubikText>
+        </TouchableHighlight>
+        }
+        {dadosLoja.whatsapp2 &&
+        <TouchableHighlight onPress={() => window.open("http://api.whatsapp.com/send?phone=55"+this.onlyNumbers(dadosLoja.whatsapp2))}>
+          <RubikText style={{ color: "black", textDecorationLine: 'underline',  flexGrow: 0, marginTop: 5 }}>
+          <FaWhatsapp
+            size={14}
+          />{dadosLoja.whatsapp2}
+          </RubikText>
+        </TouchableHighlight>
+        }
+      </View>
+      { dadosLoja.telefone &&
+      <>
+      <View style = {{alignItems: 'flex-start', flexGrow: 1, alignSelf: 'stretch'}}>
+        <RubikText style={{color: "black", paddingTop: 20, paddingLeft: 20 }}>
+          Ou se preferir, entre em contato
+        </RubikText>
+        <RubikText style={{color: "black", paddingLeft: 20}}>
+          com a loja pelo telefone
+        </RubikText>
+      </View>
+      <a href={"tel:"+this.onlyNumbers(dadosLoja.telefone)}>
+        <RubikText style={{ color: "black", marginTop: 5}}>
+          <FaPhone
+          size={14}
+        />{dadosLoja.telefone}
+        </RubikText>
+      </a>
+      </>
+    }
+    { dadosLoja.email &&
+      <a href={"mailto:"+dadosLoja.email} style={{alignSelf: 'flex-start'}}>
+      <RubikText style={{ color: "black", marginTop:5, padding: 5, paddingLeft: 20}}>
+        <MdEmail
+        size={14}
+      /> {dadosLoja.email}
+      </RubikText>
+      </a>
+    }
+    </>
+  }
+}
+
 export default class FaleConosco extends React.Component {
-
-  state = {
-  }
-
-  componentDidMount() {
-
-  }
 
   render() {
     return ( <View>
@@ -181,44 +240,13 @@ export default class FaleConosco extends React.Component {
           <RubikText style={{ color: "black", textDecorationLine: 'underline' }}>&nbsp;Whatsapp</RubikText>
         </TouchableHighlight>
       </View>
-      <View style={{flexDirection:'column', justifyContent: 'space-evenly'}}>
-        <TouchableHighlight onPress={() => window.open("http://api.whatsapp.com/send?phone=551421043500")}>
-          <RubikText style={{ color: "black", textDecorationLine: 'underline',  flexGrow: 0, marginTop: 5 }}>
-          <FaWhatsapp
-            size={14}
-          />(14) 99766-8707
-          </RubikText>
-        </TouchableHighlight>
-        <TouchableHighlight onPress={this.openWhatsapp}>
-          <RubikText style={{ color: "black", textDecorationLine: 'underline',  flexGrow: 0, marginTop: 5 }}>
-          <FaWhatsapp
-            size={14}
-          />(14) 2104-3500
-          </RubikText>
-        </TouchableHighlight>
-      </View>
-      <View style = {{alignItems: 'flex-start', flexGrow: 1, alignSelf: 'stretch'}}>
-        <RubikText style={{color: "black", paddingTop: 20, paddingLeft: 20 }}>
-          Ou se preferir, entre em contato
-        </RubikText>
-        <RubikText style={{color: "black", paddingLeft: 20}}>
-          com a loja pelo telefone
-        </RubikText>
-      </View>
-      <a href="tel:1421043500">
-        <RubikText style={{ color: "black", marginTop: 5}}>
-          <FaPhone
-          size={14}
-        />(14) 2104-3500
-        </RubikText>
-      </a>
-      <a href="mailto:megajau@vestylle.com.br" style={{alignSelf: 'flex-start'}}>
-      <RubikText style={{ color: "black", marginTop:5, padding: 5, paddingLeft: 20}}>
-        <MdEmail
-        size={14}
-      /> megajau@vestylle.com.br
-      </RubikText>
-      </a>
+      <LojaConsumer>
+        {({dadosLoja}) => (
+        <FaleConoscoInfosLoja
+          dadosLoja={dadosLoja}
+        />
+        )}
+      </LojaConsumer>
 
       <RubikText 
       bold={true} 
@@ -233,13 +261,13 @@ export default class FaleConosco extends React.Component {
         OU ENTRE EM CONTATO PELO FORMULÁRIO
       </RubikText>
 
-      <LojaConsumer>
+      <UserConsumer>
         {({faleConosco}) => (
         <FormContato
           faleConosco={faleConosco}
         />
         )}
-      </LojaConsumer>
+      </UserConsumer>
       <RodapeCompleto/>
     </View>
     )
