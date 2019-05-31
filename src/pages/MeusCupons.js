@@ -34,7 +34,6 @@ class ListaCupons extends React.Component {
     static getDerivedStateFromProps(props, state) {
         if (state.cuponsSelecionados === 'ativos' &&
             props.cupons !== state.cupons) {
-        console.log(props.cupons)
             return {
                 cupons: props.cupons,
             };
@@ -249,32 +248,6 @@ class ListaCupons extends React.Component {
   }
 }
 
-class AtualizaCupons extends React.Component {
-
-    state = {
-        cupons: [],
-        loading: true
-    }
-
-    static getDerivedStateFromProps(props, state) {
-
-        if(props.cupons !== state.cupons) {
-            return {
-                cupons: props.cupons
-            }
-        }
-        if (!props.isLoadingUser && state.cupons.length === 0 ) {
-            props.atualizaCupons()
-            props.atualizaCuponsUtilizados()
-        }
-
-        // Return null to indicate no change to state.
-        return null;
-    }
-    render() {
-        return <></>
-    }
-}
 export default class MeusCupons extends React.Component {
 
 
@@ -287,19 +260,6 @@ export default class MeusCupons extends React.Component {
   render() {
     return ( <View>
       <Header/>
-
-{/* 
-        <UserConsumer>
-        {({ atualizaCupons, cupons, atualizaInfosUser, isLoadingUser, atualizaCuponsUtilizados }) => (
-            <AtualizaCupons
-                atualizaCupons={atualizaCupons}
-                atualizaCuponsUtilizados={atualizaCuponsUtilizados}
-                atualizaInfosUser={atualizaInfosUser}
-                isLoadingUser={isLoadingUser}
-                cupons={cupons}
-            />
-        )}
-        </UserConsumer> */}
 
       <View style={{backgroundColor: "#585756", position: 'relative'}}>
 

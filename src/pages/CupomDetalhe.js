@@ -5,7 +5,6 @@ import Breadcrumb from '../ui/Breadcrumb';
 import RubikText from '../ui/RubikText';
 import Header from '../components/Header';
 import RodapeCompleto from '../components/RodapeCompleto';
-import { LojaConsumer } from '../LojaContext';
 import { FaSpinner } from 'react-icons/fa';
 import TouchableHighlight from '../ui/TouchableHighlight';
 import { UserConsumer } from '../UserContext';
@@ -159,6 +158,7 @@ class CodigoCupom extends React.Component {
 class DadosCupom extends React.Component {
     state = {
         cupom : null,
+        cupomId: null,
         loading: true
     }
 
@@ -175,30 +175,47 @@ class DadosCupom extends React.Component {
         if (props.cupomId && 
             props.cupons && 
             props.cupons.length > 0) {
-
-
-            const cupom = props.cupons.find((cupom) => Number(cupom.id) === Number(props.cupomId))
             return {
-                cupom,
-                loading: false
+                cupomId: props.cupomId,
             };
         }
 
         // Return null to indicate no change to state.
         return null;
     }
+
+    componentDidUpdate() {
+        if(this.state.cupom || !this.state.cupomId) {
+            return
+        }
+        this.props.getCupomById(this.state.cupomId)
+        .then(cupom => {
+            if(!cupom) {
+                cupom = this.props.cupons.find((cupom) => Number(cupom.id) === Number(this.props.cupomId))
+                console.log("cupom carregado da lista local", cupom)
+            } 
+            this.setState({
+                cupom,
+                loading: false
+            })
+                console.log("cupom carregado", cupom)
+        })
+        .catch(() => {
+           let cupom = this.props.cupons.find((cupom) => Number(cupom.id) === Number(this.props.cupomId))
+            this.setState({
+                cupom,
+                loading: false
+            })
+            console.log("cupom carregado da lista local", cupom)
+        })
+    }
+
     componentDidMount() {
         if(!this.state.cupom &&
            (!this.props.cupons || 
             this.props.cupons.length === 0)) {
                 
             this.props.atualizaCupons()
-            .then((cupons)=>{
-                this.setState({loading: false})
-            })
-            .catch((e)=>{
-                this.setState({loading: false})
-            })
         }
     }
 
@@ -228,7 +245,6 @@ class DadosCupom extends React.Component {
                 </RubikText>
             }
         }
-        console.log(this.state)
         return <>
         <View style={{alignItems: 'center', marginTop: 30, marginBottom: 20}}>
           <View style={{alignItems: 'center'}} >
@@ -371,15 +387,16 @@ export default class CupomDetalhe extends React.Component {
         </Breadcrumb>
       </View>
 
-        <LojaConsumer>
-            {({cupons, atualizaCupons}) => (
+        <UserConsumer>
+        {({cupons, atualizaCupons, getCupomById}) => (
             <DadosCupom
                 cupons = {cupons}
                 cupomId = {this.state.cupomId}
                 atualizaCupons = {atualizaCupons}
+                getCupomById = {getCupomById}
             />
-            )}
-        </LojaConsumer>
+        )}
+        </UserConsumer>
 
         <RubikText
             bold={true} 

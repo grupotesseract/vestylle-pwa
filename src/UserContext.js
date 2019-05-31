@@ -34,6 +34,7 @@ class UserProvider extends React.Component {
     this.buscaCupom = this.buscaCupom.bind(this)
     this.atualizaCupons = this.atualizaCupons.bind(this)
     this.loadFromLocalStorage = this.loadFromLocalStorage.bind(this)
+    this.getCupomById = this.getCupomById.bind(this)
     this.faleConosco = this.faleConosco.bind(this)
   }
 
@@ -127,6 +128,34 @@ class UserProvider extends React.Component {
     })
     .catch(error => console.error('Atualiza cupons utilizados error', error));
     return res;
+  }
+
+  async getCupomById(cupomId) {
+    if(!cupomId) {
+      const msgErro = { erro: "Cupom não encontrado." }
+      throw msgErro
+    }
+
+    const res = await fetch(process.env.REACT_APP_API_URL+'/cupons/'+cupomId,
+      {
+        credentials: 'include',
+        headers: {
+          'Authorization': 'Bearer '+this.state.userToken
+        }
+      }
+    )
+    .then(response => response.json())
+    .catch(erro => console.error('Erro no buscaCupom',erro))
+    if(!res) {
+      const msgErro = { erro: "Cupom não encontrado." }
+      throw msgErro
+    }
+    if(res.success) {
+      const cupom = res.data
+      return cupom
+    } else {
+      throw res.message
+    }
   }
 
   async buscaCupom(codigoCupom) {
@@ -599,6 +628,7 @@ class UserProvider extends React.Component {
           isLoadingUser: this.state.isLoadingUser,
           faleConosco: this.faleConosco, 
           atualizaCupons: this.atualizaCupons,
+          getCupomById: this.getCupomById,
           buscaCupom: this.buscaCupom
         }}
       >
