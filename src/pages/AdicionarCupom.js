@@ -153,6 +153,7 @@ class InputCupomQR extends React.Component {
           borderBottomRightRadius: 5,
           paddingLeft: 20,
           paddingRight: 20,
+          textAlign: 'left',
           alignSelf: 'flex-start'
         }}
       >
@@ -238,11 +239,12 @@ export default class AdicionarCupom extends React.Component {
               borderTopRightRadius: 5,
               borderBottomRightRadius: 5,
               paddingLeft: 20,
+              textAlign:'left'
             }}
           >
             Ler o QR Code impresso na etiqueta
           </RubikText>
-          <RubikText style={{paddingLeft: 20, textAlign: 'left'}}>
+          <RubikText style={{paddingLeft: 20, textAlign: 'left', fontSize: 14, paddingRight: 20}}>
             Utilize a câmera do seu celular para ler o QRCode impresso na etiqueta do produto com desconto.
           </RubikText>
         </View>
@@ -256,15 +258,15 @@ export default class AdicionarCupom extends React.Component {
         </View>
       </View>
 
-      <View style={{ backgroundColor: 'black', padding: 20, marginBottom: 30, marginTop: 40, flexDirection: 'row'}}>
-        <RubikText style={{color: 'white', textAlign: 'left'}}>
+      <View style={{ backgroundColor: 'black', paddingLeft: 20, marginBottom: 30, marginTop: 40, flexDirection: 'row'}}>
+        <RubikText style={{fontSize: 12,color: 'white', textAlign: 'left', paddingBottom: 34, paddingTop: 20}}>
           Clique no botão abaixo e <span style={{color:'#feca03', display: 'inline', fontWeight: 'bold'}}>aponte a câmera do seu celular para o QR Code</span>.
           Aguarde alguns instantes até que ele seja escaneado.
         </RubikText>
         <img
           alt="Leitor QR Code"
           src={require('../assets/maoqr.png')}
-          style={{marginTop: -69, marginBottom: -57, width: 160}}
+          style={{marginTop: -69, marginBottom: -57, width: 135 }}
         />
       </View>
 

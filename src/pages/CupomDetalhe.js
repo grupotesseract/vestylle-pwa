@@ -98,7 +98,7 @@ class CodigoCupom extends React.Component {
             )}
 
 
-            {!this.state.codigo && this.state.usuario && this.state.usuario.id_vestylle && (
+            {!this.state.codigo && this.state.usuario && (this.state.usuario.id_vestylle) && (
             <TouchableHighlight
             style={this.style.btnAtivar}
             onPress={() => this.ativaCupom()}
@@ -108,13 +108,12 @@ class CodigoCupom extends React.Component {
             )}
             {!this.state.usuario.cpf && !this.state.usuario.id_vestylle &&
             <Link to="/meuperfil" style={{flexDirection: 'column', alignItems: 'center'}}>
-                <View style={this.style.btnDesativado}><RubikText bold={true}>ATUALIZAR CPF</RubikText></View>
+                <View><RubikText bold={true}>ATUALIZAR CPF</RubikText></View>
                 <RubikText>Atualize seu CPF para habilitar a ativação de cupons.</RubikText>
             </Link>
             }
             {this.state.usuario.cpf && !this.state.usuario.id_vestylle &&
             <View style={{flexDirection: 'column', alignItems: 'center'}}>
-                <View style={this.style.btnDesativado}><RubikText bold={true}>ATIVAR CUPOM</RubikText></View>
                 <RubikText>Para utilizar seu cupom, faça seu cadastro em nossa loja!</RubikText>
             </View>
             }
@@ -340,11 +339,11 @@ class DadosCupom extends React.Component {
         </View>
 
         <View style={{padding: 15, marginRight: 20, marginLeft: 20, textAlign: 'left'}}>
-            <RubikText style={{fontSize: 18, marginBottom: 5}}>
+            <RubikText style={{fontSize: 16, marginBottom: 5}}>
                 {this.state.cupom.texto_cupom}
             </RubikText>
             { this.state.cupom.data_validade && (
-            <RubikText>
+            <RubikText style={{fontSize: 14}}>
                 Esse cupom é válido até {this.datetime2DDMMAAAA(this.state.cupom.data_validade)}
             </RubikText>
             )}

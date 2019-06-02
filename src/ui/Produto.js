@@ -94,6 +94,7 @@ class Produto extends Component {
               style={{
                 color: '#585756',
                 textDecorationLine: 'underline',
+                textAlign: 'left',
               }}
             >{this.props.titulo.toUpperCase()}</RubikText>
             <RubikText style={{

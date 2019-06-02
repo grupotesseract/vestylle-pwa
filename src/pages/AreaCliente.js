@@ -50,7 +50,7 @@ class AreaCliente extends Component {
           </Link>
         </View>
 
-        <View style={{marginTop: 20, paddingRight: 10, paddingLeft: 10, flexDirection: 'row'}}>
+        <View style={{marginTop: 20, paddingRight: 20, paddingLeft: 20, flexDirection: 'row'}}>
           <Link to="/meuperfil" style={this.style.btnMeuPerfil}>
             <FaUserAlt size={64} color="#1e1e1c"/>
             <RubikText style={this.style.fonteBotao} bold={true}>Meu Perfil</RubikText>
@@ -61,7 +61,7 @@ class AreaCliente extends Component {
           </Link>
         </View>
 
-        <View style={{paddingRight: 10, paddingLeft: 10, flexDirection: 'row'}}>
+        <View style={{padding: 20, paddingTop: 0, flexDirection: 'row'}}>
           <Link to="/listadesejos" style={this.style.btnMeuPerfil}>
             <FaHeart size={64} color="#1e1e1c"/>
             <RubikText style={this.style.fonteBotao} bold={true}>Lista de Desejos</RubikText>
@@ -77,6 +77,7 @@ class AreaCliente extends Component {
         
         </View>
 
+              {/*}
         <UserConsumer>
           {({ receberNotificacoes }) => (<>
           <View style={{paddingRight: 10, paddingLeft: 10, flexDirection: 'row'}}>
@@ -89,6 +90,7 @@ class AreaCliente extends Component {
           </View>
           </>)}
         </UserConsumer>
+          */}
       </View>
       <MiniRodape/>
       </>
@@ -101,7 +103,7 @@ class AreaCliente extends Component {
       backgroundColor: 'white',
       flexDirection: 'column',
       borderRadius: 5,
-      margin: 10,
+      margin: 7,
       padding: 10,
       paddingTop: 20,
       flex: 1

@@ -14,7 +14,8 @@ class Breadcrumb extends Component {
       paddingTop: 20,
       paddingLeft: 20,
       color: 'white',
-      alignSelf: 'flex-start'
+      alignSelf: 'flex-start',
+      fontSize: 14
     }
   }
 }

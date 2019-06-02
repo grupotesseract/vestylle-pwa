@@ -132,7 +132,7 @@ class ListaCupons extends React.Component {
                         border: 1,
                         borderColor: '#868686',
                         borderStyle: 'solid',
-                        height: 250,
+                        height: 220,
                         justifyItems: 'center',
                         position: 'relative',
                         overflow: 'hidden',
@@ -143,6 +143,8 @@ class ListaCupons extends React.Component {
                         style={{
                             width:'100%',
                             position: 'absolute',
+                            objectFit: 'cover',
+                            height: '100%'
 
                         }}
                     />

@@ -89,7 +89,7 @@ class ProdutoDetalhado extends React.Component {
       <View style={{
         marginBottom: 20,
       }}>
-        <RubikText style={{alignSelf: 'center', marginTop: 10, marginBottom: 10}}>{oferta.subtitulo}</RubikText>
+        <RubikText style={{alignSelf: 'center', margin: 10}}>{oferta.subtitulo}</RubikText>
 
         { oferta.fotos && oferta.fotos.length > 0 &&
           <View style={{marginBottom: 50}}>
