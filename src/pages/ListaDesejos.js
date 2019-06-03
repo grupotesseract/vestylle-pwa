@@ -49,32 +49,32 @@ class ListagemDesejos extends React.Component {
         <View style={{alignItems: 'center'}}>
           <RubikText bold={true}>A Lista de Desejos facilita suas compras.</RubikText>
         </View>
-        <View style={{flexDirection:'row', marginTop: 10}}>
+        <View style={{flexDirection:'row', padding:15}}>
           <View style={{backgroundColor: 'white', flexGrow:1, padding: 10}}>
             <img 
               alt=""
               src={require('../assets/sinoalerta.png')}
-              style={{padding:20, border: '1px solid #bdbabc', borderRadius: 10, maxWidth: 48, marginTop: 14}}
+              style={{padding:15, border: '1px solid #bdbabc', borderRadius: 5, maxWidth: 32, marginTop: 8}}
             />
           </View>
           <View style={{flexGrow: 1}}>
-            <RubikText bold={true} style={{fontSize: 17, marginBottom:8}}>ALERTA DE DESCONTO</RubikText>
-            <RubikText bold={true} style={{justifyContent:'flex-start', textAlign: 'left'}}>Adicionando seus produtos favoritos, nós podemos te avisar se ele entrar em oferta. </RubikText>
-            <RubikText style={{justifyContent:'flex-start', textAlign: 'left'}}>Você pode desabilitar essa função em Area do Cliente > Meu Perfil</RubikText>
+            <RubikText bold={true} style={{fontSize: 14, marginBottom:2}}>ALERTA DE DESCONTO</RubikText>
+            <RubikText bold={true} style={{fontSize: 12, justifyContent:'flex-start', textAlign: 'left'}}>Adicionando seus produtos favoritos, nós podemos te avisar se ele entrar em oferta. </RubikText>
+            <RubikText style={{fontSize: 12,justifyContent:'flex-start', textAlign: 'left'}}>Você pode desabilitar essa função em Area do Cliente > Meu Perfil</RubikText>
           </View>
         </View>
-        <View style={{flexDirection:'row', marginBottom: 50}}>
+        <View style={{flexDirection:'row', marginBottom: 50, padding: 15}}>
           <View style={{backgroundColor: 'white', flexGrow:1, padding: 10}}>
             <img 
               alt=""
               src={require('../assets/bag.png')}
-              style={{padding:20, border: '1px solid #bdbabc', borderRadius: 10, maxWidth: 48, marginTop: 14}}
+              style={{padding:15, border: '1px solid #bdbabc', borderRadius: 5, maxWidth: 32, marginTop: 14}}
             />
           </View>
           <View style={{flexGrow: 1}}>
-            <RubikText bold={true} style={{fontSize: 17, marginTop:8, marginBottom:5}}>COMPRAS PRÁTICAS</RubikText>
-            <RubikText bold={true} style={{justifyContent:'flex-start', textAlign: 'left'}}>Na hora das compras em nossa loja, a lista te ajuda.</RubikText>
-            <RubikText style={{justifyContent:'flex-start', textAlign: 'left'}}>É só mostrá-la para um de nossos atendentes que ele encontra para você.</RubikText>
+            <RubikText bold={true} style={{fontSize: 14, marginTop:8, marginBottom:5}}>COMPRAS PRÁTICAS</RubikText>
+            <RubikText bold={true} style={{fontSize: 12,justifyContent:'flex-start', textAlign: 'left'}}>Na hora das compras em nossa loja, a lista te ajuda.</RubikText>
+            <RubikText style={{fontSize: 12,justifyContent:'flex-start', textAlign: 'left'}}>É só mostrá-la para um de nossos atendentes que ele encontra para você.</RubikText>
           </View>
         </View>
 
@@ -121,16 +121,17 @@ class ListagemDesejos extends React.Component {
           backgroundColor:'#585756', 
           padding: 20, 
           flexDirection: 'row',
+          justifyContent: 'center',
           marginBottom: 50,
           boxShadow: '0 0 10px black'
           }}>
           <img alt="clique no coração"
             src={require('../assets/like.png')}
             style={{
-              maxWidth: 100,
+              maxWidth: 70,
               marginRight: 20
             }}/>
-          <RubikText bold={true} style={{color: 'white'}}>Produto adicionado à lista.</RubikText>
+          <RubikText bold={true} style={{fontSize: 12, color: 'white'}}>Produto adicionado à lista.</RubikText>
         </View>
         <CupomBoasVindas/>
       </> ):(<>

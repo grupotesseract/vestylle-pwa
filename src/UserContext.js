@@ -10,6 +10,7 @@ class UserProvider extends React.Component {
     userId: null,
     perfil: null,
     ofertas: [],
+    cupons: [],
     cuponsUtilizados: [],
     isLoadingUser: true
   }
@@ -31,7 +32,10 @@ class UserProvider extends React.Component {
     this.atualizaCuponsUtilizados = this.atualizaCuponsUtilizados.bind(this)
     this.atualizaInfosUser = this.atualizaInfosUser.bind(this)
     this.buscaCupom = this.buscaCupom.bind(this)
+    this.atualizaCupons = this.atualizaCupons.bind(this)
     this.loadFromLocalStorage = this.loadFromLocalStorage.bind(this)
+    this.getCupomById = this.getCupomById.bind(this)
+    this.faleConosco = this.faleConosco.bind(this)
   }
 
   loadFromLocalStorage() {
@@ -42,7 +46,7 @@ class UserProvider extends React.Component {
         this.setState({userToken, userId, isAuth: true})
         if(!this.state.perfil) {
           const perfil = JSON.parse(localStorage.getItem('perfil'))
-          console.log("perfil carregado do localStorage", perfil)
+          // console.log("perfil carregado do localStorage", perfil)
           const ofertas = JSON.parse(localStorage.getItem('ofertas'))
           this.setState({perfil, ofertas})
         }
@@ -56,10 +60,42 @@ class UserProvider extends React.Component {
     this.atualizaInfosUser()
   }
 
-  atualizaInfosUser() {
-    this.loadFromLocalStorage()
-    this.atualizaCuponsUtilizados()
-    this.setState({ isLoadingUser: false })
+  async atualizaInfosUser() {
+    await this.loadFromLocalStorage()
+    await this.atualizaCuponsUtilizados()
+    await this.setState({ isLoadingUser: false })
+  }
+
+  async atualizaCupons() {
+    if(this.state.isLoadingUser) {
+      await this.atualizaInfosUser()
+    }
+    const userToken = this.state.userToken
+    let auth = null
+    if(userToken) {
+      auth = {
+        credentials: 'include',
+        headers: {
+          'Authorization': 'Bearer '+userToken,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      }
+    }
+    await fetch(process.env.REACT_APP_API_URL+'/cupons', auth)
+    .then(response => {
+      response.json()
+      .then(res => {
+        if(res && res.success) {
+          const cupons = res.data
+          console.log("cupons",cupons)
+          this.setState({
+            cupons
+          })
+        }
+      })
+    })
+    .catch(erro => console.error('Erro no atualizacupons',erro))
   }
 
   async atualizaCuponsUtilizados() {
@@ -92,6 +128,34 @@ class UserProvider extends React.Component {
     })
     .catch(error => console.error('Atualiza cupons utilizados error', error));
     return res;
+  }
+
+  async getCupomById(cupomId) {
+    if(!cupomId) {
+      const msgErro = { erro: "Cupom não encontrado." }
+      throw msgErro
+    }
+
+    const res = await fetch(process.env.REACT_APP_API_URL+'/cupons/'+cupomId,
+      {
+        credentials: 'include',
+        headers: {
+          'Authorization': 'Bearer '+this.state.userToken
+        }
+      }
+    )
+    .then(response => response.json())
+    .catch(erro => console.error('Erro no buscaCupom',erro))
+    if(!res) {
+      const msgErro = { erro: "Cupom não encontrado." }
+      throw msgErro
+    }
+    if(res.success) {
+      const cupom = res.data
+      return cupom
+    } else {
+      throw res.message
+    }
   }
 
   async buscaCupom(codigoCupom) {
@@ -390,6 +454,42 @@ class UserProvider extends React.Component {
     return res;
   }
 
+  async faleConosco(nome, contato, assunto, mensagem) {
+    const params = JSON.stringify({
+      nome,
+      assunto,
+      mensagem,
+      contato
+    })
+    const options = this.state.userToken ?
+      {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Bearer '+this.state.userToken,
+          'Content-Type': 'application/json'
+        },
+        body: params
+      } :
+      {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: params
+      }
+    const res = await fetch(process.env.REACT_APP_API_URL+'/fale_conoscos', options)
+    .then(response => {
+      return response.json().then((jsonRes) => {
+        return jsonRes
+      })
+    })
+    .catch(error => console.error('Erro no fale conosco', error));
+    return res;
+  }
+
   null2emptystring = (obj) => {
     const objRes = obj
     for (var prop in obj) {
@@ -504,6 +604,7 @@ class UserProvider extends React.Component {
     return (
       <UserContext.Provider
         value={{ 
+          cupons: this.state.cupons,
           isAuth: this.state.isAuth,
           userToken: this.state.userToken,
           perfil: this.state.perfil,
@@ -525,6 +626,9 @@ class UserProvider extends React.Component {
           atualizaInfosUser: this.atualizaInfosUser,
           loadFromLocalStorage: this.loadFromLocalStorage,
           isLoadingUser: this.state.isLoadingUser,
+          faleConosco: this.faleConosco, 
+          atualizaCupons: this.atualizaCupons,
+          getCupomById: this.getCupomById,
           buscaCupom: this.buscaCupom
         }}
       >

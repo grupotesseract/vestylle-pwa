@@ -46,13 +46,13 @@ class InfosLoja extends React.Component {
       </Breadcrumb>
       <View style={{alignItems: 'center'}}>
         <View style={{alignItems: 'center', padding: 20}}>
-          <LaughingSmiling>Vista-se bem e com a qualidade</LaughingSmiling>
-          <LaughingSmiling>das melhores marcas!</LaughingSmiling>
+          <LaughingSmiling style={{fontSize:18}}>Vista-se bem e com a qualidade</LaughingSmiling>
+          <LaughingSmiling style={{fontSize:18}}>das melhores marcas!</LaughingSmiling>
         </View>
       </View>
       <View style={{padding: 20, alignItems: 'center'}}>
-        <RubikText bold={true} style={{color: 'black', fontSize:20}}>Somos uma loja multimarcas de moda</RubikText>
-        <RubikText bold={true} style={{color: 'black', fontSize:20}}>jovem, casual, acessórios e calçados</RubikText>
+        <RubikText bold={true} style={{color: 'black', fontSize:16}}>Somos uma loja multimarcas de moda
+        jovem, casual, acessórios e calçados</RubikText>
       </View>
 
       <View style={{padding: 20 , marginBottom: 60}}>

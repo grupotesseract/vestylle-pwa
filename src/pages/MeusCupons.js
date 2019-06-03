@@ -5,12 +5,12 @@ import RubikText from '../ui/RubikText';
 import Header from '../components/Header';
 import { Link } from 'react-router-dom'
 import RodapeCompleto from '../components/RodapeCompleto';
-import { LojaConsumer } from '../LojaContext';
 import { UserConsumer } from '../UserContext';
 
 class ListaCupons extends React.Component {
     state = {
-        cupons: []
+        cupons: [],
+        cuponsSelecionados: 'ativos'
     }
 
     datetime2DDMMAAAA = (datetime) => {
@@ -26,12 +26,23 @@ class ListaCupons extends React.Component {
         if(this.props.atualizaCupons) {
             this.props.atualizaCupons()
         }
+        if(this.props.atualizaCuponsUtilizados) {
+            this.props.atualizaCuponsUtilizados()
+        }
     }
 
     static getDerivedStateFromProps(props, state) {
-        if (props.cupons !== state.cupons) {
+        if (state.cuponsSelecionados === 'ativos' &&
+            props.cupons !== state.cupons) {
             return {
                 cupons: props.cupons,
+            };
+        }
+
+        if (state.cuponsSelecionados === 'utilizados' &&
+            props.cuponsUtilizados !== state.cupons) {
+            return {
+                cupons: props.cuponsUtilizados,
             };
         }
 
@@ -41,6 +52,35 @@ class ListaCupons extends React.Component {
 
     render() {
         return <>
+            <View 
+              style={{ flexDirection: 'row', marginTop: 15}}
+              onClick={() => this.toggleCupom()}
+              >
+                <RubikText
+                    style={ 
+                      Object.assign({}, 
+                        this.style.toggleBtn, 
+                        this.style.toggleLeftBtn, 
+                        this.state.cuponsSelecionados === 'ativos' ? 
+                            this.style.toggleAtivo :
+                            this.style.toggleInativo) 
+                    }
+                >
+                    DISPONÍVEIS
+                </RubikText>
+                <RubikText
+                    style={ 
+                      Object.assign({}, 
+                        this.style.toggleBtn, 
+                        this.style.toggleRightBtn, 
+                        this.state.cuponsSelecionados === 'utilizados' ? 
+                            this.style.toggleAtivo :
+                            this.style.toggleInativo) 
+                    }
+                >
+                    ATIVADOS
+                </RubikText>
+            </View>
         {this.state.cupons && 
          this.state.cupons.map((cupom,key) => {
             return <View 
@@ -54,7 +94,7 @@ class ListaCupons extends React.Component {
                 alignItems: 'stretch',
                 padding: 10,
                 position: 'relative'
-            },this.props.inativo && {
+            },this.state.cuponsSelecionados === 'utilizados' && {
                 opacity: 0.7,
                 filter: 'grayscale(100%)'
             })}>
@@ -92,7 +132,7 @@ class ListaCupons extends React.Component {
                         border: 1,
                         borderColor: '#868686',
                         borderStyle: 'solid',
-                        height: 250,
+                        height: 220,
                         justifyItems: 'center',
                         position: 'relative',
                         overflow: 'hidden',
@@ -103,6 +143,8 @@ class ListaCupons extends React.Component {
                         style={{
                             width:'100%',
                             position: 'absolute',
+                            objectFit: 'cover',
+                            height: '100%'
 
                         }}
                     />
@@ -135,12 +177,29 @@ class ListaCupons extends React.Component {
                         alignSelf: 'center'
                     }}
                 >
-                    <RubikText>{ this.props.inativo ? "VER DETALHES" : "ATIVAR CUPOM"} </RubikText>
+                    <RubikText>{ this.state.cuponsSelecionados === 'utilizados' ? "VER DETALHES" : "ATIVAR CUPOM"} </RubikText>
                 </Link>
             </View>
         })}
         </>
     }
+
+  toggleCupom = () => {
+    let cuponsSelecionados = this.state.cuponsSelecionados
+    if(this.props.atualizaCupons) {
+        this.props.atualizaCupons()
+    }
+    if(this.props.atualizaCuponsUtilizados) {
+        this.props.atualizaCuponsUtilizados()
+    }
+    if(cuponsSelecionados === 'utilizados') {
+        cuponsSelecionados = 'ativos'
+        this.setState({cuponsSelecionados})
+        return
+    }
+    cuponsSelecionados = 'utilizados'
+    this.setState({cuponsSelecionados})
+  }
 
     style = {
         bordaCentro : {
@@ -153,37 +212,44 @@ class ListaCupons extends React.Component {
             padding: 5,
             marginRight: 30,
             marginLeft: 30,
-        }
-    }
+        },
+      toggleBtn: {
+        borderWidth: 0,
+        borderStyle: 'solid',
+        padding: 5,
+        paddingRight: 10,
+        paddingLeft: 10,
+        cursor: 'pointer'
+      },
+      toggleLeftBtn: {
+          borderTopRightRadius: 0,
+          borderBottomRightRadius: 0,
+          borderTopLeftRadius: 5,
+          borderBottomLeftRadius: 5,
+      },
+      toggleRightBtn: {
+          borderTopRightRadius: 5,
+          borderBottomRightRadius: 5,
+          borderTopLeftRadius: 0,
+          borderBottomLeftRadius: 0,
+        paddingRight: 10,
+        paddingLeft: 10,
+      },
+      toggleAtivo: {
+          borderWidth: 1,
+          borderColor: '#feca03',
+          backgroundColor: '#feca03',
+          color: 'black'
+      },
+      toggleInativo: {
+          borderWidth: 1,
+          borderColor: '#bdbabc',
+          backgroundColor: 'transparent',
+          color: '#bdbabc'
+      },
+  }
 }
 
-class AtualizaCupons extends React.Component {
-
-    state = {
-        cupons: null
-    }
-
-    static getDerivedStateFromProps(props, state) {
-
-        if (!props.isLoadingUser && !state.cupons && !props.cupons) {
-            const token = props.userToken
-            props.atualizaCupons(token)
-            props.atualizaCuponsUtilizados()
-        }
-
-        if(props.cupons !== state.cupons) {
-            return {
-                cupons: props.cupons
-            }
-        }
-
-        // Return null to indicate no change to state.
-        return null;
-    }
-    render() {
-        return <></>
-    }
-}
 export default class MeusCupons extends React.Component {
 
 
@@ -196,23 +262,6 @@ export default class MeusCupons extends React.Component {
   render() {
     return ( <View>
       <Header/>
-
-
-        <UserConsumer>
-        {({ atualizaInfosUser, isLoadingUser, atualizaCuponsUtilizados }) => (
-            <LojaConsumer>
-            {({atualizaCupons, cupons}) => (
-                <AtualizaCupons
-                    atualizaCupons={atualizaCupons}
-                    atualizaCuponsUtilizados={atualizaCuponsUtilizados}
-                    atualizaInfosUser={atualizaInfosUser}
-                    isLoadingUser={isLoadingUser}
-                    cupons={cupons}
-                />
-            )}
-            </LojaConsumer>
-        )}
-        </UserConsumer>
 
       <View style={{backgroundColor: "#585756", position: 'relative'}}>
 
@@ -246,63 +295,20 @@ export default class MeusCupons extends React.Component {
             <RubikText bold={true} style={{color: 'white'}}>Meus cupons</RubikText>
         </Breadcrumb>
         <View style={{alignItems: 'center'}}>
-            <View 
-              style={{ flexDirection: 'row', marginTop: 15}}
-              onClick={this.toggleCupom}
-              >
-                <RubikText
-                    style={ 
-                      Object.assign({}, 
-                        this.style.toggleBtn, 
-                        this.style.toggleLeftBtn, 
-                        this.state.cupons === 'ativos' ? 
-                            this.style.toggleAtivo :
-                            this.style.toggleInativo) 
-                    }
-                >
-                    DISPONÍVEIS
-                </RubikText>
-                <RubikText
-                    style={ 
-                      Object.assign({}, 
-                        this.style.toggleBtn, 
-                        this.style.toggleRightBtn, 
-                        this.state.cupons === 'utilizados' ? 
-                            this.style.toggleAtivo :
-                            this.style.toggleInativo) 
-                    }
-                >
-                    ATIVADOS
-                </RubikText>
-            </View>
-            { this.state.cupons === 'ativos' ?
-                 <UserConsumer>
-                {({ cuponsUtilizados, atualizaCuponsUtilizados }) => (
-                    <LojaConsumer>
-                    {({cupons}) => {
-                       if(cupons) {
-                         cupons = cupons.filter(cupom => cuponsUtilizados.findIndex(cupomU => Number(cupomU.id) === Number(cupom.id)) < 0)
-                       }
-                       return (
-                        <ListaCupons
-                        cupons={cupons}
-                        atualizaCupons={atualizaCuponsUtilizados}
-                        />
-                    )}}
-                    </LojaConsumer>
-                )}
-                </UserConsumer>
-                 : 
-                 <UserConsumer>
-                  {({cuponsUtilizados, atualizaCuponsUtilizados}) => (
-                    <ListaCupons
-                        cupons={cuponsUtilizados}
-                        atualizaCupons={atualizaCuponsUtilizados}
-                        inativo={true}
-                    />  
-                  )}
-                 </UserConsumer>
-            }
+            <UserConsumer>
+            {({cupons, cuponsUtilizados, atualizaCupons, atualizaCuponsUtilizados }) => {
+                if(cupons) {
+                    cupons = cupons.filter(cupom => cuponsUtilizados.findIndex(cupomU => Number(cupomU.id) === Number(cupom.id)) < 0)
+                }
+                return (
+                <ListaCupons
+                cupons={cupons}
+                cuponsUtilizados={cuponsUtilizados}
+                atualizaCupons={atualizaCupons}
+                atualizaCuponsUtilizados={atualizaCuponsUtilizados}
+                />
+            )}}
+            </UserConsumer>
 
             <Link 
             to="/adicionarcupom"
@@ -373,51 +379,5 @@ export default class MeusCupons extends React.Component {
     )
   }
 
-  toggleCupom = () => {
-    let cupons = this.state.cupons
-    if(cupons === 'utilizados') {
-        cupons = 'ativos'
-        this.setState({cupons})
-        return
-    }
-    cupons = 'utilizados'
-    this.setState({cupons})
-  }
 
-  style = {
-      toggleBtn: {
-        borderWidth: 0,
-        borderStyle: 'solid',
-        padding: 5,
-        paddingRight: 10,
-        paddingLeft: 10,
-        cursor: 'pointer'
-      },
-      toggleLeftBtn: {
-          borderTopRightRadius: 0,
-          borderBottomRightRadius: 0,
-          borderTopLeftRadius: 5,
-          borderBottomLeftRadius: 5,
-      },
-      toggleRightBtn: {
-          borderTopRightRadius: 5,
-          borderBottomRightRadius: 5,
-          borderTopLeftRadius: 0,
-          borderBottomLeftRadius: 0,
-        paddingRight: 10,
-        paddingLeft: 10,
-      },
-      toggleAtivo: {
-          borderWidth: 1,
-          borderColor: '#feca03',
-          backgroundColor: '#feca03',
-          color: 'black'
-      },
-      toggleInativo: {
-          borderWidth: 1,
-          borderColor: '#bdbabc',
-          backgroundColor: 'transparent',
-          color: '#bdbabc'
-      },
-  }
 }

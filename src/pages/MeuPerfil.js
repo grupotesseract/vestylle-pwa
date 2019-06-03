@@ -94,7 +94,7 @@ class FormMeuPerfil extends React.Component {
     loading: true
   }
 
-  componentDidUpdate() {
+  loadPerfil() {
     if(this.state.loading) {
       this.props.getData()
       .then(perfil => {
@@ -106,8 +106,16 @@ class FormMeuPerfil extends React.Component {
           loading: false
         })
       })
-    .catch(erro => console.error('Erro no form de meu perfil',erro))
+      .catch(erro => console.error('Erro no form de meu perfil',erro))
     }
+  }
+
+  componentDidUpdate() {
+    this.loadPerfil();
+  }
+
+  componentDidMount() {
+    this.loadPerfil();
   }
 
   render() {

@@ -38,10 +38,10 @@ class App extends Component {
             <ProtectedRoute exact={true} path="/meuspontos" component={MeusPontos}/>
             <ProtectedRoute exact={true} path="/meuperfil" component={MeuPerfil} />
             <Route exact={true} path="/listadesejos" component={ListaDesejos} />
-            <Route exact={true} path="/adicionarcupom" component={AdicionarCupom} />
+            <ProtectedRoute exact={true} path="/adicionarcupom" component={AdicionarCupom} />
             <ProtectedRoute path="/adicionarcupom/:codigoCupom" component={AdicionarCupom} />
-            <Route path="/cupom/:cupomId" component={CupomDetalhe} />
-            <Route path="/meuscupons" component={MeusCupons} />
+            <ProtectedRoute path="/cupom/:cupomId" component={CupomDetalhe} />
+            <ProtectedRoute path="/meuscupons" component={MeusCupons} />
             <Route exact={true} path="/faleconosco" component={FaleConosco} />
             <Route exact={true} path="/loja" component={Loja} />
           </Switch>

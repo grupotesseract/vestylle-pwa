@@ -15,8 +15,11 @@ class LojaProvider extends React.Component {
     this.atualizaCupons = this.atualizaCupons.bind(this)
     this.getOfertasComLike = this.getOfertasComLike.bind(this)
     this.getOfertaById = this.getOfertaById.bind(this)
-    this.faleConosco = this.faleConosco.bind(this)
     this.atualizaDadosLoja = this.atualizaDadosLoja.bind(this)
+  }
+
+  componentDidMount() {
+    this.atualizaDadosLoja()
   }
 
   async atualizaDadosLoja() {
@@ -119,30 +122,6 @@ class LojaProvider extends React.Component {
     .catch(erro => console.error('Erro no atualizacupons',erro))
   }
 
-  async faleConosco(pessoa_id, nome, contato, assunto, mensagem) {
-    const params = JSON.stringify({
-      pessoa_id,
-      nome,
-      assunto,
-      mensagem,
-      contato
-    })
-    const res = await fetch(process.env.REACT_APP_API_URL+'/fale_conoscos', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: params
-    })
-    .then(response => {
-      return response.json().then((jsonRes) => {
-        return jsonRes
-      })
-    })
-    .catch(error => console.error('Erro no fale conosco', error));
-    return res;
-  }
 
 
   render() {
@@ -155,7 +134,6 @@ class LojaProvider extends React.Component {
           atualizaOfertas: this.atualizaOfertas,
           getOfertasComLike: this.getOfertasComLike,
           getOfertaById: this.getOfertaById,
-          faleConosco: this.faleConosco, 
           atualizaDadosLoja: this.atualizaDadosLoja,
           dadosLoja: this.state.dadosLoja
         }}

@@ -162,32 +162,35 @@ export default class Produtos extends React.Component {
       </View>
 
       <View style={{ padding: 10, paddingLeft: 30, paddingRight: 30}}>
-        <RubikText bold={true} style={{color: 'black'}}>Confira as novidades</RubikText>
 
         <View 
           style={{ 
-            borderTop: 2, 
-            borderBottom: 2, 
-            borderColor: 'black', 
-            borderStyle: 'solid', 
-            paddingTop: 6, 
-            paddingBottom:6,
             marginTop: 5,
             marginBottom: 5,
             flexDirection: 'row'
           }}>
-          <Link to="/listadesejos">
+          <Link to="/listadesejos"
+          style={{
+            borderTop: 2, 
+            borderBottom: 2, 
+            borderColor: 'black', 
+            borderStyle: 'solid', 
+            paddingTop: 0, 
+            paddingBottom:0,
+            paddingRight: 2
+          }}>
             <FaRegHeart 
-              size={36}
-              style={{padding: 2,margin: 2}}
+              size={20}
+              style={{padding: 2,marginRight: 10, flexShrink: 0}}
             />
-            <RubikText style={{textAlign: 'left'}}> Clique aqui para mostrar produtos adicionados a sua LISTA DE DESEJOS</RubikText>
+            <RubikText style={{textAlign: 'left', fontSize: 12}}> Clique aqui para mostrar produtos adicionados a sua LISTA DE DESEJOS</RubikText>
           </Link>
           <TouchableHighlight
+          style={{marginLeft: 20}}
             onPress={() => this.setVisualizacaoMiniatura()}
           >
             <FaTh
-              size={36}
+              size={30}
               style={{padding: 2,margin: 2}}
               color={this.state.visualizacao === 'thumb' ? '#585756' : '#bdbabc'}
             />
@@ -196,12 +199,15 @@ export default class Produtos extends React.Component {
             onPress={() => this.setVisualizacaoGrande()}
           >
             <FaSquare
-              size={36}
+              size={30}
               style={{padding: 2,margin: 2}}
               color={this.state.visualizacao !== 'thumb' ? '#585756' : '#bdbabc'}
             />
           </TouchableHighlight>
         </View>
+      </View>
+      <View style={{paddingLeft: 20, paddingRight: 20}}>
+        <RubikText bold={true} style={{color: 'black'}}>Confira as novidades</RubikText>
       </View>
 
       <View>
