@@ -91,7 +91,8 @@ class FormMeuPerfil extends React.Component {
     celular: '',
     genero: '',
     receberNovidades: false,
-    loading: true
+    loading: true,
+    atualizando: false
   }
 
   loadPerfil() {
@@ -122,7 +123,7 @@ class FormMeuPerfil extends React.Component {
     return <form onSubmit={(e) => this.atualizarPerfil(e)}>
       <RubikText bold={true} style={{color:'white', fontSize: 14, marginTop: 10, marginBottom: 10}} >
         Meu perfil
-        {this.state.loading && <FaSpinner color="white" className="spin" style={{fontSize: 18,marginLeft: 20}}/>}
+        {(this.state.loading || this.state.atualizando) && <FaSpinner color="white" className="spin" style={{fontSize: 18,marginLeft: 20}}/>}
       </RubikText>
 
       { this.state.redirectTo && (
@@ -231,6 +232,10 @@ class FormMeuPerfil extends React.Component {
       perfil.cpf = perfil.cpf.replace(/\D/g,'')
     }
 
+    this.setState({
+      atualizando: true
+    })
+
     await this.props.setData(perfil)
     .then((res) => {
       if(res && res.succes && res.data) {
@@ -238,7 +243,7 @@ class FormMeuPerfil extends React.Component {
         this.props.atualizaPerfil(meuPerfil)
       }
       this.props.getData()
-      this.setState({loading: false})
+      this.setState({atualizando: false})
       this.setState({redirectTo: '/areacliente'})
     })
     .catch((e) => {
@@ -248,6 +253,7 @@ class FormMeuPerfil extends React.Component {
         return msgErro
       })
       this.setState({
+        atualizando: false,
         loading: false,
         erroUpdate:true,
         msgErro
