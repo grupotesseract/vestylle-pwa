@@ -6,6 +6,7 @@ class UserProvider extends React.Component {
   state = { 
     isAuth: false,
     userToken: null,
+    notificacoes: false,
     fbData: null,
     userId: null,
     perfil: null,
@@ -412,7 +413,6 @@ class UserProvider extends React.Component {
   }
 
   async getDadosMeuPerfil() {
-    console.log(this.state)
     const res = await fetch(process.env.REACT_APP_API_URL+'/pessoas/'+this.state.userId,
       {
         credentials: 'include',
@@ -503,6 +503,9 @@ class UserProvider extends React.Component {
   }
 
   receberNotificacoes() {
+    this.setState({
+      notificacoes: true
+    })
     // Pega registro do service worker
     if(!('serviceWorker' in navigator)) {
       console.log('sw not supported');
@@ -529,7 +532,7 @@ class UserProvider extends React.Component {
             const convertedVapidKey = this.urlBase64ToUint8Array(vapidPublicKey);
       
             swReg.pushManager.subscribe({
-              userVisibleOnly: true,
+              userVisibleOnly: false,
               applicationServerKey: convertedVapidKey
             }).then((subscription) => {
               this.enviaSubscription(subscription)
@@ -586,7 +589,7 @@ class UserProvider extends React.Component {
 
   registerOnPush = (swReg) => {
     swReg.active.addEventListener("push", (event) => {
-      console.log("push received");
+      console.log("push received", event);
       let title = (event.data && event.data.text()) || "Chegou uma mensagem!";
       let body = "Recebemos uma mensagem por push :)";
       let tag = "push-demo-tag";
@@ -629,7 +632,8 @@ class UserProvider extends React.Component {
           faleConosco: this.faleConosco, 
           atualizaCupons: this.atualizaCupons,
           getCupomById: this.getCupomById,
-          buscaCupom: this.buscaCupom
+          buscaCupom: this.buscaCupom,
+          notificacoes: this.state.notificacoes
         }}
       >
         {this.props.children}

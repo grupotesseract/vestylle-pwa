@@ -10,7 +10,6 @@ import TouchableHighlight from '../ui/TouchableHighlight';
 import { UserConsumer } from '../UserContext';
 import { Link } from 'react-router-dom'
 
-
 class CodigoCupom extends React.Component {
 
     state = {
@@ -18,6 +17,7 @@ class CodigoCupom extends React.Component {
         cupomId: null,
         usuario: null,
         loadingCodigo: false,
+        utilizado: false,
         atualizaCodigo: null
     }
     constructor() {
@@ -25,39 +25,39 @@ class CodigoCupom extends React.Component {
         this.atualizaCodigo = this.atualizaCodigo.bind(this)
     }
 
-    async atualizaCodigo() {
-        if(!this.state.loadingCodigo) {
-            if(this.props.atualizaCuponsUtilizados) {
-                this.setState({loadingCodigo: true})
-                const cupom = await this.props.atualizaCuponsUtilizados()
-                .then(cuponsUtilizados => {
-                    if(!cuponsUtilizados){
-                        return null
-                    }
-                    const cupom = cuponsUtilizados.find(c => Number(c.id) === Number(this.state.cupomId) )
-                    return cupom
+    async atualizaCodigo(id_cupom) {
+        const cupomId = id_cupom || this.state.cupomId
+        if(!this.state.loadingCodigo && cupomId) {
+            this.props.getCupomById(cupomId)
+            .then(cupom => {
+                if(!cupom) {
+                    cupom = this.props.cupons.find((cupom) => Number(cupom.id) === Number(this.props.cupomId))
+                    console.log("cupom carregado da lista local", cupom)
+                } 
+                const pessoa = cupom.pessoas[0]
+                if(!pessoa) return;
+                const codigo = pessoa.pivot.codigo_unico
+                const utilizado = pessoa.pivot.cupom_utilizado_venda
+                this.setState({
+                    codigo,
+                    utilizado,
+                    loadingCodigo: false
                 })
-                if(cupom) {
-                    const codigoTxt = cupom.codigo_unico
-                    this.setState({codigo: codigoTxt})
-                }
-            }
+            })
+            .catch((e) => {
+                console.log("erro ao carergar cupom", e)
+            })
         }
     }
 
     componentDidMount() {
-        if(this.props.cupomId && this.props.cuponsUtilizados && this.props.cuponsUtilizados.length) {
-            const cupom = this.props.cuponsUtilizados.find(c => Number(c.id) === Number(this.props.cupomId) )
-            const codigoTxt = cupom.codigo_unico
-            this.setState({codigo: codigoTxt})
-        }
         this.setState({ atualizaCodigo: this.atualizaCodigo })
         this.atualizaCodigo()
     }
 
     static getDerivedStateFromProps(props, state) {
-        if(!state.codigo && state.atualizaCodigo) {
-            state.atualizaCodigo()
+        if(!state.codigo && state.atualizaCodigo && props.cupomId) {
+            state.atualizaCodigo(props.cupomId)
         }
         if (props.cupomId !== state.cupomId ||
             props.usuario !== state.usuario) {
@@ -79,7 +79,7 @@ class CodigoCupom extends React.Component {
             alignSelf: 'stretch',
             padding: 20
         }}>
-            {this.state.codigo  && (
+            {!this.state.utilizado && this.state.codigo  && (
             <RubikText 
                 bold={true}
                 style={{ 
@@ -97,8 +97,25 @@ class CodigoCupom extends React.Component {
             </RubikText>
             )}
 
-
-            {!this.state.codigo && this.state.usuario && (this.state.usuario.id_vestylle) && (
+            { this.state.utilizado && <>
+                <RubikText 
+                    bold={true}
+                    style={{ 
+                        backgroundColor: '#aaaaaa', 
+                        color: '#777777',
+                        alignSelf: 'center',
+                        margin:30,
+                        padding: 20,
+                        paddingRight: 30,
+                        paddingLeft: 30,
+                        fontSize: 24
+                    }}
+                >
+                    {this.state.codigo}
+                </RubikText>
+                <RubikText style={{alignSelf: 'center'}}>Este cupom já foi utilizado para venda.</RubikText>
+            </>}
+            { !this.state.utilizado && !this.state.codigo && this.state.usuario && (this.state.usuario.id_vestylle) && (
             <TouchableHighlight
             style={this.style.btnAtivar}
             onPress={() => this.ativaCupom()}
@@ -106,13 +123,14 @@ class CodigoCupom extends React.Component {
                 <RubikText bold={true} style={{color: 'white'}}>ATIVAR CUPOM</RubikText>
             </TouchableHighlight>
             )}
-            {!this.state.usuario.cpf && !this.state.usuario.id_vestylle &&
+            
+            {!this.state.utilizado && !this.state.usuario.cpf && !this.state.usuario.id_vestylle &&
             <Link to="/meuperfil" style={{flexDirection: 'column', alignItems: 'center'}}>
                 <View><RubikText bold={true}>ATUALIZAR CPF</RubikText></View>
                 <RubikText>Atualize seu CPF para habilitar a ativação de cupons.</RubikText>
             </Link>
             }
-            {this.state.usuario.cpf && !this.state.usuario.id_vestylle &&
+            {!this.state.utilizado && this.state.usuario.cpf && !this.state.usuario.id_vestylle &&
             <View style={{flexDirection: 'column', alignItems: 'center'}}>
                 <RubikText>Para utilizar seu cupom, faça seu cadastro em nossa loja!</RubikText>
             </View>
@@ -436,14 +454,16 @@ export default class CupomDetalhe extends React.Component {
         </View>
 
         <UserConsumer>
-        {({perfil, ativaCupom, atualizaCuponsUtilizados, cuponsUtilizados}) => {
+        {({perfil, ativaCupom, atualizaCuponsUtilizados, getCupomById, cuponsUtilizados}) => {
+            const cupomId = this.state.cupomId;
             return (
             <CodigoCupom
-                cupomId = {this.state.cupomId}
+                cupomId = {cupomId}
                 usuario={perfil}
                 ativaCupom={ativaCupom}
                 atualizaCuponsUtilizados={atualizaCuponsUtilizados}
                 cuponsUtilizados={cuponsUtilizados}
+                getCupomById = {getCupomById}
             />
         )}}
         </UserConsumer>

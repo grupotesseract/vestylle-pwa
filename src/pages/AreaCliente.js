@@ -4,9 +4,10 @@ import MiniRodape from '../components/MiniRodape';
 import View from '../ui/View';
 import RubikText from '../ui/RubikText';
 import { Link } from 'react-router-dom'
-import { FaUserAlt, FaStar, FaHeart, FaBell } from 'react-icons/fa';
+import { FaUserAlt, FaStar, FaHeart, FaCheckSquare, FaSquare } from 'react-icons/fa';
 import Breadcrumb from '../ui/Breadcrumb';
 import { UserConsumer } from '../UserContext';
+import TouchableHighlight from '../ui/TouchableHighlight';
 
 class AreaCliente extends Component {
 
@@ -77,20 +78,22 @@ class AreaCliente extends Component {
         
         </View>
 
-              {/*}
         <UserConsumer>
-          {({ receberNotificacoes }) => (<>
-          <View style={{paddingRight: 10, paddingLeft: 10, flexDirection: 'row'}}>
-            <button 
-              style={this.style.btnMeuPerfil}
-              onClick={receberNotificacoes}>
-              <FaBell size={64} color="#1e1e1c"/>
-              <RubikText style={this.style.fonteBotao} bold={true}>Ativar notificações</RubikText>
-            </button>
+          {({ receberNotificacoes, notificacoes }) => (<>
+          <View style={{paddingRight: 30, paddingLeft: 30, flexDirection: 'row'}}>
+            <TouchableHighlight
+              onPress={receberNotificacoes}>
+              { !notificacoes && 
+                <FaSquare style={{color: 'white'}}/>
+              }
+              { notificacoes && 
+                <FaCheckSquare style={{color: 'white'}}/>
+              }
+              <RubikText style={{color: 'white', marginLeft: 3}}> Ativar notificações no meu dispositivo</RubikText>
+            </TouchableHighlight>
           </View>
           </>)}
         </UserConsumer>
-          */}
       </View>
       <MiniRodape/>
       </>
