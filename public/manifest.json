@@ -18,12 +18,12 @@
       "type": "image/x-icon"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff",
   "serviceworker": {
-    "src": "./service-worker.js",
+    "src": "/service-worker.js",
     "scope": "/",
     "update_via_cache": "none"
   }

@@ -35,7 +35,8 @@ class InfosLoja extends React.Component {
   }
 
   render() {
-    if(!this.state.dadosLoja) {
+    const dadosLoja = this.state.dadosLoja || this.props.dadosLoja
+    if(!dadosLoja) {
       return <></>
     }
     return ( <View>
@@ -57,7 +58,7 @@ class InfosLoja extends React.Component {
 
       <View style={{padding: 20 , marginBottom: 60}}>
         <Slider {...this.settings}>
-        { this.state.dadosLoja && this.state.dadosLoja.fotos && this.state.dadosLoja.fotos.map((foto, key) => {
+        { dadosLoja && dadosLoja.fotos && dadosLoja.fotos.map((foto, key) => {
           return <View style={{width: '100%'}}>
             <View style={{  alignSelf: 'center', overflow:'hidden',width: '100%', display: 'flex'}} key={key}>
             <img 
@@ -78,7 +79,7 @@ class InfosLoja extends React.Component {
           <FaMapMarker
             size={14}
           />
-          Rua Edgard Ferraz 281, Jaú - SP | 17201-440
+          {dadosLoja.endereco}
         </RubikText>
 
         <iframe 

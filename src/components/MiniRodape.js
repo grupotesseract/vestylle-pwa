@@ -1,16 +1,33 @@
 import React, { Component } from 'react';
 import RubikText from '../ui/RubikText';
 import View from '../ui/View';
+import { LojaConsumer } from '../LojaContext';
 
+class DadosMiniRodape extends Component {
+
+  render () {
+    const dadosLoja = this.props.dadosLoja
+    if(!dadosLoja) {
+      return <></>
+    }
+    return <>
+      <RubikText bold = {true}>Vestylle Megastore Jaú</RubikText>
+      <RubikText style={{paddingTop:5, paddingBottom:5, fontSize: 12}}>{dadosLoja.endereco}</RubikText>
+      <RubikText style={{fontSize: 12}}>{dadosLoja.telefone}</RubikText>
+    </>
+  }
+}
 class MiniRodape extends Component {
 
   render() {
     return <View style={this.style.container}>
-      
-      <RubikText bold = {true}>Vestylle Megastore Jaú</RubikText>
-      <RubikText style={{paddingTop:5, paddingBottom:5, fontSize: 12}}>Rua Edgard Ferraz 281, Jaú - SP | 17201-000</RubikText>
-      <RubikText style={{fontSize: 12}}>+55 (14) 2104-3500</RubikText>
-
+      <LojaConsumer>
+      {({ dadosLoja }) => (
+      <DadosMiniRodape
+          dadosLoja = {dadosLoja}
+      />
+      )}
+      </LojaConsumer>
     </View>
   }
 
