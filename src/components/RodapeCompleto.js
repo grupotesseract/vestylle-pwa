@@ -5,11 +5,20 @@ import View from '../ui/View';
 import { FaClock, FaMapMarker, FaWhatsapp, FaPhone } from 'react-icons/fa';
 import TouchableHighlight from '../ui/TouchableHighlight';
 import { MdEmail } from 'react-icons/md';
+import { LojaConsumer } from '../LojaContext';
 
-class RodapeCompleto extends Component {
+class DadosRodape extends Component {
+
+  onlyNumbers(str) {
+    return str.replace(/\D/g, '');
+  }
 
   render() {
-    return <React.Fragment>
+    const dadosLoja = this.props.dadosLoja
+    if(!dadosLoja) {
+      return <></>
+    }
+    return <>
       <View style={this.style.container}>
         <img
           alt="Vestylle"
@@ -30,7 +39,7 @@ class RodapeCompleto extends Component {
           <FaMapMarker
             size={14}
           />
-          Rua Edgard Ferraz 281, Jaú - SP | 17201-440
+          {dadosLoja.endereco}
         </RubikText>
         <a href="http://maps.apple.com/?ll=-22.2955408,-48.5574577,17">
           <RubikText bold={true} style={{fontSize: 14, textDecorationLine: 'underline'}}>VER LOCALIZAÇÃO NO MAPA</RubikText>
@@ -54,30 +63,40 @@ class RodapeCompleto extends Component {
             <RubikText bold={true} style={{color: "#feca03"}}>NOSSOS ATENDENTES</RubikText>
           </View>
         </View>
+        {dadosLoja.whatsapp &&
         <View style={{flexDirection: "row", paddingTop:10}}>
           <RubikText style={{color: "white", paddingLeft: 20}}>
             Iniciar conversa pelo 
           </RubikText>
-          <TouchableHighlight onPress={this.openWhatsapp} style={{flexGrow: 1, justifyContent:"flex-start"}}>
+          <TouchableHighlight onPress={() => window.open("http://api.whatsapp.com/send?phone=55"+this.onlyNumbers(dadosLoja.whatsapp))} style={{flexGrow: 1, justifyContent:"flex-start"}}>
             <RubikText style={{ color: "#feca03", textDecorationLine: 'underline' }}>&nbsp;Whatsapp</RubikText>
           </TouchableHighlight>
         </View>
+        }
         <View style={{flexDirection:'row', justifyContent: 'space-evenly'}}>
-          <TouchableHighlight onPress={() => window.open("http://api.whatsapp.com/send?phone=551421043500")}>
+
+          {dadosLoja.whatsapp &&
+          <TouchableHighlight onPress={() => window.open("http://api.whatsapp.com/send?phone=55"+this.onlyNumbers(dadosLoja.whatsapp))}>
             <RubikText style={{ color: "#feca03", textDecorationLine: 'underline',  flexGrow: 0, marginTop: 5 }}>
             <FaWhatsapp
               size={14}
-            />(14) 99766-8707
+            />{dadosLoja.whatsapp}
             </RubikText>
           </TouchableHighlight>
-          <TouchableHighlight onPress={this.openWhatsapp}>
+          }
+          {dadosLoja.whatsapp2 &&
+          <TouchableHighlight onPress={() => window.open("http://api.whatsapp.com/send?phone=55"+this.onlyNumbers(dadosLoja.whatsapp2))}>
             <RubikText style={{ color: "#feca03", textDecorationLine: 'underline',  flexGrow: 0, marginTop: 5 }}>
             <FaWhatsapp
               size={14}
             />(14) 2104-3500
             </RubikText>
           </TouchableHighlight>
+          }
         </View>
+
+        { dadosLoja.telefone &&
+        <>
         <View style = {{alignItems: 'flex-start', flexGrow: 1, alignSelf: 'stretch'}}>
           <RubikText style={{color: "white", paddingTop: 20, paddingLeft: 20 }}>
             Ou se preferir, você pode entrar em
@@ -86,31 +105,30 @@ class RodapeCompleto extends Component {
             contato com a loja pelo telefone
           </RubikText>
         </View>
-        <a href="tel:1421043500">
+        <a href={"tel:"+this.onlyNumbers(dadosLoja.telefone)}>
           <RubikText style={{ color: "white", marginTop: 5}}>
             <FaPhone
             size={14}
             style={this.style.icon}
-          />(14) 2104-3500
+          />{dadosLoja.telefone}
           </RubikText>
         </a>
-        <a href="mailto:megajau@vestylle.com.br"
+        </>
+        }
+        { dadosLoja.email &&
+        <a href={"mailto:"+dadosLoja.email}
           style = {this.style.email}
         >
           <RubikText style={{ color: "white"}}>
             <MdEmail
             size={14}
             style={{color:"#feca03", paddingTop: 5}}
-          /> megajau@vestylle.com.br
+          /> {dadosLoja.email}
           </RubikText>
         </a>
+        }
       </View>
-      <MiniRodape/>
-    </React.Fragment>
-  }
-
-  openWhatsapp = () => {
-    window.open("http://api.whatsapp.com/send?phone=551421043500")
+    </>
   }
 
   style = {
@@ -166,6 +184,23 @@ class RodapeCompleto extends Component {
       justifyContent: 'flex-start'
     }
   }
+}
+class RodapeCompleto extends Component {
+
+  render() {
+    return <React.Fragment>
+      <LojaConsumer>
+      {({ atualizaDadosLoja, dadosLoja }) => (
+      <DadosRodape
+          atualizaDadosLoja = {atualizaDadosLoja}
+          dadosLoja = {dadosLoja}
+      />
+      )}
+      </LojaConsumer>
+      <MiniRodape/>
+    </React.Fragment>
+  }
+
 }
 
 export default RodapeCompleto;
