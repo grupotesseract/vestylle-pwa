@@ -512,10 +512,9 @@ class UserProvider extends React.Component {
     } 
     if(('serviceWorker' in navigator)) {
       console.log('sw available (not ready)');
-      navigator.serviceWorker.ready
+      navigator.serviceWorker.register('./webpush-sw.js')
       .then((serviceWorkerRegistration) => {
-        console.log('sw ready, registration:');
-        console.log(serviceWorkerRegistration)
+        console.log('sw ready, registration:', serviceWorkerRegistration);
 
         console.log("REACT_APP_VAPID_PUBLIC_KEY", process.env.REACT_APP_VAPID_PUBLIC_KEY)
         // Pede permissão para exibir notificações
