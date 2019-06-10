@@ -548,7 +548,7 @@ class UserProvider extends React.Component {
   enviaSubscription = async (subscription) => {
     console.log(subscription);
 
-    const res = await fetch(process.env.REACT_APP_API_URL+'/pessoas/'+this.state.userId+'/subscription', {
+    const res = await fetch(process.env.REACT_APP_API_URL+'/push', {
       method: 'POST',
       credentials: 'include',
       headers: {
