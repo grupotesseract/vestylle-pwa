@@ -546,8 +546,6 @@ class UserProvider extends React.Component {
   }
 
   enviaSubscription = async (subscription) => {
-    console.log(subscription);
-
     const res = await fetch(process.env.REACT_APP_API_URL+'/push', {
       method: 'POST',
       credentials: 'include',
@@ -556,7 +554,7 @@ class UserProvider extends React.Component {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({"subscription":subscription})
+      body: JSON.stringify(subscription)
     })
     .then(response => response.json())
     .catch(erro => console.error('Erro no enviaSubscription',erro))
