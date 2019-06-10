@@ -536,8 +536,19 @@ class UserProvider extends React.Component {
               applicationServerKey: convertedVapidKey
             }).then((subscription) => {
               this.enviaSubscription(subscription)
-              this.registerOnPush(swReg);
             }).catch((e) => console.error(e));
+
+            swReg.active.addEventListener("push", (e) => {
+              if (e.data) {
+                var msg = e.data.json();
+                console.log(msg)
+                e.waitUntil(swReg.showNotification(msg.title, {
+                    body: msg.body,
+                    icon: msg.icon,
+                    actions: msg.actions
+                }));
+              }
+            });
           }
         });
       })
@@ -583,22 +594,6 @@ class UserProvider extends React.Component {
         outputArray[i] = rawData.charCodeAt(i);
     }
     return outputArray;
-  }
-
-  registerOnPush = (swReg) => {
-    swReg.active.addEventListener("push", (event) => {
-      console.log("push received", event);
-      let title = (event.data && event.data.text()) || "Chegou uma mensagem!";
-      let body = "Recebemos uma mensagem por push :)";
-      let tag = "push-demo-tag";
-      let icon = '/assets/icon.png';
-
-      event.waitUntil(
-        swReg.showNotification(title, { body, icon, tag })
-      )
-    });
-
-    console.log(swReg)
   }
 
   render() {
