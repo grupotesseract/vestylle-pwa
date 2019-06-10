@@ -532,7 +532,7 @@ class UserProvider extends React.Component {
             const convertedVapidKey = this.urlBase64ToUint8Array(vapidPublicKey);
       
             swReg.pushManager.subscribe({
-              userVisibleOnly: false,
+              userVisibleOnly: true,
               applicationServerKey: convertedVapidKey
             }).then((subscription) => {
               this.enviaSubscription(subscription)
