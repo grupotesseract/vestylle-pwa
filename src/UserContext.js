@@ -512,7 +512,7 @@ class UserProvider extends React.Component {
     } 
     if(('serviceWorker' in navigator)) {
       console.log('sw available (not ready)');
-      navigator.serviceWorker.register('./webpush-sw.js')
+      navigator.serviceWorker.ready
       .then((serviceWorkerRegistration) => {
         console.log('sw ready, registration:', serviceWorkerRegistration);
 
