@@ -566,7 +566,7 @@ class UserProvider extends React.Component {
     if(res.success) {
       console.log("sucesso no post subscription", res)
     } else {
-      throw res.message
+      console.error("erro ao enviar subscription", res.message)
     }
   }
 
