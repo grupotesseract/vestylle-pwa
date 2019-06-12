@@ -34,6 +34,7 @@ class Home extends Component {
           <RubikText bold={true} style={{fontSize: 25}}>
           Preparamos
           </RubikText>
+          
           <LaughingSmiling style={{fontSize: 30}}>
           benefícios exclusivos
           </LaughingSmiling>
