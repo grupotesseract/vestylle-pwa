@@ -4,9 +4,10 @@ import MiniRodape from '../components/MiniRodape';
 import View from '../ui/View';
 import RubikText from '../ui/RubikText';
 import { Link } from 'react-router-dom'
-import { FaUserAlt, FaStar, FaHeart, FaBell } from 'react-icons/fa';
+import { FaUserAlt, FaStar, FaHeart, FaCheckSquare, FaSquare } from 'react-icons/fa';
 import Breadcrumb from '../ui/Breadcrumb';
 import { UserConsumer } from '../UserContext';
+import TouchableHighlight from '../ui/TouchableHighlight';
 
 class AreaCliente extends Component {
 
@@ -19,14 +20,24 @@ class AreaCliente extends Component {
         <View style={{flexDirection:'row', textAlign: 'center'}}>
           <View style={{width: '20%'}}>
           </View>
-
           <UserConsumer>
-          {({perfil}) => (
-          <View style={{width:'60%',justifyContent: 'center', alignItems:'center', padding: 5}}>
-            <RubikText style={{color: 'white', fontSize: 20}}>Olá {perfil.nomeSimples || perfil.nome}!</RubikText>
-            {/* <RubikText style={{color: 'white', fontSize: 20}}>seja bem-vinda</RubikText> */}
-          </View>
-          )}
+          {({perfil}) => {
+            if(!perfil) return
+            return (
+            <View style={{width:'60%',justifyContent: 'center', alignItems:'center', padding: 5}}>
+              <RubikText style={{color: 'white', fontSize: 20}}>Olá {perfil.nomeSimples || perfil.nome}{perfil.genero !== '' ? ",":"!"}</RubikText>
+              {perfil.genero && perfil.genero === 'Feminino' &&
+                <RubikText style={{color: 'white', fontSize: 20}}>
+                  seja bem-vinda!
+                </RubikText>
+              }
+              {perfil.genero && perfil.genero === 'Masculino' &&
+                <RubikText style={{color: 'white', fontSize: 20}}>
+                  seja bem-vindo!
+                </RubikText>
+              }
+            </View>
+          )}}
           </UserConsumer>
           <Link 
             to="/adicionarcupom"
@@ -40,7 +51,7 @@ class AreaCliente extends Component {
           </Link>
         </View>
 
-        <View style={{marginTop: 20, paddingRight: 10, paddingLeft: 10, flexDirection: 'row'}}>
+        <View style={{marginTop: 20, paddingRight: 20, paddingLeft: 20, flexDirection: 'row'}}>
           <Link to="/meuperfil" style={this.style.btnMeuPerfil}>
             <FaUserAlt size={64} color="#1e1e1c"/>
             <RubikText style={this.style.fonteBotao} bold={true}>Meu Perfil</RubikText>
@@ -51,7 +62,7 @@ class AreaCliente extends Component {
           </Link>
         </View>
 
-        <View style={{paddingRight: 10, paddingLeft: 10, flexDirection: 'row'}}>
+        <View style={{padding: 20, paddingTop: 0, flexDirection: 'row'}}>
           <Link to="/listadesejos" style={this.style.btnMeuPerfil}>
             <FaHeart size={64} color="#1e1e1c"/>
             <RubikText style={this.style.fonteBotao} bold={true}>Lista de Desejos</RubikText>
@@ -68,14 +79,18 @@ class AreaCliente extends Component {
         </View>
 
         <UserConsumer>
-          {({ receberNotificacoes }) => (<>
-          <View style={{paddingRight: 10, paddingLeft: 10, flexDirection: 'row'}}>
-            <button 
-              style={this.style.btnMeuPerfil}
-              onClick={receberNotificacoes}>
-              <FaBell size={64} color="#1e1e1c"/>
-              <RubikText style={this.style.fonteBotao} bold={true}>Ativar notificações</RubikText>
-            </button>
+          {({ receberNotificacoes, notificacoes }) => (<>
+          <View style={{paddingRight: 30, paddingLeft: 30, flexDirection: 'row'}}>
+            <TouchableHighlight
+              onPress={receberNotificacoes}>
+              { !notificacoes && 
+                <FaSquare style={{color: 'white'}}/>
+              }
+              { notificacoes && 
+                <FaCheckSquare style={{color: 'white'}}/>
+              }
+              <RubikText style={{color: 'white', marginLeft: 3}}> Ativar notificações no meu dispositivo</RubikText>
+            </TouchableHighlight>
           </View>
           </>)}
         </UserConsumer>
@@ -91,7 +106,7 @@ class AreaCliente extends Component {
       backgroundColor: 'white',
       flexDirection: 'column',
       borderRadius: 5,
-      margin: 10,
+      margin: 7,
       padding: 10,
       paddingTop: 20,
       flex: 1

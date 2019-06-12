@@ -6,10 +6,14 @@ class UserProvider extends React.Component {
   state = { 
     isAuth: false,
     userToken: null,
+    notificacoes: false,
     fbData: null,
     userId: null,
     perfil: null,
-    ofertas: []
+    ofertas: [],
+    cupons: [],
+    cuponsUtilizados: [],
+    isLoadingUser: true
   }
 
   constructor() {
@@ -25,6 +29,14 @@ class UserProvider extends React.Component {
     this.getOfertas = this.getOfertas.bind(this)
     this.toggleDesejo = this.toggleDesejo.bind(this)
     this.receberNotificacoes = this.receberNotificacoes.bind(this)
+    this.ativaCupom = this.ativaCupom.bind(this)
+    this.atualizaCuponsUtilizados = this.atualizaCuponsUtilizados.bind(this)
+    this.atualizaInfosUser = this.atualizaInfosUser.bind(this)
+    this.buscaCupom = this.buscaCupom.bind(this)
+    this.atualizaCupons = this.atualizaCupons.bind(this)
+    this.loadFromLocalStorage = this.loadFromLocalStorage.bind(this)
+    this.getCupomById = this.getCupomById.bind(this)
+    this.faleConosco = this.faleConosco.bind(this)
   }
 
   loadFromLocalStorage() {
@@ -35,16 +47,175 @@ class UserProvider extends React.Component {
         this.setState({userToken, userId, isAuth: true})
         if(!this.state.perfil) {
           const perfil = JSON.parse(localStorage.getItem('perfil'))
-          console.log("perfil carregado do localStorage", perfil)
+          // console.log("perfil carregado do localStorage", perfil)
           const ofertas = JSON.parse(localStorage.getItem('ofertas'))
           this.setState({perfil, ofertas})
         }
+        return true
       }
     }
+    return this.state.isAuth
   }
 
   componentDidMount() {
-    this.loadFromLocalStorage();
+    this.atualizaInfosUser()
+  }
+
+  async atualizaInfosUser() {
+    await this.loadFromLocalStorage()
+    await this.atualizaCuponsUtilizados()
+    await this.setState({ isLoadingUser: false })
+  }
+
+  async atualizaCupons() {
+    if(this.state.isLoadingUser) {
+      await this.atualizaInfosUser()
+    }
+    const userToken = this.state.userToken
+    let auth = null
+    if(userToken) {
+      auth = {
+        credentials: 'include',
+        headers: {
+          'Authorization': 'Bearer '+userToken,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      }
+    }
+    await fetch(process.env.REACT_APP_API_URL+'/cupons', auth)
+    .then(response => {
+      response.json()
+      .then(res => {
+        if(res && res.success) {
+          const cupons = res.data
+          console.log("cupons",cupons)
+          this.setState({
+            cupons
+          })
+        }
+      })
+    })
+    .catch(erro => console.error('Erro no atualizacupons',erro))
+  }
+
+  async atualizaCuponsUtilizados() {
+    if(!this.state.userId) {
+      return []
+    }
+
+    const res = await fetch(process.env.REACT_APP_API_URL+'/pessoas/'+this.state.userId+'/cupons', {
+      credentials: 'include',
+      headers: {
+        'Authorization': 'Bearer '+this.state.userToken,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => {
+      return response.json().then((jsonRes) => {
+        if(jsonRes.success) {
+          const cuponsUtilizados = jsonRes.data
+          const cuponsFormatados = cuponsUtilizados.map(cupom => {
+            let cupomFormatado = Object.assign({},cupom,{codigo_unico: cupom.codigo_unico});
+            return cupomFormatado
+          })
+          this.setState({cuponsUtilizados: cuponsFormatados})
+          return cuponsFormatados
+        } else {
+          throw jsonRes.message
+        }
+      })
+    })
+    .catch(error => console.error('Atualiza cupons utilizados error', error));
+    return res;
+  }
+
+  async getCupomById(cupomId) {
+    if(!cupomId) {
+      const msgErro = { erro: "Cupom não encontrado." }
+      throw msgErro
+    }
+
+    const res = await fetch(process.env.REACT_APP_API_URL+'/cupons/'+cupomId,
+      {
+        credentials: 'include',
+        headers: {
+          'Authorization': 'Bearer '+this.state.userToken
+        }
+      }
+    )
+    .then(response => response.json())
+    .catch(erro => console.error('Erro no buscaCupom',erro))
+    if(!res) {
+      const msgErro = { erro: "Cupom não encontrado." }
+      throw msgErro
+    }
+    if(res.success) {
+      const cupom = res.data
+      return cupom
+    } else {
+      throw res.message
+    }
+  }
+
+  async buscaCupom(codigoCupom) {
+    if(!codigoCupom) {
+      const msgErro = { erro: "Sem código cupom" }
+      throw msgErro
+    }
+
+    const res = await fetch(process.env.REACT_APP_API_URL+'/cupons/encrypt/'+codigoCupom,
+      {
+        credentials: 'include',
+        headers: {
+          'Authorization': 'Bearer '+this.state.userToken
+        }
+      }
+    )
+    .then(response => response.json())
+    .catch(erro => console.error('Erro no buscaCupom',erro))
+    if(!res) {
+      return
+    }
+    if(res.success) {
+      const cupom = res.data
+      return cupom
+    } else {
+      throw res.message
+    }
+
+  }
+
+  async ativaCupom(idCupom) {
+    if(!this.state.userId || !idCupom) {
+      return {}
+    }
+    const params = JSON.stringify({
+      pessoa_id: this.state.userId
+    })
+    const res = await fetch(process.env.REACT_APP_API_URL+'/cupons/'+idCupom+'/ativar', {
+      method: 'POST', 
+      credentials: 'include',
+      headers: {
+        'Authorization': 'Bearer '+this.state.userToken,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: params
+    })
+    .then(response => {
+      return response.json().then((jsonRes) => {
+        if(jsonRes.success) {
+          const cupomAtivo = jsonRes.data
+          return cupomAtivo
+        } else {
+          throw jsonRes.message
+        }
+      })
+    })
+    .catch(error => console.error('Ativa cupom error', error));
+    return res;
   }
 
   async signup(login, passwd) {
@@ -252,6 +423,9 @@ class UserProvider extends React.Component {
     )
     .then(response => response.json())
     .catch(erro => console.error('Erro no getDadosMeuPerfil',erro))
+    if(!res) {
+      return
+    }
     if(res.success) {
       const meuPerfil = res.data
       this.setPerfil(meuPerfil)
@@ -280,6 +454,42 @@ class UserProvider extends React.Component {
     return res;
   }
 
+  async faleConosco(nome, contato, assunto, mensagem) {
+    const params = JSON.stringify({
+      nome,
+      assunto,
+      mensagem,
+      contato
+    })
+    const options = this.state.userToken ?
+      {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Bearer '+this.state.userToken,
+          'Content-Type': 'application/json'
+        },
+        body: params
+      } :
+      {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: params
+      }
+    const res = await fetch(process.env.REACT_APP_API_URL+'/fale_conoscos', options)
+    .then(response => {
+      return response.json().then((jsonRes) => {
+        return jsonRes
+      })
+    })
+    .catch(error => console.error('Erro no fale conosco', error));
+    return res;
+  }
+
   null2emptystring = (obj) => {
     const objRes = obj
     for (var prop in obj) {
@@ -293,6 +503,9 @@ class UserProvider extends React.Component {
   }
 
   receberNotificacoes() {
+    this.setState({
+      notificacoes: true
+    })
     // Pega registro do service worker
     if(!('serviceWorker' in navigator)) {
       console.log('sw not supported');
@@ -333,9 +546,7 @@ class UserProvider extends React.Component {
   }
 
   enviaSubscription = async (subscription) => {
-    console.log(subscription);
-
-    const res = await fetch(process.env.REACT_APP_API_URL+'/pessoas/'+this.state.userId+'/subscription', {
+    const res = await fetch(process.env.REACT_APP_API_URL+'/push', {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -343,7 +554,7 @@ class UserProvider extends React.Component {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({"subscription":subscription})
+      body: JSON.stringify(subscription)
     })
     .then(response => response.json())
     .catch(erro => console.error('Erro no enviaSubscription',erro))
@@ -353,7 +564,7 @@ class UserProvider extends React.Component {
     if(res.success) {
       console.log("sucesso no post subscription", res)
     } else {
-      throw res.message
+      console.error("erro ao enviar subscription", res.message)
     }
   }
 
@@ -376,7 +587,7 @@ class UserProvider extends React.Component {
 
   registerOnPush = (swReg) => {
     swReg.active.addEventListener("push", (event) => {
-      console.log("push received");
+      console.log("push received", event);
       let title = (event.data && event.data.text()) || "Chegou uma mensagem!";
       let body = "Recebemos uma mensagem por push :)";
       let tag = "push-demo-tag";
@@ -394,7 +605,9 @@ class UserProvider extends React.Component {
     return (
       <UserContext.Provider
         value={{ 
+          cupons: this.state.cupons,
           isAuth: this.state.isAuth,
+          userToken: this.state.userToken,
           perfil: this.state.perfil,
           login: this.login,
           logout: this.logout,
@@ -407,7 +620,18 @@ class UserProvider extends React.Component {
           getOfertas: this.getOfertas,
           toggleDesejo: this.toggleDesejo,
           receberNotificacoes: this.receberNotificacoes,
-          listaDesejos: this.state.ofertas 
+          listaDesejos: this.state.ofertas,
+          ativaCupom: this.ativaCupom,
+          cuponsUtilizados: this.state.cuponsUtilizados,
+          atualizaCuponsUtilizados: this.atualizaCuponsUtilizados,
+          atualizaInfosUser: this.atualizaInfosUser,
+          loadFromLocalStorage: this.loadFromLocalStorage,
+          isLoadingUser: this.state.isLoadingUser,
+          faleConosco: this.faleConosco, 
+          atualizaCupons: this.atualizaCupons,
+          getCupomById: this.getCupomById,
+          buscaCupom: this.buscaCupom,
+          notificacoes: this.state.notificacoes
         }}
       >
         {this.props.children}

@@ -38,18 +38,44 @@ class LikeBtn extends Component {
 class Produto extends Component {
 
   render() {
-    return <div style={{ alignSelf: 'center', overflow:'hidden', width: '100%'}}>
+    return <div style={{ overflow: 'visible', position: 'relative', alignSelf: 'center', width: '100%'}}>
+        <Link 
+          to={"/produtos/"+this.props.id}>
+        {Number(this.props.porcentagem_off) > 0 &&
+        <View style={{
+            backgroundColor: '#e20f17',
+            position: 'absolute',
+            top: -3,
+            right: 45,
+            padding: 10,
+            paddingBottom: 0
+          }}
+          className="bandeirola">
+            <RubikText bold={true} 
+              style={{
+                fontSize:22,
+                color: 'white'
+              }}>{this.props.porcentagem_off}%</RubikText>
+            <RubikText bold={true} 
+              style={{
+                fontSize:20,
+                color: 'white',
+                flexDirection: 'column',
+                marginTop: -2
+              }}>OFF</RubikText>
+        </View>
+        }
         <img 
           style={{
             objectFit:'cover', 
             height: '100%',
             borderWidth: 2,
             borderColor: '#bdbabc',
-            borderRadius: 10
         }} 
           alt={this.props.id}
           className="img-slider"
           src={this.props.img}/>
+        </Link>
         <View style={{
           flexDirection: 'row'
         }}>
@@ -68,6 +94,7 @@ class Produto extends Component {
               style={{
                 color: '#585756',
                 textDecorationLine: 'underline',
+                textAlign: 'left',
               }}
             >{this.props.titulo.toUpperCase()}</RubikText>
             <RubikText style={{
@@ -82,7 +109,6 @@ class Produto extends Component {
           <UserConsumer>
             {({toggleDesejo}) => (
               <LikeBtn
-                likeCallback={this.props.likeCallback}
                 toggleDesejo={toggleDesejo}
                 id={this.props.id}
                 liked={this.props.liked}

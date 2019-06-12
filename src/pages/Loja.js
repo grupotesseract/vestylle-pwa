@@ -7,8 +7,13 @@ import RodapeCompleto from '../components/RodapeCompleto';
 import Breadcrumb from '../ui/Breadcrumb';
 import LaughingSmiling from '../ui/LaughingSmiling';
 import { FaMapMarker } from 'react-icons/fa';
+import { LojaConsumer } from '../LojaContext';
 
-export default class Loja extends React.Component {
+class InfosLoja extends React.Component {
+
+  state = {
+    dadosLoja: null
+  }
 
   settings = {
     dots: true,
@@ -20,10 +25,20 @@ export default class Loja extends React.Component {
   };
 
   componentDidMount() {
-
+    if(this.props.atualizaDadosLoja) {
+      this.props.atualizaDadosLoja()
+      .then((dadosLoja) => {
+        console.log(dadosLoja)
+        this.setState({dadosLoja})
+      })
+    }    
   }
 
   render() {
+    const dadosLoja = this.state.dadosLoja || this.props.dadosLoja
+    if(!dadosLoja) {
+      return <></>
+    }
     return ( <View>
       <Header/>
 
@@ -32,33 +47,29 @@ export default class Loja extends React.Component {
       </Breadcrumb>
       <View style={{alignItems: 'center'}}>
         <View style={{alignItems: 'center', padding: 20}}>
-          <LaughingSmiling>Vista-se bem e com a qualidade</LaughingSmiling>
-          <LaughingSmiling>das melhores marcas!</LaughingSmiling>
+          <LaughingSmiling style={{fontSize:18}}>Vista-se bem e com a qualidade</LaughingSmiling>
+          <LaughingSmiling style={{fontSize:18}}>das melhores marcas!</LaughingSmiling>
         </View>
       </View>
       <View style={{padding: 20, alignItems: 'center'}}>
-        <RubikText bold={true} style={{color: 'black', fontSize:20}}>Somos uma multimarcas de moda</RubikText>
-        <RubikText bold={true} style={{color: 'black', fontSize:20}}>jovem, casual, acessórios e calçados</RubikText>
+        <RubikText bold={true} style={{color: 'black', fontSize:16}}>Somos uma loja multimarcas de moda
+        jovem, casual, acessórios e calçados</RubikText>
       </View>
 
       <View style={{padding: 20 , marginBottom: 60}}>
         <Slider {...this.settings}>
-          <View style={{  alignSelf: 'center', overflow:'hidden',width: '100%'}}>
+        { dadosLoja && dadosLoja.fotos && dadosLoja.fotos.map((foto, key) => {
+          return <View style={{width: '100%'}}>
+            <View style={{  alignSelf: 'center', overflow:'hidden',width: '100%', display: 'flex'}} key={key}>
             <img 
-              src="http://www.sjequipaobra.com.br/fotos/vestylle (12).jpg"
+              src={foto.urlCloudinary}
               alt="Foto Loja"
-          className="img-slider"
-              style={{maxWidth: '100%', height: '100%',objectFit:'cover'}}
+              className="img-slider"
+              style={{maxWidth: '100%',objectFit:'cover', alignSelf: 'center'}}
             />
           </View>
-          <View style={{ alignSelf: 'center', overflow:'hidden', width: '100%'}}>
-            <img 
-              src="http://www.sjequipaobra.com.br/fotos/vestylle.jpg"
-              alt="Foto Loja"
-          className="img-slider"
-              style={{maxWidth: '100%', height: '100%',objectFit:'cover'}}
-            />
           </View>
+        }) }
         </Slider>
       </View>
 
@@ -68,7 +79,7 @@ export default class Loja extends React.Component {
           <FaMapMarker
             size={14}
           />
-          Rua Edgard Ferraz 281, Jaú - SP | 17201-000
+          {dadosLoja.endereco}
         </RubikText>
 
         <iframe 
@@ -90,5 +101,18 @@ export default class Loja extends React.Component {
       <RodapeCompleto/>
     </View>
     )
+  }
+}
+export default class Loja extends React.Component {  
+  render() {
+    return <LojaConsumer>
+      {({ atualizaDadosLoja, dadosLoja }) => (<>
+          <InfosLoja
+            atualizaDadosLoja = {atualizaDadosLoja}
+            dadosLoja = {dadosLoja}
+          />
+      </>
+      )}
+    </LojaConsumer>
   }
 }

@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import View from '../ui/View';
 import { IoMdHome, IoMdQrScanner, IoMdShirt, IoMdPin } from 'react-icons/io'
 import { MdPerson } from 'react-icons/md';
-import { FaStar, FaHeart, FaWhatsapp, FaArrowLeft, FaPowerOff } from 'react-icons/fa'
+import { FaStar, FaHeart, FaWhatsapp, FaArrowLeft, FaWallet } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import { UserConsumer } from '../UserContext';
+import RubikText from '../ui/RubikText';
 
 class MenuButton extends React.Component {
   render() {
@@ -73,6 +74,12 @@ class Menu extends Component {
             />
             <MenuButton 
                 toggleMenu={this.props.toggleMenu} 
+                label="Meus Cupons"
+                page="/meuscupons"
+                icon={FaWallet}
+            />
+            <MenuButton 
+                toggleMenu={this.props.toggleMenu} 
                 label="Adicionar Cupom"
                 page="/adicionarcupom"
                 icon={IoMdQrScanner}
@@ -117,11 +124,7 @@ class Menu extends Component {
             <button 
                 onClick={() => this.logoutAndClose(logout)}
             >
-                <FaPowerOff
-                style={{padding: 10, justifyContent: 'center', width: 46 }}
-                size={26}
-                color="white"
-                />
+                <RubikText style={{color: 'white', cursor: 'pointer'}}>Sair</RubikText>
             </button>
             </>
             )}

@@ -91,28 +91,39 @@ class FormMeuPerfil extends React.Component {
     celular: '',
     genero: '',
     receberNovidades: false,
-    loading: true
+    loading: true,
+    atualizando: false
+  }
+
+  loadPerfil() {
+    if(this.state.loading) {
+      this.props.getData()
+      .then(perfil => {
+        if(perfil.data_nascimento) {
+          perfil.data_nascimento = this.utf2ddmmaaaa(perfil.data_nascimento)
+        }
+        this.setState({
+          ...perfil,
+          loading: false
+        })
+      })
+      .catch(erro => console.error('Erro no form de meu perfil',erro))
+    }
+  }
+
+  componentDidUpdate() {
+    this.loadPerfil();
   }
 
   componentDidMount() {
-    this.props.getData()
-    .then(perfil => {
-      if(perfil.data_nascimento) {
-        perfil.data_nascimento = this.utf2ddmmaaaa(perfil.data_nascimento)
-      }
-      this.setState({
-        ...perfil,
-        loading: false
-      })
-    })
-    .catch(erro => console.error('Erro no form de meu perfil',erro))
+    this.loadPerfil();
   }
 
   render() {
     return <form onSubmit={(e) => this.atualizarPerfil(e)}>
       <RubikText bold={true} style={{color:'white', fontSize: 14, marginTop: 10, marginBottom: 10}} >
         Meu perfil
-        {this.state.loading && <FaSpinner color="white" className="spin" style={{fontSize: 18,marginLeft: 20}}/>}
+        {(this.state.loading || this.state.atualizando) && <FaSpinner color="white" className="spin" style={{fontSize: 18,marginLeft: 20}}/>}
       </RubikText>
 
       { this.state.redirectTo && (
@@ -146,9 +157,9 @@ class FormMeuPerfil extends React.Component {
             fontSize: 15
           }}
         >
-          <option value="Prefiro Não Informar" selected={"Prefiro Não Informar"===this.state.genero}>Prefiro Não Informar</option>
-          <option value="Feminino" selected={"Feminino"===this.state.genero}>Feminino</option>
-          <option value="Masculino" selected={"Masculino"===this.state.genero}>Masculino</option>
+          <option style={{backgroundColor:'#33302b'}} value="Prefiro Não Informar" selected={"Prefiro Não Informar"===this.state.genero}>Prefiro Não Informar</option>
+          <option style={{backgroundColor:'#33302b'}} value="Feminino" selected={"Feminino"===this.state.genero}>Feminino</option>
+          <option style={{backgroundColor:'#33302b'}} value="Masculino" selected={"Masculino"===this.state.genero}>Masculino</option>
         </select>
       </View>
       <InputValidacao 
@@ -221,13 +232,18 @@ class FormMeuPerfil extends React.Component {
       perfil.cpf = perfil.cpf.replace(/\D/g,'')
     }
 
+    this.setState({
+      atualizando: true
+    })
+
     await this.props.setData(perfil)
     .then((res) => {
       if(res && res.succes && res.data) {
         const meuPerfil = res.data
         this.props.atualizaPerfil(meuPerfil)
       }
-      this.setState({loading: false})
+      this.props.getData()
+      this.setState({atualizando: false})
       this.setState({redirectTo: '/areacliente'})
     })
     .catch((e) => {
@@ -237,6 +253,7 @@ class FormMeuPerfil extends React.Component {
         return msgErro
       })
       this.setState({
+        atualizando: false,
         loading: false,
         erroUpdate:true,
         msgErro

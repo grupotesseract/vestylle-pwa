@@ -14,7 +14,8 @@ class LaughingSmiling extends Component {
     fontRubik: {
       fontFamily: 'Laughing And Smiling',
       flexDirection: 'row',
-      fontSize:26
+      fontSize:20,
+      marginBottom: 2
     }
   }
 }

@@ -2,10 +2,15 @@ import React, { Component } from 'react';
 import View from '../ui/View';
 import { Link } from 'react-router-dom'
 import RubikText from '../ui/RubikText';
+import { UserConsumer } from '../UserContext';
 
-class CupomBoasVindas extends Component {
+class CupomContent extends Component {
 
   render() {
+    if(this.props.isAuth) {
+      return null
+    }
+    
     return <View style={this.style.container}>
       <View 
         className="cupom-boas-vindas"
@@ -22,17 +27,18 @@ class CupomBoasVindas extends Component {
             position: 'absolute',
             top: -25,
             padding: 10,
-            paddingTop: 40
+            paddingTop: 20
           }}
           className="bandeirola">
             <RubikText bold={true} 
               style={{
-                fontSize:42,
+                fontSize:32,
                 color: 'white'
               }}>10%</RubikText>
             <RubikText bold={true} 
               style={{
-                fontSize:32,
+                marginTop: -5,
+                fontSize:28,
                 color: 'white',
                 flexDirection: 'column'
               }}>OFF</RubikText>
@@ -74,6 +80,16 @@ class CupomBoasVindas extends Component {
     bandeirola: {
       color: "#bdbbbc"
     }
+  }
+}
+
+class CupomBoasVindas extends Component {
+  render() {
+    return <UserConsumer>
+      {({ isAuth }) => (
+        <CupomContent isAuth={isAuth}/>
+      )}
+      </UserConsumer>
   }
 }
 

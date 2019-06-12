@@ -86,9 +86,7 @@ export default class CadastroSimples extends React.Component {
           to="/"
           fontSize="12"
           style={{marginTop: 50, marginBottom: 25, color: '#feca03', fontSize:12}}
-        >
-        Saiba mais sobre o aplicativo Megastore Jaú
-        </Link>
+        >&nbsp;</Link>
         { this.state.cadastroConcluido && (
           <Alert
             title = "Obrigado!"

@@ -9,48 +9,118 @@ import LaughingSmiling from '../ui/LaughingSmiling';
 import Produto from '../ui/Produto';
 import { LojaConsumer } from '../LojaContext';
 import { UserConsumer } from '../UserContext';
-import { FaRegHeart } from 'react-icons/fa';
+import { FaRegHeart, FaTh, FaSquare } from 'react-icons/fa';
 import CupomBoasVindas from '../components/CupomBoasVindas';
+import TouchableHighlight from '../ui/TouchableHighlight';
+import ProdutoThumb from '../ui/ProdutoThumb';
 
 class ListaProdutos extends React.Component {
 
   state = {
-    ofertas: []
+    ofertas: [],
+    listaDesejos: [],
+    visualizacao: 'full',
+    atualizaOfertas: null
   }
 
-  atualizaOfertas(props) {
-    let listaDesejosId = []
-    if(props.listaDesejos) {
-      listaDesejosId = props.listaDesejos.map((oferta) => oferta.id);
+  constructor() {
+    super();
+    this.atualizaOfertas = this.atualizaOfertas.bind(this)
+  }
+
+  atualizaOfertas(listaNova) {
+    if(!listaNova) {
+      listaNova = this.state.listaDesejos
     }
-    props.getOfertasComLike(listaDesejosId)
+    if(!this.props.getOfertasComLike) {
+      return null
+    }
+
+    let listaDesejos = []
+    if(listaNova) {
+      listaDesejos = listaNova.map((oferta) => oferta.id);
+    }
+    this.props.getOfertasComLike(listaDesejos, this.props.userToken)
     .then((ofertas) => {
       this.setState({ofertas})
     })
   }
 
   componentDidMount() {
-    this.atualizaOfertas(this.props)
+    this.setState({
+      atualizaOfertas: this.atualizaOfertas
+    })
+    this.atualizaOfertas();
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.atualizaOfertas(nextProps)
+  static getDerivedStateFromProps(props, state) {
+    if (props.listaDesejos !== state.listaDesejos) {
+      if(state.atualizaOfertas) {
+        state.atualizaOfertas(props.listaDesejos)
+      }
+      return {
+        listaDesejos: props.listaDesejos,
+      };
+    }
+    if (props.visualizacao !== state.visualizacao) {
+      return {
+        visualizacao: props.visualizacao,
+      };
+    }
+
+    // Return null to indicate no change to state.
+    return null;
   }
+
 
   render() {
+
+    if(this.state.visualizacao === 'thumb') {
+      return <View style={{
+        flexDirection: 'row', 
+        flexWrap: 'wrap', 
+        justifyContent: 'space-evenly',
+        marginBottom: 50
+        }}>
+      {this.state.ofertas.map((oferta, key) => {
+        return (
+        <View 
+          style={{
+            position:'relative', 
+            maxWidth: '50%', 
+            float: 'left',
+            minWidth: 160
+          }} 
+          key={key}>
+          <ProdutoThumb
+            id={oferta.id}
+            img={oferta.urlFoto}
+            porcentagem_off={oferta.porcentagem_off}
+          />
+        </View>
+        )
+      })}
+      </View>
+    }
+
   return <>
     {this.state.ofertas.map((oferta, key) => {
       let rowBackground = null
-      if(key%2 === 0) {
+
+      // Exibe um div de background a cada 2 produtos
+      // (somente na visualizacao full)
+      if(key%2 === 0 && this.state.visualizacao === 'full') {
         rowBackground = <div style={{
-            position: 'absolute',
-            height: '50%',
-            width: '100%',
-            backgroundColor: '#55bcba',
-            top: '25%',
-            zIndex: 1
-          }}></div>
+          position: 'absolute',
+          height: '50%',
+          width: '100%',
+          backgroundColor: '#55bcba',
+          top: '25%',
+          zIndex: 1
+        }}></div>
       }
+
+
       return (
       <View style={{position:'relative'}} key={key}>
         {rowBackground}
@@ -60,9 +130,9 @@ class ListaProdutos extends React.Component {
             id={oferta.id}
             img={oferta.urlFoto}
             liked={oferta.liked}
-            likeCallback={this.likeCallback}
             titulo={oferta.descricao_oferta}
             subtitulo={oferta.subtitulo}
+            porcentagem_off={oferta.porcentagem_off}
           />
         </View>
       </View>
@@ -72,6 +142,10 @@ class ListaProdutos extends React.Component {
 }
 
 export default class Produtos extends React.Component {
+
+  state = {
+    visualizacao: 'full'
+  }
 
   render() {
     return ( <View>
@@ -88,37 +162,64 @@ export default class Produtos extends React.Component {
       </View>
 
       <View style={{ padding: 10, paddingLeft: 30, paddingRight: 30}}>
-        <RubikText bold={true} style={{color: 'black'}}>Confira as novidades</RubikText>
 
         <View 
           style={{ 
+            marginTop: 5,
+            marginBottom: 5,
+            flexDirection: 'row'
+          }}>
+          <Link to="/listadesejos"
+          style={{
             borderTop: 2, 
             borderBottom: 2, 
             borderColor: 'black', 
             borderStyle: 'solid', 
-            paddingTop: 6, 
-            paddingBottom:6,
-            marginTop: 5,
-            marginBottom: 5
+            paddingTop: 0, 
+            paddingBottom:0,
+            paddingRight: 2
           }}>
-          <Link to="/listadesejos">
             <FaRegHeart 
-              size={36}
-              style={{padding: 2,margin: 2}}
+              size={20}
+              style={{padding: 2,marginRight: 10, flexShrink: 0}}
             />
-            <RubikText style={{textAlign: 'left'}}> Clique aqui para mostrar produtos adicionados a sua LISTA DE DESEJOS</RubikText>
+            <RubikText style={{textAlign: 'left', fontSize: 12}}> Clique aqui para mostrar produtos adicionados a sua LISTA DE DESEJOS</RubikText>
           </Link>
+          <TouchableHighlight
+          style={{marginLeft: 20}}
+            onPress={() => this.setVisualizacaoMiniatura()}
+          >
+            <FaTh
+              size={30}
+              style={{padding: 2,margin: 2}}
+              color={this.state.visualizacao === 'thumb' ? '#585756' : '#bdbabc'}
+            />
+          </TouchableHighlight>
+          <TouchableHighlight
+            onPress={() => this.setVisualizacaoGrande()}
+          >
+            <FaSquare
+              size={30}
+              style={{padding: 2,margin: 2}}
+              color={this.state.visualizacao !== 'thumb' ? '#585756' : '#bdbabc'}
+            />
+          </TouchableHighlight>
         </View>
+      </View>
+      <View style={{paddingLeft: 20, paddingRight: 20}}>
+        <RubikText bold={true} style={{color: 'black'}}>Confira as novidades</RubikText>
       </View>
 
       <View>
         <UserConsumer>
-        {({listaDesejos}) => (
+        {({listaDesejos, userToken}) => (
           <LojaConsumer>
           {({getOfertasComLike}) => (
             <ListaProdutos
               getOfertasComLike={getOfertasComLike}
               listaDesejos={listaDesejos}
+              userToken={userToken}
+              visualizacao={this.state.visualizacao}
             />
           )}
           </LojaConsumer>
@@ -129,5 +230,13 @@ export default class Produtos extends React.Component {
       <RodapeCompleto/>
     </View>
     )
+  }
+
+  setVisualizacaoGrande() {
+    this.setState({ visualizacao: 'full' })
+  }
+
+  setVisualizacaoMiniatura() {
+    this.setState({ visualizacao: 'thumb' })
   }
 }

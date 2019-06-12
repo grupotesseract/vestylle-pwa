@@ -9,11 +9,15 @@
   margin: 0 2px;
 }
 .slick-dots li button:before{
-  font-size: 16px;
+  font-size: 10px;
 }
 
 .img-slider {
   max-height: 300px;
+  align-self: center;
+}
+.img-thumb {
+  max-height: 160px;
 }
 /* rubik-regular - latin */
 @font-face {
@@ -120,6 +124,7 @@ button {
   justify-content: center;
   align-items: center;
   flex-direction: row;
+  cursor: pointer;
 }
 
 .spin {
@@ -143,22 +148,22 @@ button {
 }
 
 /* Cupom de boas vindas */
-.cupom-boas-vindas .bandeirola:after{
+.bandeirola:after{
   content:'';
   position:absolute;
   right: 0;
-  bottom: -15px;
+  bottom: -14px;
   width: 0;
   height: 0;
   border-right: 50px solid #e20f17;
   border-top: 0px solid #e20f17;
   border-bottom: 15px solid transparent;
 }
-.cupom-boas-vindas .bandeirola:before{
+.bandeirola:before{
   content:'';
   position:absolute;
   left: 0;
-  bottom: -15px;
+  bottom: -14px;
   width: 0;
   height: 0;
   border-left: 50px solid #e20f17;
