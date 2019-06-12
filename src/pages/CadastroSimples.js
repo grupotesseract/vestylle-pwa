@@ -45,8 +45,8 @@ export default class CadastroSimples extends React.Component {
         <View
           style={{width: '80%'}}>
           <UserConsumer>
-          {({ setToken, signup }) => (
-          <form onSubmit={(e) => this.cadastrarNovoUsuario(setToken, signup, e)}>
+          {({ signup }) => (
+          <form onSubmit={(e) => this.cadastrarNovoUsuario(signup, e)}>
             <RubikText style={this.styles.label}>CPF ou E-mail</RubikText>
             <TextInput
               style={this.styles.inputComBorda}
@@ -110,7 +110,7 @@ export default class CadastroSimples extends React.Component {
     );
   }
 
-  cadastrarNovoUsuario = async (setToken, signup, event) => {
+  cadastrarNovoUsuario = async (signup, event) => {
     if(event) {
       event.preventDefault()
     }
