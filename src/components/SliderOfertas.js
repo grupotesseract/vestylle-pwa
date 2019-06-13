@@ -25,7 +25,6 @@ class ListaOfertas extends React.Component {
 
   static getDerivedStateFromProps(props, state) {
 
-    console.log("props", props, state)
     if (!props.isLoadingUser && !state.ofertas && !props.ofertas) {
       const listaDesejosIds = props.listaDesejos ? props.listaDesejos.map((produto)=> produto.id) : []
       props.getOfertasComLike(listaDesejosIds, props.userToken)
