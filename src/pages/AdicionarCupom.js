@@ -66,7 +66,6 @@ class InputCupomQR extends React.Component {
     return cupomValue
   }
 
-
   findCupom = async (cupomValue) => {
     if(cupomValue && cupomValue.length > 3) {
       if(!this.state.loadingCupom) {
