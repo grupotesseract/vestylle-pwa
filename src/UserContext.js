@@ -536,18 +536,6 @@ class UserProvider extends React.Component {
             }).then((subscription) => {
               this.enviaSubscription(subscription)
             }).catch((e) => console.error(e));
-
-            swReg.active.addEventListener("push", (e) => {
-              if (e.data) {
-                var msg = e.data.json();
-                console.log(msg)
-                e.waitUntil(swReg.showNotification(msg.title, {
-                    body: msg.body,
-                    icon: msg.icon,
-                    actions: msg.actions
-                }));
-              }
-            });
           }
         });
       })
