@@ -514,8 +514,7 @@ class UserProvider extends React.Component {
       console.log('sw available (not ready)');
       navigator.serviceWorker.ready
       .then((serviceWorkerRegistration) => {
-        console.log('sw ready, registration:');
-        console.log(serviceWorkerRegistration)
+        console.log('sw ready, registration:', serviceWorkerRegistration);
 
         console.log("REACT_APP_VAPID_PUBLIC_KEY", process.env.REACT_APP_VAPID_PUBLIC_KEY)
         // Pede permissão para exibir notificações
@@ -536,7 +535,6 @@ class UserProvider extends React.Component {
               applicationServerKey: convertedVapidKey
             }).then((subscription) => {
               this.enviaSubscription(subscription)
-              this.registerOnPush(swReg);
             }).catch((e) => console.error(e));
           }
         });
@@ -583,22 +581,6 @@ class UserProvider extends React.Component {
         outputArray[i] = rawData.charCodeAt(i);
     }
     return outputArray;
-  }
-
-  registerOnPush = (swReg) => {
-    swReg.active.addEventListener("push", (event) => {
-      console.log("push received", event);
-      let title = (event.data && event.data.text()) || "Chegou uma mensagem!";
-      let body = "Recebemos uma mensagem por push :)";
-      let tag = "push-demo-tag";
-      let icon = '/assets/icon.png';
-
-      event.waitUntil(
-        swReg.showNotification(title, { body, icon, tag })
-      )
-    });
-
-    console.log(swReg)
   }
 
   render() {

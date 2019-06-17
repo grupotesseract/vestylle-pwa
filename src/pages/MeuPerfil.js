@@ -181,7 +181,7 @@ class FormMeuPerfil extends React.Component {
       <Checkbox
         title="Quero receber novidades e ofertas da Vestylle Megastore Jaú"
         value={this.state.receberNovidades}
-        onChange={(receberNovidades) => this.setState({receberNovidades})}
+        onChange={(receberNovidades) => this.toggleNotificacoes(receberNovidades)}
         style={{paddingTop: 20, paddingBottom: 15}}/>
       
       <ButtonBorder
@@ -201,6 +201,13 @@ class FormMeuPerfil extends React.Component {
         />
       )}
     </form>
+  }
+
+  toggleNotificacoes(receberNovidades) {
+    this.setState({receberNovidades})
+    if(receberNovidades) {
+      this.props.receberNotificacoes();
+    }
   }
 
   dismissAlertErro = () => {
@@ -293,7 +300,7 @@ export default class MeuPerfil extends React.Component {
     return ( <View>
       <Header/>
       <UserConsumer>
-      {({ getDadosMeuPerfil, setDadosMeuPerfil, setPerfil }) => (<>
+      {({ getDadosMeuPerfil, setDadosMeuPerfil, setPerfil, receberNotificacoes }) => (<>
       <ImageBackground
         source={require('../assets/fundologin.jpg')}
         style={{width: '100%', height: '100%'}}>
@@ -302,6 +309,7 @@ export default class MeuPerfil extends React.Component {
             getData={getDadosMeuPerfil}
             setData={setDadosMeuPerfil}
             atualizaPerfil={setPerfil}
+            receberNotificacoes={receberNotificacoes}
           />
         </View>
         <MiniRodape/>
