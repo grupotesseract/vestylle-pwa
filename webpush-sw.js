@@ -1,6 +1,6 @@
 self.addEventListener('push', function (e) {
-    console.log(e.data);
-    var msg = e.data;
+    console.log(JSON.stringify(e.data));
+    var msg = e.data.json();
     e.waitUntil(
         self.registration.showNotification(msg.title, {
             body: msg.body,
@@ -11,7 +11,7 @@ self.addEventListener('push', function (e) {
 });
 
 self.addEventListener('notificationclick', function(event) {
-    console.log('notification clicked:',event);
+    console.log('notification clicked:',JSON.stringify(event));
     const rootUrl = new URL('/', location).href;
     event.notification.close();
     // Enumerate windows, and call window.focus(), or open a new one.
