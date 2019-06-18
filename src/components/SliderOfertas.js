@@ -20,18 +20,20 @@ class ListaOfertas extends React.Component {
 
   state = {
     ofertas: null,
-    error: null
+    error: null,
+    listaDesejosIds: []
   }
 
   static getDerivedStateFromProps(props, state) {
 
-    if (!props.isLoadingUser && !state.ofertas && !props.ofertas) {
+    if ((props.listaDesejos !== state.listaDesejosIds) || (!props.isLoadingUser && !state.ofertas && !props.ofertas)) {
       const listaDesejosIds = props.listaDesejos ? props.listaDesejos.map((produto)=> produto.id) : []
       props.getOfertasComLike(listaDesejosIds, props.userToken)
       .then(ofertas => {
       console.log("ofertas",ofertas)
         return {
-          ofertas: ofertas
+          ofertas: ofertas,
+          listaDesejosIds: props.listaDesejosIds
         }
       })
     }
