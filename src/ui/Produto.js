@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import View from './View';
 import RubikText from './RubikText';
 import TouchableHighlight from "../ui/TouchableHighlight";
@@ -8,7 +8,14 @@ import { UserConsumer } from '../UserContext';
 
 class LikeBtn extends Component {
 
+  state={
+    redirectTo : null
+  }
+
   render() {
+    if(this.state.redirectTo) {
+      return <Redirect to={this.state.redirectTo}/>
+    }
     return <TouchableHighlight
     onPress={this.likeProduto}
     style={{
@@ -30,6 +37,13 @@ class LikeBtn extends Component {
 
   likeProduto = () => {
     const idProduto = this.props.id
+
+    if(!this.props.isAuth) {
+      this.setState({
+        redirectTo: "/cadastro"
+      })
+      return
+    }
     this.props.toggleDesejo(idProduto)
     console.log(idProduto)
   }
@@ -107,11 +121,12 @@ class Produto extends Component {
             </RubikText>
           </Link>
           <UserConsumer>
-            {({toggleDesejo}) => (
+            {({toggleDesejo, isAuth}) => (
               <LikeBtn
                 toggleDesejo={toggleDesejo}
                 id={this.props.id}
                 liked={this.props.liked}
+                isAuth={isAuth}
               />
             )}
           </UserConsumer>
