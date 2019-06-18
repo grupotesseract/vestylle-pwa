@@ -356,7 +356,6 @@ class UserProvider extends React.Component {
     return res;
   }
 
-
   async toggleDesejo(oferta_id) {
     if(!this.state.userId) {
       return
