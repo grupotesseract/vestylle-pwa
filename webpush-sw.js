@@ -11,7 +11,7 @@ self.addEventListener('push', function (e) {
 });
 
 self.addEventListener('notificationclick', function(event) {
-    console.log('notification clicked:',JSON.stringify(event));
+    console.log('notification clicked:',JSON.stringify(event.notification));
     const rootUrl = new URL('/', location).href;
     event.notification.close();
     // Enumerate windows, and call window.focus(), or open a new one.
@@ -25,4 +25,9 @@ self.addEventListener('notificationclick', function(event) {
         return clients.openWindow("/");
       })
     );
+});
+
+self.addEventListener('notificationclose', function(event) {
+    console.log('notification closed:',JSON.stringify(event.notification));
+    event.notification.close();
 });
