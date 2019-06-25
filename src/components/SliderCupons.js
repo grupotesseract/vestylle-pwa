@@ -125,7 +125,7 @@ export default class SliderCupons extends React.Component {
           {({atualizaCupons, cupons}) => (
           <ListaCupons
             atualizaCupons={atualizaCupons}
-            cupons={cupons}
+            cupons={cupons && cupons.filter((item) => item.em_destaque === true)}
             userToken={userToken}
             isLoadingUser={isLoadingUser}
           />

@@ -12,6 +12,10 @@
   font-size: 10px;
 }
 
+.img-slider-wide {
+  max-height: 170px;
+  align-self: center;
+}
 .img-slider {
   max-height: 300px;
   align-self: center;
@@ -216,6 +220,9 @@ button {
 @media only screen and (min-width: 450px) {
   .faca-seu-cadastro {
     font-size: 19px;
+  }
+  .img-slider-wide {
+    max-height: 250px;
   }
   .img-slider {
     max-height: 400px;
