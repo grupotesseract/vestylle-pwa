@@ -13,6 +13,7 @@ import { FaRegHeart, FaTh, FaSquare } from 'react-icons/fa';
 import CupomBoasVindas from '../components/CupomBoasVindas';
 import TouchableHighlight from '../ui/TouchableHighlight';
 import ProdutoThumb from '../ui/ProdutoThumb';
+import ReactGA from 'react-ga';
 
 class ListaProdutos extends React.Component {
 
@@ -47,6 +48,7 @@ class ListaProdutos extends React.Component {
   }
 
   componentDidMount() {
+    ReactGA.pageview('/produtos');
     this.setState({
       atualizaOfertas: this.atualizaOfertas
     })

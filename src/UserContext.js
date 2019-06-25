@@ -1,4 +1,5 @@
 import React  from 'react';
+import ReactGA from 'react-ga';
 
 const UserContext = React.createContext();
 
@@ -58,6 +59,10 @@ class UserProvider extends React.Component {
   }
 
   componentDidMount() {
+    ReactGA.initialize(process.env.REACT_APP_GOOGLE_UA, {
+      debug: true,
+      titleCase: false,
+    });
     this.atualizaInfosUser()
   }
 
