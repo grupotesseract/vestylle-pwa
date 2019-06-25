@@ -319,10 +319,10 @@ class DadosCupom extends React.Component {
             </View>
             }
             
-        { this.state.cupom.fotos && this.state.cupom.fotos.length > 0 &&
+        { this.state.cupom.fotos_listagem && this.state.cupom.fotos_listagem.length > 0 &&
           <View style={{marginBottom: 50}}>
             <Slider {...this.sliderSettings}>
-              {this.state.cupom.fotos.map((foto, key) => (
+              {this.state.cupom.fotos_listagem.map((foto, key) => (
                 <div style={{ position: 'relative'}}>
                     <div style={{display:'flex'}}>
 
@@ -331,7 +331,7 @@ class DadosCupom extends React.Component {
                         objectFit:'cover', 
                       }} 
                       alt={this.state.cupom.titulo}
-                      className="img-slider"
+                      className="img-slider-wide"
                       key={key}
                       src={foto.urlCloudinary}/>
                     </div>
@@ -340,7 +340,7 @@ class DadosCupom extends React.Component {
             </Slider> 
           </View>
         }
-        { (!this.state.cupom.fotos || this.state.cupom.fotos.length === 0) &&
+        { (!this.state.cupom.fotos_listagem || this.state.cupom.fotos_listagem.length === 0) &&
             <img
                 src={this.state.cupom.foto_caminho || (this.state.cupom.oferta && this.state.cupom.oferta.urlFoto)}
                 alt={this.state.cupom.titulo}
