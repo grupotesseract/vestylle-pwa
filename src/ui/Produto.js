@@ -5,7 +5,8 @@ import RubikText from './RubikText';
 import TouchableHighlight from "../ui/TouchableHighlight";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { UserConsumer } from '../UserContext';
-
+import { FacebookShareButton } from 'react-share'
+import { IoMdShare } from 'react-icons/io';
 class LikeBtn extends Component {
 
   state={
@@ -120,6 +121,12 @@ class Produto extends Component {
               {this.props.subtitulo}
             </RubikText>
           </Link>
+          <FacebookShareButton url={new URL('/', window.location).href + "/produtos/" + this.props.id}>
+            <IoMdShare
+              size={32}
+              style={{color: '#585756', marginTop: 6, cursor: 'pointer'}}
+            />
+          </FacebookShareButton>
           <UserConsumer>
             {({toggleDesejo, isAuth}) => (
               <LikeBtn

@@ -9,8 +9,14 @@ import RubikText from '../ui/RubikText';
 import { Link } from 'react-router-dom'
 import CupomBoasVindas from '../components/CupomBoasVindas';
 import LaughingSmiling from '../ui/LaughingSmiling';
+import ReactGA from 'react-ga';
 
 class Home extends Component {
+
+  componentDidMount() {
+    ReactGA.pageview('/');
+  }
+
   render() {
     return <>
       <Header/>

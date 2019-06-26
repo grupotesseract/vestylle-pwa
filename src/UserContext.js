@@ -1,4 +1,5 @@
 import React  from 'react';
+import ReactGA from 'react-ga';
 
 const UserContext = React.createContext();
 
@@ -18,25 +19,25 @@ class UserProvider extends React.Component {
 
   constructor() {
     super()
-    this.login = this.login.bind(this)
-    this.logout = this.logout.bind(this)
-    this.setToken = this.setToken.bind(this)
-    this.setPerfil = this.setPerfil.bind(this)
-    this.signup = this.signup.bind(this)
-    this.getDadosMeuPerfil = this.getDadosMeuPerfil.bind(this)
-    this.setDadosMeuPerfil = this.setDadosMeuPerfil.bind(this)
-    this.setFacebookToken = this.setFacebookToken.bind(this)
-    this.getOfertas = this.getOfertas.bind(this)
-    this.toggleDesejo = this.toggleDesejo.bind(this)
-    this.receberNotificacoes = this.receberNotificacoes.bind(this)
     this.ativaCupom = this.ativaCupom.bind(this)
+    this.atualizaCupons = this.atualizaCupons.bind(this)
     this.atualizaCuponsUtilizados = this.atualizaCuponsUtilizados.bind(this)
     this.atualizaInfosUser = this.atualizaInfosUser.bind(this)
     this.buscaCupom = this.buscaCupom.bind(this)
-    this.atualizaCupons = this.atualizaCupons.bind(this)
-    this.loadFromLocalStorage = this.loadFromLocalStorage.bind(this)
-    this.getCupomById = this.getCupomById.bind(this)
     this.faleConosco = this.faleConosco.bind(this)
+    this.getCupomById = this.getCupomById.bind(this)
+    this.getDadosMeuPerfil = this.getDadosMeuPerfil.bind(this)
+    this.getOfertas = this.getOfertas.bind(this)
+    this.loadFromLocalStorage = this.loadFromLocalStorage.bind(this)
+    this.login = this.login.bind(this)
+    this.logout = this.logout.bind(this)
+    this.receberNotificacoes = this.receberNotificacoes.bind(this)
+    this.setDadosMeuPerfil = this.setDadosMeuPerfil.bind(this)
+    this.setFacebookToken = this.setFacebookToken.bind(this)
+    this.setPerfil = this.setPerfil.bind(this)
+    this.setToken = this.setToken.bind(this)
+    this.signup = this.signup.bind(this)
+    this.toggleDesejo = this.toggleDesejo.bind(this)
   }
 
   loadFromLocalStorage() {
@@ -58,6 +59,10 @@ class UserProvider extends React.Component {
   }
 
   componentDidMount() {
+    ReactGA.initialize(process.env.REACT_APP_GOOGLE_UA, {
+      debug: true,
+      titleCase: false,
+    });
     this.atualizaInfosUser()
   }
 
@@ -261,6 +266,21 @@ class UserProvider extends React.Component {
     return res;
   }
 
+  async recoverPassword(email) {
+    const res = await fetch(process.env.REACT_APP_API_URL+'/password/reset', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({email: email})
+    })
+    .then(response => response.json())
+    .catch(erro => console.error('Erro no recoverPassword',erro))
+    if(res) {
+      return res;
+    }
+  }
 
   logout() {
     localStorage.clear();
@@ -613,6 +633,7 @@ class UserProvider extends React.Component {
           signup: this.signup,
           toggleDesejo: this.toggleDesejo,
           userToken: this.state.userToken,
+          recoverPassword: this.recoverPassword,
         }}
       >
         {this.props.children}

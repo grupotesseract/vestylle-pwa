@@ -138,7 +138,7 @@ class ListaCupons extends React.Component {
                         overflow: 'hidden',
                     }}>
                     <img
-                        src={cupom.foto_caminho || ((cupom.oferta && cupom.oferta.urlFoto) && cupom.oferta.urlFoto)}
+                        src={(cupom.fotos_listagem && cupom.fotos_listagem.length > 0) && cupom.fotos_listagem[0].urlCloudinary}
                         alt={cupom.titulo}
                         style={{
                             width:'100%',
