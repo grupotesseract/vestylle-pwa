@@ -18,6 +18,7 @@ class InputCupomQR extends React.Component {
     status: 'display',
     loadingCupom: false,
     redirectTo: null,
+    ativaBuscaCupom: null
   }
 
   handleScan = cupomValue => {
@@ -54,7 +55,12 @@ class InputCupomQR extends React.Component {
   handleChangeCumpom = (e) => {
     let cupomValue = this.removeURI(e.target.value)
     this.setState({cupom: cupomValue})
-    this.findCupom(cupomValue)
+    clearTimeout(this.state.ativaBuscaCupom)
+    this.setState({
+      ativaBuscaCupom: setTimeout(()=>{
+        this.findCupom(cupomValue)
+      } ,1500)
+    })
   }
 
   removeURI(cupomValue) {
