@@ -5,17 +5,16 @@ import Alert from '../ui/Alert';
 import { Link, Redirect } from 'react-router-dom'
 import ImageBackground from '../ui/ImageBackground';
 import View from '../ui/View';
-import TextInput from '../ui/TextInput';
 import { UserConsumer } from '../UserContext';
 
 export default class EsqueceuSenha extends React.Component {
 
   state = {
-    erroSenha: false,
+    email: '',
+    erroRecover: false,
+    emailEnviado: false,
     redirectTo: null,
     msgErro: '',
-    login: '',
-    password: ''
   }
   
   render() {
@@ -29,43 +28,48 @@ export default class EsqueceuSenha extends React.Component {
         )}
         <View
           style={{width: '80%', flexGrow:2, marginBottom: 'auto', justifyContent: 'center'}}>
-          <img
-            alt="Vestylle"
-            src={require('../assets/logobranco.png')}
-            style={{ width:'80%', height:60 }}
-          />
-          <RubikText style={styles.textoBranco}>Faça seu cadastro </RubikText>
-          <RubikText style={styles.textoBranco}>e receba benefícios exclusivos</RubikText>
+          <Link 
+            to="/"
+            style={{flexDirection: 'column'}}>
+            <img
+              alt="Vestylle"
+              src={require('../assets/logobranco.png')}
+              style={{ width:'80%', height:60 }}
+            />
+            <RubikText style={styles.textoBranco}>Faça seu cadastro </RubikText>
+            <RubikText style={styles.textoBranco}>e receba benefícios exclusivos</RubikText>
+          </Link>
         </View>
 
         <View
           style={{width: '80%', justifySelf: 'center', flexGrow: 1}}>
 
           <RubikText style={styles.label}>Digite seu E-mail</RubikText>
-          <TextInput
+          <input
             style={styles.inputComBorda}
-            onChangeText={(email) => this.setState({email})}
+            onChange={(email) => this.setState({email: email.target.value})}
             value={this.state.email}
           />
           <UserConsumer>
-          {({ setToken }) => (
+          {({ recoverPassword }) => (
           <ButtonBorder 
             title="PRÓXIMA"
             loading={this.state.loading}
-            onPress={() => this.signInAsync(setToken)} 
+            onPress={() => this.callRecover(recoverPassword)} 
           />
           )}
           </UserConsumer>
         </View>
-        <Link 
-          navigation={this.props.navigation}
-          to="/"
-          fontSize="12"
-          style={{marginTop: 100, marginBottom: 25, color: "#feca03", fontSize: 12}}
-        >
-          Saiba mais sobre o aplicativo Megastore Jaú
-        </Link>
-        { this.state.erroLogin && (
+        { this.state.emailEnviado && (
+          <Alert
+            title = "Veja seu email!"
+            message = {this.state.msgErro}
+            btnText = "OK"
+            onClickButton = {this.goHome}
+            dismissAlert = {this.goHome}
+          />
+        )}
+        { this.state.erroRecover && (
           <Alert
             title = "Erro"
             message = {this.state.msgErro}
@@ -78,50 +82,35 @@ export default class EsqueceuSenha extends React.Component {
     );
   }
 
-  signInAsync = async (setToken) => {
-    const self = this;
-    this.setState({loading:true})
-    await this.fetchLogin()
-    .then(jsonRes => {
-      if(jsonRes.success) {
-        const token = jsonRes.data.token
-        setToken(token);
-        self.setState({ redirectTo: '/areacliente'});
-        return;
+  callRecover(recoverPassword) {
+    recoverPassword(this.state.email)
+    .then((res) => {
+      console.log(res)
+      if(res && !res.success) {
+        this.setState({
+          erroRecover: true,
+          msgErro: res.message
+        })
+        return
       }
-      const msgErro = jsonRes.message;
-      self.setState({
-        erroLogin: true,
-        loading: false,
-        msgErro
-      })
+      if(res && res.success) {
+        this.setState({
+          emailEnviado: true,
+          msgErro: res.message
+        })
+        return
+      }
     })
-    .catch(erro => {
-      self.setState({
-        erroLogin: true, 
-        msgErro: erro.toString(),
-        loading: false
-      })
-    })
-  };
+    .catch((e) => console.log('erro no callRecover', e))
+  }
 
-  fetchLogin = async () => {
-    const res = await fetch('https://develop-api.vestylle.grupotesseract.com.br/api/login', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({email: this.state.login, password: this.state.password})
-    })
-    .then(response => response.json())
-    .catch(erro => console.error('Login não rolou',erro))
-    return res;
+  goHome = () => {
+    this.setState({redirectTo: '/'})
   }
 
   dismissAlertErro = () => {
     this.setState({
-      erroLogin: false
+      erroRecover: false
     })
   }
 }

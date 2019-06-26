@@ -3,7 +3,7 @@ import { Link, Redirect } from 'react-router-dom'
 import View from './View';
 import RubikText from './RubikText';
 import TouchableHighlight from "../ui/TouchableHighlight";
-import { FaHeart, FaRegHeart, FaShareAlt } from "react-icons/fa";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { UserConsumer } from '../UserContext';
 import { FacebookShareButton } from 'react-share'
 import { IoMdShare } from 'react-icons/io';
