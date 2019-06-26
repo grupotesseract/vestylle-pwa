@@ -266,6 +266,21 @@ class UserProvider extends React.Component {
     return res;
   }
 
+  async recoverPassword(email) {
+    const res = await fetch(process.env.REACT_APP_API_URL+'/password/reset', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({email: email})
+    })
+    .then(response => response.json())
+    .catch(erro => console.error('Erro no recoverPassword',erro))
+    if(res) {
+      return res;
+    }
+  }
 
   logout() {
     localStorage.clear();
@@ -618,6 +633,7 @@ class UserProvider extends React.Component {
           signup: this.signup,
           toggleDesejo: this.toggleDesejo,
           userToken: this.state.userToken,
+          recoverPassword: this.recoverPassword,
         }}
       >
         {this.props.children}
