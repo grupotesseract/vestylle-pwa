@@ -20,8 +20,16 @@ import FaleConosco from './pages/FaleConosco';
 import Loja from './pages/Loja';
 import MeusCupons from './pages/MeusCupons';
 import CupomDetalhe from './pages/CupomDetalhe';
+import ReactGA from 'react-ga';
 
 class App extends Component {
+
+  componentWillMount() {
+    ReactGA.initialize(process.env.REACT_APP_GOOGLE_UA, {
+      debug: true,
+      titleCase: false,
+    });
+  }
   render() {
     return <div className="App">
       <LojaProvider>

@@ -9,6 +9,7 @@ import { FaCamera, FaArrowLeft, FaSpinner } from 'react-icons/fa';
 import QrReader from 'react-qr-reader'
 import Alert from '../ui/Alert';
 import { UserConsumer } from '../UserContext';
+import ReactGA from 'react-ga';
 
 class InputCupomQR extends React.Component {
 
@@ -36,6 +37,10 @@ class InputCupomQR extends React.Component {
     this.setState({
       status
     })
+  }
+
+  componentDidMount() {
+    ReactGA.pageview('vestylle.grupotesseract.com.br/adicionarcupom');
   }
 
   componentDidUpdate() {
