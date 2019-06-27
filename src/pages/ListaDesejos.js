@@ -9,6 +9,7 @@ import Breadcrumb from '../ui/Breadcrumb';
 import LaughingSmiling from '../ui/LaughingSmiling';
 import { FaRegHeart, FaSpinner } from 'react-icons/fa';
 import Produto from '../ui/Produto';
+import ReactGA from 'react-ga';
 
 class ListagemDesejos extends React.Component {
 
@@ -22,6 +23,7 @@ class ListagemDesejos extends React.Component {
     .then((listaDesejos) => {
      this.setState({listaDesejos})
     })
+    ReactGA.pageview('/listadesejos');
   }
 
   static getDerivedStateFromProps(props, state) {

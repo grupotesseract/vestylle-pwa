@@ -7,6 +7,7 @@ import TouchableHighlight from '../ui/TouchableHighlight';
 import { Link, Redirect } from 'react-router-dom'
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
 import { UserConsumer } from '../UserContext';
+import ReactGA from 'react-ga';
 
 class FBButton extends Component {
 
@@ -98,6 +99,10 @@ class Cadastro extends Component {
   constructor() {
     super()
     this.loginDone = this.loginDone.bind(this)
+  }
+
+  componentDidMount() {
+    ReactGA.pageview('/cadastro');
   }
 
   render() {

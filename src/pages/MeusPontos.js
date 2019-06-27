@@ -10,6 +10,7 @@ import CircularProgressbar from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { FaStar } from 'react-icons/fa';
 import LaughingSmiling from '../ui/LaughingSmiling';
+import ReactGA from 'react-ga';
 
 class DisplayPontos extends React.Component {
 
@@ -33,6 +34,7 @@ class DisplayPontos extends React.Component {
         nome: this.props.nome || '',
       })
     })
+    ReactGA.pageview('/meuspontos');
   }
 
   datetime2DDMMAAAA = (datetime) => {

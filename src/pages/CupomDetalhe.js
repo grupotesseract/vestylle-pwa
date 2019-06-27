@@ -9,6 +9,7 @@ import { FaSpinner } from 'react-icons/fa';
 import TouchableHighlight from '../ui/TouchableHighlight';
 import { UserConsumer } from '../UserContext';
 import { Link } from 'react-router-dom'
+import ReactGA from 'react-ga';
 
 class CodigoCupom extends React.Component {
 
@@ -391,6 +392,7 @@ export default class CupomDetalhe extends React.Component {
     this.setState({
       cupomId
     })
+    ReactGA.pageview('/cupom/'+cupomId);
   }
 
   render() {

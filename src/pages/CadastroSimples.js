@@ -7,6 +7,7 @@ import View from '../ui/View';
 import TextInput from '../ui/TextInput';
 import { Link, Redirect } from 'react-router-dom'
 import { UserConsumer } from '../UserContext';
+import ReactGA from 'react-ga';
 
 export default class CadastroSimples extends React.Component {
   state = {
@@ -20,6 +21,10 @@ export default class CadastroSimples extends React.Component {
     password: '',
     passwordConfirm: '',
     redirectTo: null
+  }
+
+  componentDidMount() {
+    ReactGA.pageview('/cadastrosimples');
   }
 
   render() {

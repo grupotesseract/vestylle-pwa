@@ -7,8 +7,13 @@ import { Link } from 'react-router-dom'
 import { FaUserAlt, FaStar, FaHeart } from 'react-icons/fa';
 import Breadcrumb from '../ui/Breadcrumb';
 import { UserConsumer } from '../UserContext';
+import ReactGA from 'react-ga';
 
 class AreaCliente extends Component {
+
+  componentDidMount() {
+    ReactGA.pageview('/areacliente');
+  }
 
   render() {
     return <>

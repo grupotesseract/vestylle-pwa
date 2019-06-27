@@ -7,6 +7,7 @@ import ImageBackground from '../ui/ImageBackground';
 import View from '../ui/View';
 import TextInput from '../ui/TextInput';
 import { UserConsumer } from '../UserContext';
+import ReactGA from 'react-ga';
 
 export default class LoginScreen extends React.Component {
 
@@ -16,6 +17,10 @@ export default class LoginScreen extends React.Component {
     msgErro: '',
     login: '',
     password: ''
+  }
+
+  componentDidMount() {
+    ReactGA.pageview('/login');
   }
   
   render() {

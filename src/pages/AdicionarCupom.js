@@ -40,7 +40,7 @@ class InputCupomQR extends React.Component {
   }
 
   componentDidMount() {
-    ReactGA.pageview('vestylle.grupotesseract.com.br/adicionarcupom');
+    ReactGA.pageview('/adicionarcupom');
   }
 
   componentDidUpdate() {
