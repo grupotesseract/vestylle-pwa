@@ -96,6 +96,14 @@ body script {
   color: black;
 }
 
+.container {
+  width: 100%;
+  max-width: 1200px;
+  align-self: center;
+  justify-self: center;
+  justify-content: space-evenly
+}
+
 img {
   object-fit: contain;
 }
