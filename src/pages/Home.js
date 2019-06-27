@@ -13,14 +13,45 @@ import ReactGA from 'react-ga';
 
 class Home extends Component {
 
+  state = {
+    windowSize: {
+      sm: true,
+      md: false,
+      lg: false
+    }
+  }
+
+  constructor(props) {
+    super(props);
+    this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateWindowDimensions);
+  }
+
+  updateWindowDimensions() {
+    this.setState({
+      windowSize: {
+        sm: true,
+        md: window.innerWidth > 1023,
+        lg: window.innerWidth > 1366
+      }
+    })
+  }
+
   componentDidMount() {
     ReactGA.pageview('/');
+    this.updateWindowDimensions();
+    window.addEventListener('resize', this.updateWindowDimensions);
   }
 
   render() {
     return <>
       <Header/>
-      <SimpleMenu/>
+      <SimpleMenu
+        windowSize={this.state.windowSize}
+      />
       <View style={{
         paddingTop: 20
       }}>
