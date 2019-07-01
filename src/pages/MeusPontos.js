@@ -70,7 +70,7 @@ class DisplayPontos extends React.Component {
       <View style={{alignItems: 'flex-start', alignSelf: 'stretch', textAlign: 'left', marginTop: 20}}>
         { this.state.qtdPontos === 0 && (<>
           <RubikText style={this.style.fonteDestaque}>Você ainda não possui pontos.</RubikText>
-          <RubikText style={{color: 'white'}}>Para começar a acumular pontos, utilize seu CPF nas próximas compras na loja Vestylle Megastore Jaú. Seus pontos aparecerão aqui.</RubikText>
+          <RubikText style={{color: 'white'}}> Para começar a acumular pontos, insira seu CPF em <Link to="MeuPerfil" style={{display: 'inline'}}><b style={{display: 'inline'}}>Meu Perfil</b></Link> e utilize-o nas próximas compras na loja Vestylle Megastore Jaú. Seus pontos aparecerão aqui. </RubikText>
         </>)}
         { this.state.qtdPontos > 0 && this.state.qtdPontos < 1000 && (<>
           { this.state.nome !== '' && (

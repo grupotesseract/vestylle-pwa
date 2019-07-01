@@ -78,7 +78,8 @@ class CodigoCupom extends React.Component {
         <View style={{ 
             backgroundColor: '#feca03', 
             alignSelf: 'stretch',
-            padding: 20
+            padding: 20,
+            marginTop: 10
         }}>
             {!this.state.utilizado && this.state.codigo  && (
             <RubikText 
@@ -407,6 +408,21 @@ export default class CupomDetalhe extends React.Component {
       </View>
 
         <UserConsumer>
+        {({perfil, ativaCupom, atualizaCuponsUtilizados, getCupomById, cuponsUtilizados}) => {
+            const cupomId = this.state.cupomId;
+            return (
+            <CodigoCupom
+                cupomId = {cupomId}
+                usuario={perfil}
+                ativaCupom={ativaCupom}
+                atualizaCuponsUtilizados={atualizaCuponsUtilizados}
+                cuponsUtilizados={cuponsUtilizados}
+                getCupomById = {getCupomById}
+            />
+        )}}
+        </UserConsumer>
+
+        <UserConsumer>
         {({cupons, atualizaCupons, getCupomById}) => (
             <DadosCupom
                 cupons = {cupons}
@@ -455,20 +471,6 @@ export default class CupomDetalhe extends React.Component {
             />
         </View>
 
-        <UserConsumer>
-        {({perfil, ativaCupom, atualizaCuponsUtilizados, getCupomById, cuponsUtilizados}) => {
-            const cupomId = this.state.cupomId;
-            return (
-            <CodigoCupom
-                cupomId = {cupomId}
-                usuario={perfil}
-                ativaCupom={ativaCupom}
-                atualizaCuponsUtilizados={atualizaCuponsUtilizados}
-                cuponsUtilizados={cuponsUtilizados}
-                getCupomById = {getCupomById}
-            />
-        )}}
-        </UserConsumer>
 
       <RodapeCompleto/>
     </View>

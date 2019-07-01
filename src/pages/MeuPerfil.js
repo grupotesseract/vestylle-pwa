@@ -119,6 +119,7 @@ class FormMeuPerfil extends React.Component {
   componentDidMount() {
     this.loadPerfil();
     ReactGA.pageview('/meuperfil');
+    this.setState({ receberNovidades: ( Notification.permission === 'granted' )})
   }
 
   render() {

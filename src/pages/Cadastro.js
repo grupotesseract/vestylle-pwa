@@ -108,7 +108,7 @@ class Cadastro extends Component {
   render() {
     return <ImageBackground
       source={require('../assets/fundocadastro.jpg')}
-      style={{width: '100%', height: '100vh', justifyContent: 'space-evenly', alignItems: 'flex-end'}}>
+      style={{width: '100%', height: '100%', justifyContent: 'space-evenly', alignItems: 'flex-end'}}>
 
         { this.state.redirectTo && (
           <Redirect to={this.state.redirectTo}/>
@@ -160,9 +160,15 @@ class Cadastro extends Component {
             <RubikText style={this.styles.textoSmall}>JÁ POSSUI CADASTRO? </RubikText>
             <Link
               to="Login"
-              fontSize="8"
-              style={this.styles.textoSmall}
-            >&nbsp; ACESSE SUA CONTA
+              style={{
+                color: '#FFFFFF',
+                fontSize: 14,
+                padding: 5,
+                // marginTop: 5,
+                // border: '1px solid white',
+                textDecoration: 'underline'
+              }}
+            >ACESSE SUA CONTA
             </Link>
           </View>
         </>
@@ -195,10 +201,10 @@ class Cadastro extends Component {
     },
     fullCenter: {
       alignSelf: 'stretch',
-      flexDirection: 'row',
+      flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
-      paddingBottom: 25,
+      paddingBottom: 35,
       marginTop: 10
     },
     botaoQuadrado: {

@@ -27,7 +27,7 @@ export default class LoginScreen extends React.Component {
     return (
       <ImageBackground
         source={require('../assets/fundologin.jpg')}
-        style={{width: '100%', minHeight: '100vh', justifyContent: 'space-between', alignItems: 'center'}}>
+        style={{width: '100%', minHeight: '100%', justifyContent: 'space-between', alignItems: 'center'}}>
 
         { this.state.redirectTo && (
           <Redirect to={this.state.redirectTo}/>
