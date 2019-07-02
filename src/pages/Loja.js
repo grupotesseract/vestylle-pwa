@@ -8,6 +8,7 @@ import Breadcrumb from '../ui/Breadcrumb';
 import LaughingSmiling from '../ui/LaughingSmiling';
 import { FaMapMarker } from 'react-icons/fa';
 import { LojaConsumer } from '../LojaContext';
+import ReactGA from 'react-ga';
 
 class InfosLoja extends React.Component {
 
@@ -32,6 +33,7 @@ class InfosLoja extends React.Component {
         this.setState({dadosLoja})
       })
     }    
+    ReactGA.pageview('/loja');
   }
 
   render() {

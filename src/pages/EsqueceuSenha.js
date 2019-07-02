@@ -6,6 +6,7 @@ import { Link, Redirect } from 'react-router-dom'
 import ImageBackground from '../ui/ImageBackground';
 import View from '../ui/View';
 import { UserConsumer } from '../UserContext';
+import ReactGA from 'react-ga';
 
 export default class EsqueceuSenha extends React.Component {
 
@@ -15,6 +16,10 @@ export default class EsqueceuSenha extends React.Component {
     emailEnviado: false,
     redirectTo: null,
     msgErro: '',
+  }
+
+  componentDidMount() {
+    ReactGA.pageview('/esqueceusenha');
   }
   
   render() {

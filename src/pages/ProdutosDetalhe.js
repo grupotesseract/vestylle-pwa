@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom'
 import { LojaConsumer } from '../LojaContext';
 import CupomBoasVindas from '../components/CupomBoasVindas';
 import { UserConsumer } from '../UserContext';
+import ReactGA from 'react-ga';
 
 class ProdutoDetalhado extends React.Component {
 
@@ -196,6 +197,7 @@ export default class ProdutosDetalhe extends React.Component {
     this.setState({
       produtoId
     })
+    ReactGA.pageview('/produtos'+produtoId);
   }
 
   render() {

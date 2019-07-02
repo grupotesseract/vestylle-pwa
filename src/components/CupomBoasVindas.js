@@ -15,7 +15,7 @@ class CupomContent extends Component {
       <View 
         className="cupom-boas-vindas"
         style={{
-        flexDirection: 'row'
+        flexDirection: 'row',
       }}>
         <View style={{
           textAlign: 'center',

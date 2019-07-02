@@ -12,6 +12,7 @@ import TouchableHighlight from '../ui/TouchableHighlight';
 import Alert from '../ui/Alert';
 import MaskedInput from 'react-text-mask'
 import { FaSpinner } from 'react-icons/fa';
+import ReactGA from 'react-ga';
 
 class Checkbox extends React.Component {
   render() { 
@@ -117,6 +118,8 @@ class FormMeuPerfil extends React.Component {
 
   componentDidMount() {
     this.loadPerfil();
+    ReactGA.pageview('/meuperfil');
+    this.setState({ receberNovidades: ( Notification.permission === 'granted' )})
   }
 
   render() {

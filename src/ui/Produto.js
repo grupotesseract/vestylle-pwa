@@ -121,10 +121,12 @@ class Produto extends Component {
               {this.props.subtitulo}
             </RubikText>
           </Link>
-          <FacebookShareButton url={new URL('/', window.location).href + "/produtos/" + this.props.id}>
+          <FacebookShareButton 
+          style={{alignSelf: 'center'}}
+          url={new URL('/', window.location).href + "/produtos/" + this.props.id}>
             <IoMdShare
               size={32}
-              style={{color: '#585756', marginTop: 6, cursor: 'pointer'}}
+              style={{color: '#585756', cursor: 'pointer'}}
             />
           </FacebookShareButton>
           <UserConsumer>

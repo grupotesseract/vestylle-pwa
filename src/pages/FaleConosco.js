@@ -12,6 +12,7 @@ import ButtonBorder from '../ui/ButtonBorder';
 import { LojaConsumer } from '../LojaContext';
 import Alert from '../ui/Alert';
 import { UserConsumer } from '../UserContext';
+import ReactGA from 'react-ga';
 
 class FormContato extends React.Component {
   state = {
@@ -110,7 +111,6 @@ class FormContato extends React.Component {
       loading: true
     })
     await this.props.faleConosco(
-      1,
       this.state.nome,
       this.state.contato,
       this.state.assunto,
@@ -212,6 +212,10 @@ class FaleConoscoInfosLoja extends React.Component {
 }
 
 export default class FaleConosco extends React.Component {
+
+  componentDidMount() {
+    ReactGA.pageview('/faleconosco');
+  }
 
   render() {
     return ( <View>

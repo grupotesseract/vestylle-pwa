@@ -6,6 +6,7 @@ import Header from '../components/Header';
 import { Link } from 'react-router-dom'
 import RodapeCompleto from '../components/RodapeCompleto';
 import { UserConsumer } from '../UserContext';
+import ReactGA from 'react-ga';
 
 class ListaCupons extends React.Component {
     state = {
@@ -257,6 +258,10 @@ export default class MeusCupons extends React.Component {
       cupons: 'ativos',
       cuponsAtivos: [],
       cuponsUtilizados: []
+  }
+
+  componentDidMount() {
+    ReactGA.pageview('/meuscupons');
   }
 
   render() {

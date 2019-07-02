@@ -9,6 +9,7 @@ import { FaSpinner } from 'react-icons/fa';
 import TouchableHighlight from '../ui/TouchableHighlight';
 import { UserConsumer } from '../UserContext';
 import { Link } from 'react-router-dom'
+import ReactGA from 'react-ga';
 
 class CodigoCupom extends React.Component {
 
@@ -77,7 +78,8 @@ class CodigoCupom extends React.Component {
         <View style={{ 
             backgroundColor: '#feca03', 
             alignSelf: 'stretch',
-            padding: 20
+            padding: 20,
+            marginTop: 10
         }}>
             {!this.state.utilizado && this.state.codigo  && (
             <RubikText 
@@ -391,6 +393,7 @@ export default class CupomDetalhe extends React.Component {
     this.setState({
       cupomId
     })
+    ReactGA.pageview('/cupom/'+cupomId);
   }
 
   render() {
@@ -403,6 +406,21 @@ export default class CupomDetalhe extends React.Component {
             <RubikText bold={true} style={{color: '#585756'}}>Detalhes do cupom</RubikText>
         </Breadcrumb>
       </View>
+
+        <UserConsumer>
+        {({perfil, ativaCupom, atualizaCuponsUtilizados, getCupomById, cuponsUtilizados}) => {
+            const cupomId = this.state.cupomId;
+            return (
+            <CodigoCupom
+                cupomId = {cupomId}
+                usuario={perfil}
+                ativaCupom={ativaCupom}
+                atualizaCuponsUtilizados={atualizaCuponsUtilizados}
+                cuponsUtilizados={cuponsUtilizados}
+                getCupomById = {getCupomById}
+            />
+        )}}
+        </UserConsumer>
 
         <UserConsumer>
         {({cupons, atualizaCupons, getCupomById}) => (
@@ -453,20 +471,6 @@ export default class CupomDetalhe extends React.Component {
             />
         </View>
 
-        <UserConsumer>
-        {({perfil, ativaCupom, atualizaCuponsUtilizados, getCupomById, cuponsUtilizados}) => {
-            const cupomId = this.state.cupomId;
-            return (
-            <CodigoCupom
-                cupomId = {cupomId}
-                usuario={perfil}
-                ativaCupom={ativaCupom}
-                atualizaCuponsUtilizados={atualizaCuponsUtilizados}
-                cuponsUtilizados={cuponsUtilizados}
-                getCupomById = {getCupomById}
-            />
-        )}}
-        </UserConsumer>
 
       <RodapeCompleto/>
     </View>

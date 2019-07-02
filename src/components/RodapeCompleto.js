@@ -6,6 +6,121 @@ import { FaClock, FaMapMarker, FaWhatsapp, FaPhone } from 'react-icons/fa';
 import TouchableHighlight from '../ui/TouchableHighlight';
 import { MdEmail } from 'react-icons/md';
 import { LojaConsumer } from '../LojaContext';
+import { Link } from 'react-router-dom'
+
+class DadosRodapeWide extends Component {
+
+  onlyNumbers(str) {
+    return str.replace(/\D/g, '');
+  }
+
+  render() {
+    const dadosLoja = this.props.dadosLoja
+    if(!dadosLoja) {
+      return <></>
+    }
+    return <View style={{borderTop: '1px solid black', padding: 20, fontSize: 12}}>
+      <View className="container" style={{flexDirection: 'row'}}>
+        <img
+          alt="Vestylle"
+          src={require('../assets/logofull.png')}
+           style={{ marginRight: 40, width:'70%', alignSelf: 'center', maxWidth: 230 }}
+        />
+        <View style={{ borderLeft: '2px solid black', fontSize: 12, minWidth: 150, paddingLeft: 10, lineHeight: 1.7, alignItems: 'flex-start'}}>
+            <Link to="/">INÍCIO</Link>
+            <Link to="/areacliente">ÁREA DO CLIENTE</Link>
+            <Link to="/meuspontos">MEUS PONTOS</Link>
+            <Link to="/meuscupons">MEUS CUPONS</Link>
+            <Link to="/adicionarcupom">ADICIONAR CUPOM</Link>
+            <Link to="/listadesejos">LISTA DE DESEJOS</Link> 
+            <Link to="/produtos">PRODUTOS</Link>
+            <Link to="/loja">LOJA</Link>
+            <Link to="/faleconosco">FALE CONOSCO</Link>
+        </View>
+        <View style={{lineHeight: 1.5, borderLeft: '2px solid black', alignItems: 'flex-start', justifyContent: 'space-between', minWidth: 200, paddingLeft: 10}}>
+          <View>
+            <RubikText bold={true} style={{fontSize: 14}}>Horário de</RubikText>
+            <RubikText bold={true} style={{fontSize: 14}}>funcionamento</RubikText>
+            <RubikText>Segunda a Sexta 9h as 18h</RubikText>
+            <RubikText>Sábados 9h as 17h</RubikText>
+          </View>
+          <View style={{alignItems: 'flex-start'}}>
+            <RubikText bold={true} style={{fontSize: 14}}>Endereço</RubikText>
+            <RubikText style={{maxWidth: 180, textAlign: 'left'}}>
+              {dadosLoja.endereco}
+            </RubikText>
+            <a href="http://maps.apple.com/?ll=-22.2955408,-48.5574577,17">
+              <RubikText bold={true} style={{fontSize: 14, textDecorationLine: 'underline'}}>VER NO MAPA</RubikText>
+            </a>
+          </View>
+        </View>
+        <View style={{
+          borderLeft: '2px solid black',
+          alignItems: 'flex-start'
+        }}>
+          <View style={this.style.duvidas}>
+            <RubikText bold={true} style={{color: "white", alignItems: "center"}}>
+              DÚVIDAS ?
+            </RubikText>
+          </View>
+          <View style={{padding: 10, alignItems: 'flex-start'}}>
+            <RubikText bold={true}>FALE COM UM DE</RubikText>
+            <RubikText bold={true}>NOSSOS ATENDENTES</RubikText>
+            {dadosLoja.whatsapp &&
+            <>
+              <RubikText style={{marginTop: 6}}>
+                Iniciar conversa pelo 
+              </RubikText>
+              <TouchableHighlight onPress={() => window.open("http://api.whatsapp.com/send?phone=55"+this.onlyNumbers(dadosLoja.whatsapp))}>
+                <RubikText bold={true}>Whatsapp</RubikText>
+                <RubikText>&nbsp; {dadosLoja.whatsapp}</RubikText>
+              </TouchableHighlight>
+            </>
+            }
+            {dadosLoja.whatsapp2 &&
+            <TouchableHighlight onPress={() => window.open("http://api.whatsapp.com/send?phone=55"+this.onlyNumbers(dadosLoja.whatsapp2))}>
+              <RubikText>
+              {dadosLoja.whatsapp2}
+              </RubikText>
+            </TouchableHighlight>
+            }
+
+            { dadosLoja.telefone &&
+            <>
+              <RubikText style={{marginTop: 6}}>
+                Ou se preferir, você pode entrar em
+              </RubikText>
+              <RubikText>
+                contato com a loja pelo telefone
+              </RubikText>
+            <a href={"tel:"+this.onlyNumbers(dadosLoja.telefone)}>
+              <RubikText>
+                <FaPhone
+                size={10}
+                style={this.style.icon}
+              />{dadosLoja.telefone}
+              </RubikText>
+            </a>
+            </>
+            }
+          </View>
+        </View>
+      </View>
+    </View>
+  }
+
+  style = {
+    duvidas: {
+      flexDirection: "row",
+      backgroundColor: "#e20f17",
+      alignItems: "center",
+      justifyContent: "flex-end",
+      padding: '5px 10px',
+      borderBottomRightRadius: 15,
+      borderTopRightRadius: 15,
+    },
+  }
+}
 
 class DadosRodape extends Component {
 
@@ -187,15 +302,53 @@ class DadosRodape extends Component {
 }
 class RodapeCompleto extends Component {
 
+ state = {
+    windowSize: {
+      sm: true,
+      md: false,
+      lg: false
+    },
+  }
+
+  constructor(props) {
+    super(props);
+    this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateWindowDimensions);
+  }
+
+  updateWindowDimensions() {
+    this.setState({
+      windowSize: {
+        sm: true,
+        md: window.innerWidth > 1023,
+        lg: window.innerWidth > 1366
+      }
+    })
+  }
+
+  componentDidMount() {
+    this.updateWindowDimensions();
+    window.addEventListener('resize', this.updateWindowDimensions);
+  }
+
   render() {
     return <React.Fragment>
       <LojaConsumer>
-      {({ atualizaDadosLoja, dadosLoja }) => (
-      <DadosRodape
-          atualizaDadosLoja = {atualizaDadosLoja}
-          dadosLoja = {dadosLoja}
-      />
-      )}
+      {({ atualizaDadosLoja, dadosLoja }) => 
+        this.state.windowSize.md ?
+        <DadosRodapeWide
+            atualizaDadosLoja = {atualizaDadosLoja}
+            dadosLoja = {dadosLoja}
+        />
+        :
+        <DadosRodape
+            atualizaDadosLoja = {atualizaDadosLoja}
+            dadosLoja = {dadosLoja}
+        />
+      }
       </LojaConsumer>
       <MiniRodape/>
     </React.Fragment>

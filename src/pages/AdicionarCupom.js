@@ -9,6 +9,7 @@ import { FaCamera, FaArrowLeft, FaSpinner } from 'react-icons/fa';
 import QrReader from 'react-qr-reader'
 import Alert from '../ui/Alert';
 import { UserConsumer } from '../UserContext';
+import ReactGA from 'react-ga';
 
 class InputCupomQR extends React.Component {
 
@@ -18,6 +19,7 @@ class InputCupomQR extends React.Component {
     status: 'display',
     loadingCupom: false,
     redirectTo: null,
+    ativaBuscaCupom: null
   }
 
   handleScan = cupomValue => {
@@ -37,6 +39,10 @@ class InputCupomQR extends React.Component {
     })
   }
 
+  componentDidMount() {
+    ReactGA.pageview('/adicionarcupom');
+  }
+
   componentDidUpdate() {
     /*
     this.setState({
@@ -54,7 +60,12 @@ class InputCupomQR extends React.Component {
   handleChangeCumpom = (e) => {
     let cupomValue = this.removeURI(e.target.value)
     this.setState({cupom: cupomValue})
-    this.findCupom(cupomValue)
+    clearTimeout(this.state.ativaBuscaCupom)
+    this.setState({
+      ativaBuscaCupom: setTimeout(()=>{
+        this.findCupom(cupomValue)
+      } ,1500)
+    })
   }
 
   removeURI(cupomValue) {
