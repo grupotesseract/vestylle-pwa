@@ -111,7 +111,6 @@ class FormContato extends React.Component {
       loading: true
     })
     await this.props.faleConosco(
-      1,
       this.state.nome,
       this.state.contato,
       this.state.assunto,
