@@ -108,7 +108,34 @@ body script {
   max-width: 1200px;
   align-self: center;
   justify-self: center;
-  justify-content: space-evenly
+  justify-content: space-evenly;
+}
+.laughing-and-smiling {
+  font-family: 'Laughing And Smiling';
+  flex-direction: 'row';
+  font-size:20px;
+  margin-bottom: 2px;
+}
+.titulo-loja.laughing-and-smiling {
+  font-size: 18px;
+}
+
+/* Pagina Fale Conosco */
+.titulo-fale-conosco {
+  border-bottom: 2px solid black;
+  align-self: flex-start;
+  padding-left: 20px;
+  margin-top: 30px;
+}
+.info-centralizada {
+  color: black;
+  text-decoration: underline;
+  flex-grow: 0;
+  margin-top: 5px;
+}
+/* Pagina Lista de Desejos */
+.features-desejos {
+  margin-bottom: 55px;
 }
 
 img {
@@ -222,6 +249,10 @@ button {
   display: none;
   opacity: 1;
 }
+.margin-sm-top {
+  margin-bottom: 50px;
+}
+
 @media only screen and (min-width: 380px) {
   .sm-hide {
     display: block;
@@ -240,5 +271,70 @@ button {
   }
   .img-slider {
     max-height: 400px;
+  }
+  .laughing-and-smiling {
+    font-size: 26px;
+  }
+  .titulo-loja.laughing-and-smiling {
+    font-size: 26px;
+  }
+}
+@media only screen and (min-width: 650px) {
+  .text-left-wide {
+    text-align: left;
+    align-items: flex-start;
+    align-self: center;
+  }
+  .text-left-wide > div {
+    width: 650px;
+  }
+  div.titulo-fale-conosco {
+    border-bottom: 1px solid black;
+    align-self: flex-start;
+    font-size: 20px;
+    padding-left: 0px;
+    margin-top: 30px;
+    margin-left: 20px;
+    width: auto;
+  }
+  div.info-centralizada {
+    color: black;
+    text-decoration: underline;
+    flex-grow: 0;
+    margin-top: 5px;
+    align-self: flex-start;
+    text-align: left;
+    width: auto;
+  }
+  div.md-width-auto {
+    width: auto;
+  }
+  .pl-md-20 {
+    padding-left: 20px;
+  }
+  /* Pagina Lista de Desejos */
+  .features-desejos {
+    border: 2px solid black;
+    max-width: 50%;
+    padding: 40px 20px;
+    margin-left: 20px;
+    margin-bottom: 0px;
+    justify-content: center;
+  }
+  .md-50 {
+    max-width: 50%;
+    float:left;
+  }
+  .lista-desejos-vazia {
+    flex-direction: row;
+    width: 100%;
+    max-width: 1200px;
+    align-self: center;
+    justify-self: center;
+    justify-content: space-evenly;
+    margin-bottom: 50px;
+  }
+  .margin-sm-top {
+    margin-bottom: 0px;
   }
 }

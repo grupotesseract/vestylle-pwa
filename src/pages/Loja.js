@@ -44,18 +44,20 @@ class InfosLoja extends React.Component {
     return ( <View>
       <Header/>
 
-      <Breadcrumb>
-        <RubikText bold={true} style={{color: 'black'}}>Loja</RubikText>
-      </Breadcrumb>
-      <View style={{alignItems: 'center'}}>
-        <View style={{alignItems: 'center', padding: 20}}>
-          <LaughingSmiling style={{fontSize:18}}>Vista-se bem e com a qualidade</LaughingSmiling>
-          <LaughingSmiling style={{fontSize:18}}>das melhores marcas!</LaughingSmiling>
+      <View className="container">
+        <Breadcrumb>
+          <RubikText bold={true} style={{color: 'black'}}>Loja</RubikText>
+        </Breadcrumb>
+        <View style={{alignItems: 'center'}}>
+          <View style={{alignItems: 'center', padding: 20}}>
+            <LaughingSmiling className="titulo-loja">Vista-se bem e com a qualidade</LaughingSmiling>
+            <LaughingSmiling className="titulo-loja">das melhores marcas!</LaughingSmiling>
+          </View>
         </View>
-      </View>
-      <View style={{padding: 20, alignItems: 'center'}}>
-        <RubikText bold={true} style={{color: 'black', fontSize:16}}>Somos uma loja multimarcas de moda
-        jovem, casual, acessórios e calçados</RubikText>
+        <View style={{padding: 20, alignItems: 'center'}}>
+          <RubikText bold={true} style={{color: 'black', fontSize:16}}>Somos uma loja multimarcas de moda
+          jovem, casual, acessórios e calçados</RubikText>
+        </View>
       </View>
 
       <View style={{padding: 20 , marginBottom: 60}}>
@@ -76,28 +78,29 @@ class InfosLoja extends React.Component {
       </View>
 
       <View style={{padding: 20, backgroundColor: '#ebebeb'}}>
-        <RubikText bold={true} style={{fontSize:20}}>COMO CHEGAR</RubikText>
-        <RubikText style={{fontSize: 18}}>
-          <FaMapMarker
-            size={14}
-          />
-          {dadosLoja.endereco}
-        </RubikText>
-
-        <iframe 
-          style= {{
-            border: 10,
-            borderColor: 'white',
-            borderStyle: 'solid',
-            marginTop: 20,
-            marginBottom: 20,
-            minHeight: 400
-          }}
-          title="Mapa Vestylle"
-          frameborder="0" 
-          src="https://www.google.com/maps/embed/v1/place?q=place_id:ChIJOf4a3ANYx5QR03_K03BGa78&key=AIzaSyBWFBnGtrkMv_qF_dCaduOL8IWsJELc4h4" 
-          allowfullscreen>
-        </iframe> 
+        <View className="container">
+            <RubikText bold={true} style={{fontSize:20}}>COMO CHEGAR</RubikText>
+            <RubikText style={{fontSize: 18}}>
+              <FaMapMarker
+                size={14}
+              />
+              {dadosLoja.endereco}
+            </RubikText>
+            <iframe 
+              style= {{
+                border: 10,
+                borderColor: 'white',
+                borderStyle: 'solid',
+                marginTop: 20,
+                marginBottom: 20,
+                minHeight: 400
+              }}
+              title="Mapa Vestylle"
+              frameborder="0" 
+              src="https://www.google.com/maps/embed/v1/place?q=place_id:ChIJOf4a3ANYx5QR03_K03BGa78&key=AIzaSyBWFBnGtrkMv_qF_dCaduOL8IWsJELc4h4" 
+              allowfullscreen>
+            </iframe> 
+        </View>
       </View>
 
       <RodapeCompleto/>

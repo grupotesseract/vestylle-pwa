@@ -89,7 +89,7 @@ class Home extends Component {
         flexDirection: 'row', 
         alignItems: 'stretch',
         justifyContent: 'stretch',
-        marginTop: 20
+        marginTop: 50
         }}>
         <View style={{
           backgroundColor: '#1d1d1b',
@@ -99,13 +99,13 @@ class Home extends Component {
           alignItems: 'flex-end',
           justifyContent: 'center',
           color: 'white',
-          fontSize: 18
+          fontSize: 22
         }}>
           <RubikText> Com os cupons promocionais</RubikText>
           <RubikText> <i style={{display:'inline'}}>Vestylle Megastore Jaú</i>, você</RubikText>
           <RubikText> tem desconto o ano inteiro. </RubikText>
         </View>
-        <View style={{flexGrow: 1, alignItems: 'flex-start', backgroundColor: "#feca03",}}>
+        <View style={{flexGrow: 1, alignItems: 'flex-start', paddingLeft: 20, backgroundColor: "#feca03",}}>
           <CupomBoasVindas/>
         </View>
       </View>:<>
