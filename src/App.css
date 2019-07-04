@@ -110,6 +110,9 @@ body script {
   justify-self: center;
   justify-content: space-evenly;
 }
+div.container-sm {
+  max-width:600px;
+}
 .laughing-and-smiling {
   font-family: 'Laughing And Smiling';
   flex-direction: 'row';
@@ -136,6 +139,30 @@ body script {
 /* Pagina Lista de Desejos */
 .features-desejos {
   margin-bottom: 55px;
+}
+/* Pagina Detalhes Produto */
+.desconto {
+  align-items: center;
+  background-color: #e20f17;
+  padding: 10px;
+  margin-top: 20px;
+  margin-bottom:-15px;
+}
+.descricao-oferta {
+  color: white;
+  background-color: black;
+}
+/* Pagina Adicionar Cupom */
+.titulo-verde {
+  background-color: #55bcba;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  padding-left: 20px;
+  padding-right: 20px;
+  text-align: left;
+  align-self: flex-start;
 }
 
 img {
@@ -204,6 +231,7 @@ button {
   border-top: 0px solid #e20f17;
   border-bottom: 15px solid transparent;
 }
+
 .bandeirola:before{
   content:'';
   position:absolute;
@@ -245,6 +273,7 @@ button {
 }
 
 
+.hide-sm,
 .sm-hide {
   display: none;
   opacity: 1;
@@ -325,6 +354,11 @@ button {
     max-width: 50%;
     float:left;
   }
+  .md-flexrow {
+    flex-direction: row;
+    position: relative;
+    justify-content: flex-start;
+  }
   .lista-desejos-vazia {
     flex-direction: row;
     width: 100%;
@@ -336,5 +370,33 @@ button {
   }
   .margin-sm-top {
     margin-bottom: 0px;
+  }
+  .margin-md-top {
+    margin-top: 100px;
+    margin-bottom: 100px;
+  }
+  .hide-md {
+    display: none;
+    visibility: hidden;
+  }
+  .hide-sm {
+    display: block;
+    opacity: 1;
+  }
+  .descricao-oferta {
+    color: black;
+    background-color: transparent;
+  }
+  /* Pagina Adicionar Cupom */
+  .titulo-verde {
+    background-color: transparent;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+    text-align: left;
+    align-self: center;
   }
 }
