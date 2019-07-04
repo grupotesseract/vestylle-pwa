@@ -141,10 +141,10 @@ class ListagemDesejos extends React.Component {
           </View>
           <CupomBoasVindas/>
         </View>
-      </View> ):(<>
+      </View> ):(<View className="container" style={{display: 'block'}}>
         {this.state.listaDesejos.map((desejo, key) => (
-          <View key={key} style={{position: 'relative'}}>
-            <div style={{
+          <View key={key} style={{position: 'relative'}} className="card-lista-desejos">
+            <div className="hide-md" style={{
               position: 'absolute',
               height: '45%',
               width: '100%',
@@ -152,12 +152,7 @@ class ListagemDesejos extends React.Component {
               top: '12%',
               zIndex:1
             }}></div>
-            <View style={{
-                width:'93%', 
-                alignSelf:'center',
-                marginBottom: '100px',
-                zIndex:2
-              }}>
+            <View className="card-interno-lista-desejos">
               <Produto
                 key={key}
                 id={desejo.id}
@@ -169,7 +164,7 @@ class ListagemDesejos extends React.Component {
             </View>
           </View>
         ))}      
-      </>)
+      </View>)
   }
 }
 

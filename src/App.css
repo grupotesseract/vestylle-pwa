@@ -140,6 +140,12 @@ div.container-sm {
 .features-desejos {
   margin-bottom: 55px;
 }
+.card-interno-lista-desejos {
+  width:93%;
+  align-self:center;
+  margin-bottom: 100px;
+  z-index:2;
+}
 /* Pagina Detalhes Produto */
 .desconto {
   align-items: center;
@@ -163,6 +169,22 @@ div.container-sm {
   padding-right: 20px;
   text-align: left;
   align-self: flex-start;
+}
+/* Pagina Meus Cupons */
+
+.card-cupom {
+  background-color: white;
+  border-radius: 3px;
+  box-shadow: 0 0 5px black;
+  margin: 20px;
+  align-self: stretch;
+  align-items: stretch;
+  padding: 10px;
+  position: relative;
+}
+.cupom-utilizado {
+  opacity: 0.7;
+  filter: grayscale(100%);
 }
 
 img {
@@ -350,6 +372,31 @@ button {
     margin-bottom: 0px;
     justify-content: center;
   }
+
+  .card-lista-desejos {
+    width: 47%;
+    margin: 1%;
+    float: left;
+  }
+  div.codigo-cupom {
+    position: relative;
+    display: flex;
+    margin-top: 10px;
+  }
+  .codigo-cupom > div{
+    flex-grow: 1;
+    justify-content: center;
+    margin-top:5px;
+  }
+  .md-50-hard {
+    width: 50%;
+    float:left;
+  }
+  .circulo-pontos {
+    align-items: flex-end;
+    padding-right: 2em;
+    margin-bottom: 50px;
+  }
   .md-50 {
     max-width: 50%;
     float:left;
@@ -371,6 +418,7 @@ button {
   .margin-sm-top {
     margin-bottom: 0px;
   }
+  .margin-md-top-bottom,
   .margin-md-top {
     margin-top: 100px;
     margin-bottom: 100px;
@@ -398,5 +446,21 @@ button {
     padding-right: 20px;
     text-align: left;
     align-self: center;
+  }
+}
+@media only screen and (min-width: 850px) {
+  .card-cupom {
+    width: 29%;
+    margin: 1%;
+    float: left;
+    height: 19em;
+  }
+  .lista-cupons {
+    display: block;
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
+  .card-lista-desejos {
+    width: 31%;
   }
 }

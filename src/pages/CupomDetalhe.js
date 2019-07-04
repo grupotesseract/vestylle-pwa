@@ -266,7 +266,7 @@ class DadosCupom extends React.Component {
         }
         return <>
         <View style={{alignItems: 'center', marginTop: 30, marginBottom: 20}}>
-          <View style={{alignItems: 'center'}} >
+          <View className="hide-md" style={{alignItems: 'center'}} >
               <RubikText 
                 bold={true}
                 style={{
@@ -293,7 +293,8 @@ class DadosCupom extends React.Component {
         </View>
 
 
-        <View style={{position:'relative'}}>
+        <View className="md-flexrow">
+        <View className="md-50" style={{position:'relative'}}>
 
             {Number(this.state.cupom.porcentagem_off) > 0 &&
             <View style={{
@@ -358,15 +359,39 @@ class DadosCupom extends React.Component {
         }
         </View>
 
-        <View style={{padding: 15, marginRight: 20, marginLeft: 20, textAlign: 'left'}}>
-            <RubikText style={{fontSize: 16, marginBottom: 5}}>
-                {this.state.cupom.texto_cupom}
-            </RubikText>
-            { this.state.cupom.data_validade && (
-            <RubikText style={{fontSize: 14}}>
-                Esse cupom é válido até {this.datetime2DDMMAAAA(this.state.cupom.data_validade)}
-            </RubikText>
-            )}
+        <View className="md-50" style={{justifyContent: 'center'}}>
+            <View style={{padding: 15, marginRight: 20, marginLeft: 20, textAlign: 'left'}}>
+                <View className="hide-sm">
+                    <RubikText 
+                        bold={true}
+                        style={{
+                            fontSize: 24,
+                            color: '#1d1e1b'
+                        }}
+                    >
+                        {this.state.cupom.titulo}
+                    </RubikText>
+                    <RubikText 
+                        style={{
+                        borderColor: 'black',
+                        borderStyle: 'solid',
+                        justifyContent: 'center',
+                        paddingTop: 5,
+                        paddingBottom:20
+                    }}>
+                        {this.state.cupom.subtitulo}
+                    </RubikText>
+                </View>
+                <RubikText style={{fontSize: 16, marginBottom: 5}}>
+                    {this.state.cupom.texto_cupom}
+                </RubikText>
+                { this.state.cupom.data_validade && (
+                <RubikText style={{fontSize: 14}}>
+                    Esse cupom é válido até {this.datetime2DDMMAAAA(this.state.cupom.data_validade)}
+                </RubikText>
+                )}
+            </View>
+        </View>
         </View>
       </> 
     }
@@ -400,13 +425,13 @@ export default class CupomDetalhe extends React.Component {
     return ( <View>
       <Header/>
 
-      <View>
+      <View className="container">
         <Breadcrumb>
             <RubikText style={{color: '#585756'}}>Meus cupons &gt;&nbsp;</RubikText>
             <RubikText bold={true} style={{color: '#585756'}}>Detalhes do cupom</RubikText>
         </Breadcrumb>
-      </View>
 
+        <View className="hide-md">
         <UserConsumer>
         {({perfil, ativaCupom, atualizaCuponsUtilizados, getCupomById, cuponsUtilizados}) => {
             const cupomId = this.state.cupomId;
@@ -421,6 +446,7 @@ export default class CupomDetalhe extends React.Component {
             />
         )}}
         </UserConsumer>
+        </View>
 
         <UserConsumer>
         {({cupons, atualizaCupons, getCupomById}) => (
@@ -433,6 +459,24 @@ export default class CupomDetalhe extends React.Component {
         )}
         </UserConsumer>
 
+        <View className="md-flexrow  margin-md-top-bottom">
+        <View className="hide-sm md-50-hard codigo-cupom">
+        <UserConsumer>
+        {({perfil, ativaCupom, atualizaCuponsUtilizados, getCupomById, cuponsUtilizados}) => {
+            const cupomId = this.state.cupomId;
+            return (
+            <CodigoCupom
+                cupomId = {cupomId}
+                usuario={perfil}
+                ativaCupom={ativaCupom}
+                atualizaCuponsUtilizados={atualizaCuponsUtilizados}
+                cuponsUtilizados={cuponsUtilizados}
+                getCupomById = {getCupomById}
+            />
+        )}}
+        </UserConsumer>
+        </View>
+        <View className="md-50-hard">
         <RubikText
             bold={true} 
             style={{
@@ -470,7 +514,10 @@ export default class CupomDetalhe extends React.Component {
             }}
             />
         </View>
+        </View>
+        </View>
 
+      </View>
 
       <RodapeCompleto/>
     </View>

@@ -78,7 +78,7 @@ class InfosLoja extends React.Component {
       </View>
 
       <View style={{padding: 20, backgroundColor: '#ebebeb'}}>
-        <View className="container">
+        <View className="container container-sm">
             <RubikText bold={true} style={{fontSize:20}}>COMO CHEGAR</RubikText>
             <RubikText style={{fontSize: 18}}>
               <FaMapMarker
