@@ -21,6 +21,7 @@ import Loja from './pages/Loja';
 import MeusCupons from './pages/MeusCupons';
 import CupomDetalhe from './pages/CupomDetalhe';
 import ReactGA from 'react-ga';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 
 class App extends Component {
 
@@ -36,6 +37,7 @@ class App extends Component {
         <UserProvider>
           <Switch>
             <Route exact={true} path="/" component={Home}/>
+            <Route exact={true} path="/privacypolicy" component={PrivacyPolicy}/>
             <Route exact={true} path="/login" component={Login}/>
             <Route exact={true} path="/cadastro" component={Cadastro}/>
             <Route exact={true} path="/esqueceusenha" component={EsqueceuSenha}/>
