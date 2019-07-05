@@ -1,6 +1,5 @@
 import React from 'react';
 import RubikText from '../ui/RubikText';
-import Alert from '../ui/Alert';
 import ImageBackground from '../ui/ImageBackground';
 import View from '../ui/View';
 import ReactGA from 'react-ga';
