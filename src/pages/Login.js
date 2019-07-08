@@ -27,7 +27,7 @@ export default class LoginScreen extends React.Component {
     return (
       <ImageBackground
         source={require('../assets/fundologin.jpg')}
-        style={{width: '100%', minHeight: '100%' }}>
+        style={{width: '100%', height: window.innerHeight }}>
 
         <View 
         className="container container-sm"
