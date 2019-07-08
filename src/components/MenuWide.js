@@ -39,13 +39,15 @@ class MenuWide extends Component {
             borderTopWidth: 0,
             borderBottomWidth: 2,
             borderColor: "#bdbbbc",
-            flexDirection: "row",
             backgroundColor: "white",
             paddingTop: 7,
             paddingBottom: 8,
-            justifyContent: "space-around",
             boxShadow: '0 2px 2px rgba(0,0,0,0.2)'
         }}>
+            <View className="container" style={{
+                flexDirection: "row",
+                justifyContent: "space-around",
+            }}>
             <MenuButton 
                 label="Início"
                 page="/"
@@ -92,6 +94,7 @@ class MenuWide extends Component {
                 icon={FaWhatsapp}
                 noborder={true}
             />
+            </View>
         </View>
     }
 }

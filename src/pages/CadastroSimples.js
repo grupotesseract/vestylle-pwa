@@ -33,6 +33,10 @@ export default class CadastroSimples extends React.Component {
         source={require('../assets/fundologin.jpg')}
         style={{width: '100%', minHeight: '100vh', justifyContent: 'space-between', alignItems: 'center'}}>
 
+        <View 
+        className="container container-sm"
+        style={{height: '100%', justifyContent: 'space-evenly', alignItems: 'flex-end'}}>
+
         { this.state.redirectTo && (
           <Redirect to={this.state.redirectTo}/>
         )}
@@ -110,7 +114,7 @@ export default class CadastroSimples extends React.Component {
             dismissAlert = {this.dismissAlertErro}
           />
         )}
-        
+        </View> 
       </ImageBackground>
     );
   }

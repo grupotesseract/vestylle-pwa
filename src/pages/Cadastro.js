@@ -106,9 +106,11 @@ class Cadastro extends Component {
   }
 
   render() {
-    return <ImageBackground
-      source={require('../assets/fundocadastro.jpg')}
-      style={{width: '100%', height: '100%', justifyContent: 'space-evenly', alignItems: 'flex-end'}}>
+    return <ImageBackground source={require('../assets/fundocadastro.jpg')} style={{height: '100%'}}>
+
+        <View 
+        className="container container-sm"
+        style={{height: '100%', justifyContent: 'space-evenly', alignItems: 'flex-end'}}>
 
         { this.state.redirectTo && (
           <Redirect to={this.state.redirectTo}/>
@@ -173,6 +175,7 @@ class Cadastro extends Component {
           </View>
         </>
         )}
+        </View>
 
     </ImageBackground>
   }

@@ -47,99 +47,104 @@ class ListagemDesejos extends React.Component {
             <FaSpinner className="spin" style={{fontSize: 36}} />
           </View>
       }
-      return !this.state.listaDesejos || this.state.listaDesejos.length < 1 ? (<>
-        <View style={{alignItems: 'center'}}>
-          <RubikText bold={true}>A Lista de Desejos facilita suas compras.</RubikText>
-        </View>
-        <View style={{flexDirection:'row', padding:15}}>
-          <View style={{backgroundColor: 'white', flexGrow:1, padding: 10}}>
-            <img 
-              alt=""
-              src={require('../assets/sinoalerta.png')}
-              style={{padding:15, border: '1px solid #bdbabc', borderRadius: 5, maxWidth: 32, marginTop: 8}}
-            />
+      return !this.state.listaDesejos || this.state.listaDesejos.length < 1 ? (
+        <View className="lista-desejos-vazia">
+
+        <View className="features-desejos">
+          <View style={{alignItems: 'center'}}>
+            <RubikText bold={true}>A Lista de Desejos facilita suas compras.</RubikText>
           </View>
-          <View style={{flexGrow: 1}}>
-            <RubikText bold={true} style={{fontSize: 14, marginBottom:2}}>ALERTA DE DESCONTO</RubikText>
-            <RubikText bold={true} style={{fontSize: 12, justifyContent:'flex-start', textAlign: 'left'}}>Adicionando seus produtos favoritos, nós podemos te avisar se ele entrar em oferta. </RubikText>
-            <RubikText style={{fontSize: 12,justifyContent:'flex-start', textAlign: 'left'}}>Você pode desabilitar essa função em Area do Cliente > Meu Perfil</RubikText>
+          <View style={{flexDirection:'row', padding:15}}>
+            <View style={{backgroundColor: 'white', flexGrow:0, padding: 10}}>
+              <img 
+                alt=""
+                src={require('../assets/sinoalerta.png')}
+                style={{padding:15, border: '1px solid #bdbabc', borderRadius: 5, maxWidth: 32, marginTop: 8}}
+              />
+            </View>
+            <View style={{flexGrow: 1}}>
+              <RubikText bold={true} style={{fontSize: 14, marginBottom:2}}>ALERTA DE DESCONTO</RubikText>
+              <RubikText bold={true} style={{fontSize: 12, justifyContent:'flex-start', textAlign: 'left'}}>Adicionando seus produtos favoritos, nós podemos te avisar se ele entrar em oferta. </RubikText>
+              <RubikText style={{fontSize: 12,justifyContent:'flex-start', textAlign: 'left'}}>Você pode desabilitar essa função em Area do Cliente > Meu Perfil</RubikText>
+            </View>
           </View>
-        </View>
-        <View style={{flexDirection:'row', marginBottom: 50, padding: 15}}>
-          <View style={{backgroundColor: 'white', flexGrow:1, padding: 10}}>
-            <img 
-              alt=""
-              src={require('../assets/bag.png')}
-              style={{padding:15, border: '1px solid #bdbabc', borderRadius: 5, maxWidth: 32, marginTop: 14}}
-            />
-          </View>
-          <View style={{flexGrow: 1}}>
-            <RubikText bold={true} style={{fontSize: 14, marginTop:8, marginBottom:5}}>COMPRAS PRÁTICAS</RubikText>
-            <RubikText bold={true} style={{fontSize: 12,justifyContent:'flex-start', textAlign: 'left'}}>Na hora das compras em nossa loja, a lista te ajuda.</RubikText>
-            <RubikText style={{fontSize: 12,justifyContent:'flex-start', textAlign: 'left'}}>É só mostrá-la para um de nossos atendentes que ele encontra para você.</RubikText>
+          <View style={{flexDirection:'row', padding: 15}}>
+            <View style={{backgroundColor: 'white', flexGrow:0, padding: 10}}>
+              <img 
+                alt=""
+                src={require('../assets/bag.png')}
+                style={{padding:15, border: '1px solid #bdbabc', borderRadius: 5, maxWidth: 32, marginTop: 14}}
+              />
+            </View>
+            <View style={{flexGrow: 1}}>
+              <RubikText bold={true} style={{fontSize: 14, marginTop:8, marginBottom:5}}>COMPRAS PRÁTICAS</RubikText>
+              <RubikText bold={true} style={{fontSize: 12,justifyContent:'flex-start', textAlign: 'left'}}>Na hora das compras em nossa loja, a lista te ajuda.</RubikText>
+              <RubikText style={{fontSize: 12,justifyContent:'flex-start', textAlign: 'left'}}>É só mostrá-la para um de nossos atendentes que ele encontra para você.</RubikText>
+            </View>
           </View>
         </View>
 
-        <RubikText
-          bold={true}
-          style={{
-            padding: 10,
-            paddingLeft: 20,
-            paddingRight: 40,
-            borderTopRightRadius: 10,
-            borderBottomRightRadius: 10,
-            fontSize: 20,
-            marginBottom: -15,
-            alignSelf: 'flex-start',
-            backgroundColor: '#55bcba',
-            zIndex:2
-          }}
-        >COMO FUNCIONA?</RubikText>
-        <View style={{
-          backgroundColor:'#1d1e1b',
-          padding: 20,
-          alignItems: 'flex-start',
-          zIndex:1,
-          flexDirection: 'row'
-        }}>
-          <RubikText style={{
-            color: 'white', 
-            textAlign:'left',
-            paddingTop: 15,
-            paddingRight:10
-            }}>
-            No momento sua lista está vazia. 
-            Para adicionar seus produtos favoritos aqui, 
-            <b style={{display:'inline'}}> basta clicar no ícone <FaRegHeart/></b> 
-            no canto inferior do produto.</RubikText>
-          <img alt="miniatura da tela"
-            src={require('../assets/minilike.png')}
+        <View className="md-50">
+          <RubikText
+            bold={true}
             style={{
-              marginTop: -70,
-              minHeight: 200
-            }}/>
-        </View>
-        <View style={{
-          backgroundColor:'#585756', 
-          padding: 20, 
-          flexDirection: 'row',
-          justifyContent: 'center',
-          marginBottom: 50,
-          boxShadow: '0 0 10px black'
+              padding: 10,
+              paddingLeft: 20,
+              paddingRight: 40,
+              borderTopRightRadius: 10,
+              borderBottomRightRadius: 10,
+              fontSize: 20,
+              marginBottom: -15,
+              alignSelf: 'flex-start',
+              backgroundColor: '#55bcba',
+              zIndex:2
+            }}
+          >COMO FUNCIONA?</RubikText>
+          <View style={{
+            backgroundColor:'#1d1e1b',
+            padding: 20,
+            alignItems: 'flex-start',
+            zIndex:1,
+            flexDirection: 'row'
           }}>
-          <img alt="clique no coração"
-            src={require('../assets/like.png')}
-            style={{
-              maxWidth: 70,
-              marginRight: 20
-            }}/>
-          <RubikText bold={true} style={{fontSize: 12, color: 'white'}}>Produto adicionado à lista.</RubikText>
+            <RubikText style={{
+              color: 'white', 
+              textAlign:'left',
+              paddingTop: 15,
+              paddingRight:10
+              }}>
+              No momento sua lista está vazia. 
+              Para adicionar seus produtos favoritos aqui, 
+              <b style={{display:'inline'}}> basta clicar no ícone <FaRegHeart/></b> 
+              no canto inferior do produto.</RubikText>
+            <img alt="miniatura da tela"
+              src={require('../assets/minilike.png')}
+              style={{
+                marginTop: -70,
+                minHeight: 200
+              }}/>
+          </View>
+          <View className="margin-sm-bottom" style={{
+            backgroundColor:'#585756', 
+            padding: 20, 
+            flexDirection: 'row',
+            justifyContent: 'center',
+            boxShadow: '0 0 10px black'
+            }}>
+            <img alt="clique no coração"
+              src={require('../assets/like.png')}
+              style={{
+                maxWidth: 70,
+                marginRight: 20
+              }}/>
+            <RubikText bold={true} style={{fontSize: 12, color: 'white'}}>Produto adicionado à lista.</RubikText>
+          </View>
+          <CupomBoasVindas/>
         </View>
-        <CupomBoasVindas/>
-      </> ):(<>
+      </View> ):(<View className="container" style={{display: 'block'}}>
         {this.state.listaDesejos.map((desejo, key) => (
-          <View key={key} style={{position: 'relative'}}>
-            <div style={{
+          <View key={key} style={{position: 'relative'}} className="card-lista-desejos">
+            <div className="hide-md" style={{
               position: 'absolute',
               height: '45%',
               width: '100%',
@@ -147,12 +152,7 @@ class ListagemDesejos extends React.Component {
               top: '12%',
               zIndex:1
             }}></div>
-            <View style={{
-                width:'93%', 
-                alignSelf:'center',
-                marginBottom: '100px',
-                zIndex:2
-              }}>
+            <View className="card-interno-lista-desejos">
               <Produto
                 key={key}
                 id={desejo.id}
@@ -164,7 +164,7 @@ class ListagemDesejos extends React.Component {
             </View>
           </View>
         ))}      
-      </>)
+      </View>)
   }
 }
 
@@ -174,15 +174,17 @@ export default class ListaDesejos extends React.Component {
     return ( <View>
       <Header/>
 
-      <Breadcrumb>
-        <RubikText bold={true} style={{color: 'black'}}>
-          Lista de desejos
-        </RubikText>
-      </Breadcrumb>
-      <View style={{alignItems: 'center'}}>
-        <View style={{alignItems: 'center', padding: 20}}>
-          <LaughingSmiling>Seus produtos favoritos </LaughingSmiling>
-          <LaughingSmiling>ficam salvos aqui</LaughingSmiling>
+      <View className="container">
+        <Breadcrumb>
+          <RubikText bold={true} style={{color: 'black'}}>
+            Lista de desejos
+          </RubikText>
+        </Breadcrumb>
+        <View style={{alignItems: 'center'}}>
+          <View style={{alignItems: 'center', padding: 20}}>
+            <LaughingSmiling>Seus produtos favoritos </LaughingSmiling>
+            <LaughingSmiling>ficam salvos aqui</LaughingSmiling>
+          </View>
         </View>
       </View>
 

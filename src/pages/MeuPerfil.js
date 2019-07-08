@@ -123,7 +123,7 @@ class FormMeuPerfil extends React.Component {
   }
 
   render() {
-    return <form onSubmit={(e) => this.atualizarPerfil(e)}>
+    return <form className="container" onSubmit={(e) => this.atualizarPerfil(e)}>
       <RubikText bold={true} style={{color:'white', fontSize: 14, marginTop: 10, marginBottom: 10}} >
         Meu perfil
         {(this.state.loading || this.state.atualizando) && <FaSpinner color="white" className="spin" style={{fontSize: 18,marginLeft: 20}}/>}
@@ -132,6 +132,8 @@ class FormMeuPerfil extends React.Component {
       { this.state.redirectTo && (
         <Redirect to={this.state.redirectTo}/>
       )}
+      <View className="container-sm">
+
       <InputValidacao 
         title="Nome" 
         value={this.state.nome}
@@ -193,6 +195,7 @@ class FormMeuPerfil extends React.Component {
         loading={this.state.loading}
         style={{marginBottom: 41}}
       />
+      </View>
 
       { this.state.erroUpdate && (
         <Alert
@@ -306,7 +309,7 @@ export default class MeuPerfil extends React.Component {
       {({ getDadosMeuPerfil, setDadosMeuPerfil, setPerfil, receberNotificacoes }) => (<>
       <ImageBackground
         source={require('../assets/fundologin.jpg')}
-        style={{width: '100%', height: '100%'}}>
+        style={{width: '100%', height: '100%', alignItems: 'center'}}>
         <View style={{padding: 20}}>
           <FormMeuPerfil
             getData={getDadosMeuPerfil}
@@ -315,12 +318,12 @@ export default class MeuPerfil extends React.Component {
             receberNotificacoes={receberNotificacoes}
           />
         </View>
-        <MiniRodape/>
       </ImageBackground>
             
       </>
       )}
       </UserConsumer>
+      <MiniRodape/>
     </View>
     )
   }

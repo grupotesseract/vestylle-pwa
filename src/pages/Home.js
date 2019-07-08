@@ -84,59 +84,63 @@ class Home extends Component {
         </View>
       </View>
 
-      {this.state.windowSize.md ?
-      <View style={{ 
-        flexDirection: 'row', 
-        alignItems: 'stretch',
-        justifyContent: 'stretch',
-        marginTop: 20
-        }}>
-        <View style={{
-          backgroundColor: '#1d1d1b',
-          flexGrow: 1, 
-          paddingRight: 70,
-          lineHeight: 1.8,
-          alignItems: 'flex-end',
-          justifyContent: 'center',
-          color: 'white',
-          fontSize: 18
-        }}>
-          <RubikText> Com os cupons promocionais</RubikText>
-          <RubikText> <i style={{display:'inline'}}>Vestylle Megastore Jaú</i>, você</RubikText>
-          <RubikText> tem desconto o ano inteiro. </RubikText>
-        </View>
-        <View style={{flexGrow: 1, alignItems: 'flex-start', backgroundColor: "#feca03",}}>
-          <CupomBoasVindas/>
-        </View>
-      </View>:<>
-      <View style={{
-          alignItems:'center',
-          margin: 20,
-          padding: 5,
-          paddingTop: 10,
-          borderTop: 1,
-          borderTopStyle: 'solid',
-          borderColor: '#585756'
-        }}>
-        <RubikText 
-          bold={true} 
-          style={{ fontSize: 15, color: '#585756' }}>
-          Com os cupons promocionais da
-        </RubikText>
-        <RubikText 
-          bold={true} 
-          style={{ fontSize: 15, color: '#585756' }}>
-        Vestylle Megastore Jaú, você tem
-        </RubikText>
-        <RubikText 
-          bold={true} 
-          style={{ fontSize: 15, color: '#585756' }}>
-          desconto o ano inteiro.
-        </RubikText>
-      </View>
-      <CupomBoasVindas/>
-      </>
-      }
+        <UserConsumer>
+          {({isAuth}) => (
+            this.state.windowSize.md  && !isAuth?
+            <View style={{ 
+              flexDirection: 'row', 
+              alignItems: 'stretch',
+              justifyContent: 'stretch',
+              marginTop: 50
+              }}>
+              <View style={{
+                backgroundColor: '#1d1d1b',
+                flexGrow: 1, 
+                paddingRight: 70,
+                lineHeight: 1.8,
+                alignItems: 'flex-end',
+                justifyContent: 'center',
+                color: 'white',
+                fontSize: 22
+              }}>
+                <RubikText> Com os cupons promocionais</RubikText>
+                <RubikText> <i style={{display:'inline'}}>Vestylle Megastore Jaú</i>, você</RubikText>
+                <RubikText> tem desconto o ano inteiro. </RubikText>
+              </View>
+              <View style={{flexGrow: 1, alignItems: 'flex-start', paddingLeft: 20, backgroundColor: "#feca03",}}>
+                <CupomBoasVindas/>
+              </View>
+            </View>:<>
+            <View style={{
+                alignItems:'center',
+                margin: 20,
+                padding: 5,
+                paddingTop: 10,
+                borderTop: 1,
+                borderTopStyle: 'solid',
+                borderColor: '#585756'
+              }}>
+              <RubikText 
+                bold={true} 
+                style={{ fontSize: 15, color: '#585756' }}>
+                Com os cupons promocionais da
+              </RubikText>
+              <RubikText 
+                bold={true} 
+                style={{ fontSize: 15, color: '#585756' }}>
+              Vestylle Megastore Jaú, você tem
+              </RubikText>
+              <RubikText 
+                bold={true} 
+                style={{ fontSize: 15, color: '#585756' }}>
+                desconto o ano inteiro.
+              </RubikText>
+            </View>
+            <CupomBoasVindas/>
+            </>
+      
+          )}
+        </UserConsumer>
       
       <View style={{
         paddingTop:40,
