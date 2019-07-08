@@ -106,7 +106,7 @@ class Cadastro extends Component {
   }
 
   render() {
-    return <ImageBackground source={require('../assets/fundocadastro.jpg')} style={{height: '100%'}}>
+    return <ImageBackground source={require('../assets/fundocadastro.jpg')} style={{height: window.innerHeight}}>
 
         <View 
         className="container container-sm"

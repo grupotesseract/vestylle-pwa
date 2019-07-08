@@ -13,7 +13,6 @@ import ReactGA from 'react-ga';
 import { UserConsumer } from '../UserContext';
 import { LojaConsumer } from '../LojaContext';
 import ListaProdutos from '../ui/ListaProdutos';
-
 class Home extends Component {
 
   state = {
