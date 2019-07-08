@@ -6,6 +6,7 @@ import Header from '../components/Header';
 import { Link } from 'react-router-dom'
 import RodapeCompleto from '../components/RodapeCompleto';
 import { UserConsumer } from '../UserContext';
+import ReactGA from 'react-ga';
 
 class ListaCupons extends React.Component {
     state = {
@@ -81,23 +82,14 @@ class ListaCupons extends React.Component {
                     ATIVADOS
                 </RubikText>
             </View>
+            <View className="lista-cupons">
+
         {this.state.cupons && 
          this.state.cupons.map((cupom,key) => {
             return <View 
             key={key}
-            style={Object.assign({},{
-                backgroundColor: 'white',
-                borderRadius: 3,
-                boxShadow: '0 0 5px black',
-                margin: 20,
-                alignSelf: 'stretch',
-                alignItems: 'stretch',
-                padding: 10,
-                position: 'relative'
-            },this.state.cuponsSelecionados === 'utilizados' && {
-                opacity: 0.7,
-                filter: 'grayscale(100%)'
-            })}>
+            className={'card-cupom' + (this.state.cuponsSelecionados === 'utilizados' ? ' cupom-utilizado' : '')}
+            >
 
                 {Number(cupom.porcentagem_off) > 0 &&
                 <View style={{
@@ -165,7 +157,7 @@ class ListaCupons extends React.Component {
                 </RubikText>
                 <Link
                     to={"/cupom/"+cupom.id}
-                    title="ATIVAR CUPOM"
+                    title="VER DETALHES"
                     style={{
                         backgroundColor: '#e20f17',
                         color: 'white',
@@ -177,10 +169,11 @@ class ListaCupons extends React.Component {
                         alignSelf: 'center'
                     }}
                 >
-                    <RubikText>{ this.state.cuponsSelecionados === 'utilizados' ? "VER DETALHES" : "ATIVAR CUPOM"} </RubikText>
+                    <RubikText>{ this.state.cuponsSelecionados === 'utilizados' ? "VER DETALHES" : "VER DETALHES"} </RubikText>
                 </Link>
             </View>
         })}
+        </View>
         </>
     }
 
@@ -259,14 +252,21 @@ export default class MeusCupons extends React.Component {
       cuponsUtilizados: []
   }
 
+  componentDidMount() {
+    ReactGA.pageview('/meuscupons');
+  }
+
   render() {
     return ( <View>
       <Header/>
 
       <View style={{backgroundColor: "#585756", position: 'relative'}}>
 
+        <View className="container">
+
         <Link 
             to="/adicionarcupom"
+            className="hide-md"
             style={{
                 width:'15%', 
                 backgroundColor:'#feca03', 
@@ -310,6 +310,11 @@ export default class MeusCupons extends React.Component {
             )}}
             </UserConsumer>
 
+
+        </View>
+        <View className="md-flexrow">
+        <View className="md-50">
+
             <Link 
             to="/adicionarcupom"
             style={{
@@ -336,43 +341,46 @@ export default class MeusCupons extends React.Component {
                     </RubikText>
                 </View>
             </Link>
-
+        </View>
+        <View className="md-50">
+            <RubikText
+                bold={true} 
+                style={{
+                backgroundColor: '#55bcba',
+                padding: 10,
+                paddingRight: 20,
+                marginTop: 20,
+                marginBottom: -2,
+                borderTopRightRadius: 20,
+                borderBottomRightRadius: 10,
+                paddingLeft: 35,
+                alignSelf: 'flex-start'
+                }}
+            >
+                COMO UTILIZO O MEU CUPOM?
+            </RubikText>
+            <View style={{flexDirection: 'row', alignSelf: 'stretch', backgroundColor: 'black', marginBottom: 50}}>
+                <View>
+                    <RubikText style={{ color: 'white',padding: 20, textAlign: 'left'}}>
+                        Para utilizar seu cupom basta <b style={{display: 'inline',color: "#feca03"}}>ativar e mostrar a tela do seu celular</b> para um(a) atendente da loja Vestylle Megastore Jaú
+                    </RubikText>
+                </View>
+                <img
+                src={require('../assets/maobar.png')}
+                alt="Escanear Cupom"
+                className="sm-hide"
+                style={{
+                    marginTop: -12,
+                    marginBottom: -12,
+                    zIndex: 2,
+                    alignSelf:'center',
+                    width: '500px'
+                }}
+                />
+            </View>
+        </View>
         </View>
       </View>
-        <RubikText
-            bold={true} 
-            style={{
-            backgroundColor: '#55bcba',
-            padding: 10,
-            paddingRight: 20,
-            marginTop: 20,
-            marginBottom: -2,
-            borderTopRightRadius: 20,
-            borderBottomRightRadius: 10,
-            paddingLeft: 35,
-            alignSelf: 'flex-start'
-            }}
-        >
-            COMO UTILIZO O MEU CUPOM?
-        </RubikText>
-        <View style={{flexDirection: 'row', alignSelf: 'stretch', backgroundColor: 'black', marginBottom: 50}}>
-            <View>
-                <RubikText style={{ color: 'white',padding: 20, textAlign: 'left'}}>
-                    Para utilizar seu cupom basta <b style={{display: 'inline',color: "#feca03"}}>ativar e mostrar a tela do seu celular</b> para um(a) atendente da loja Vestylle Megastore Jaú
-                </RubikText>
-            </View>
-            <img
-            src={require('../assets/maobar.png')}
-            alt="Escanear Cupom"
-            className="sm-hide"
-            style={{
-                marginTop: -12,
-                marginBottom: -12,
-                zIndex: 2,
-                alignSelf:'center',
-                width: '500px'
-            }}
-            />
         </View>
       <RodapeCompleto/>
     </View>

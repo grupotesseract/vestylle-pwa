@@ -8,6 +8,9 @@ import TouchableHighlight from '../ui/TouchableHighlight';
 class SimpleMenu extends Component {
 
   render() {
+    if(this.props.windowSize && this.props.windowSize.md) {
+      return <></>
+    }
     return <View style={this.style.container}>
       <Link
         to = "/adicionarcupom"

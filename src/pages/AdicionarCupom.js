@@ -9,6 +9,7 @@ import { FaCamera, FaArrowLeft, FaSpinner } from 'react-icons/fa';
 import QrReader from 'react-qr-reader'
 import Alert from '../ui/Alert';
 import { UserConsumer } from '../UserContext';
+import ReactGA from 'react-ga';
 
 class InputCupomQR extends React.Component {
 
@@ -18,6 +19,7 @@ class InputCupomQR extends React.Component {
     status: 'display',
     loadingCupom: false,
     redirectTo: null,
+    ativaBuscaCupom: null
   }
 
   handleScan = cupomValue => {
@@ -37,6 +39,10 @@ class InputCupomQR extends React.Component {
     })
   }
 
+  componentDidMount() {
+    ReactGA.pageview('/adicionarcupom');
+  }
+
   componentDidUpdate() {
     /*
     this.setState({
@@ -54,7 +60,12 @@ class InputCupomQR extends React.Component {
   handleChangeCumpom = (e) => {
     let cupomValue = this.removeURI(e.target.value)
     this.setState({cupom: cupomValue})
-    this.findCupom(cupomValue)
+    clearTimeout(this.state.ativaBuscaCupom)
+    this.setState({
+      ativaBuscaCupom: setTimeout(()=>{
+        this.findCupom(cupomValue)
+      } ,1500)
+    })
   }
 
   removeURI(cupomValue) {
@@ -99,7 +110,7 @@ class InputCupomQR extends React.Component {
   }
 
   render() {
-    return <>
+    return <View className="margin-md-top">
 
       { this.state.redirectTo && (
         <Redirect to={this.state.redirectTo}/>
@@ -134,6 +145,7 @@ class InputCupomQR extends React.Component {
           boxShadow: '0 0 5px gray',
           marginBottom: 30,
         }}
+        className="hide-md"
         onClick={() => this.changeStatus('read')}
       >
         <FaCamera style={{paddingRight: 5}}/>
@@ -144,17 +156,7 @@ class InputCupomQR extends React.Component {
 
       <RubikText
         bold={true} 
-        style={{
-          backgroundColor: '#55bcba',
-          padding: 10,
-          marginBottom: 10,
-          borderTopRightRadius: 5,
-          borderBottomRightRadius: 5,
-          paddingLeft: 20,
-          paddingRight: 20,
-          textAlign: 'left',
-          alignSelf: 'flex-start'
-        }}
+        className="titulo-verde"
       >
         Insira seu código no campo abaixo
       </RubikText>
@@ -191,7 +193,7 @@ class InputCupomQR extends React.Component {
           dismissAlert = {this.dismissAlertErro}
         />
       )}
-    </>
+    </View>
   }
 
   dismissAlertErro = () => {
@@ -219,6 +221,8 @@ export default class AdicionarCupom extends React.Component {
     return ( <View>
       <Header/>
 
+      <View className="container">
+
       <Breadcrumb>
         <Link to="/areacliente"><RubikText style={{color: '#585756'}}>Área do Cliente &gt;&nbsp;</RubikText></Link>
         <Link to="/meuscupons">
@@ -227,6 +231,7 @@ export default class AdicionarCupom extends React.Component {
         <RubikText bold={true} style={{color: '#585756'}}>Novo</RubikText>
       </Breadcrumb>
 
+      <View className="hide-md">
       <View style={{flexDirection: 'row'}}>
         <View style={{ display: 'flex', marginTop: 20, marginBottom: 10}}>
           <RubikText
@@ -268,6 +273,7 @@ export default class AdicionarCupom extends React.Component {
           style={{marginTop: -69, marginBottom: -57, width: 135 }}
         />
       </View>
+      </View>
 
 
       <UserConsumer>
@@ -279,6 +285,7 @@ export default class AdicionarCupom extends React.Component {
         )}
       </UserConsumer>
 
+      </View>
       <RodapeCompleto/>
     </View>
     )

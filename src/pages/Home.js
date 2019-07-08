@@ -10,17 +10,51 @@ import { Link } from 'react-router-dom'
 import CupomBoasVindas from '../components/CupomBoasVindas';
 import LaughingSmiling from '../ui/LaughingSmiling';
 import ReactGA from 'react-ga';
+import { UserConsumer } from '../UserContext';
+import { LojaConsumer } from '../LojaContext';
+import ListaProdutos from '../ui/ListaProdutos';
 
 class Home extends Component {
 
+  state = {
+    windowSize: {
+      sm: true,
+      md: false,
+      lg: false
+    }
+  }
+
+  constructor(props) {
+    super(props);
+    this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateWindowDimensions);
+  }
+
+  updateWindowDimensions() {
+    this.setState({
+      windowSize: {
+        sm: true,
+        md: window.innerWidth > 1023,
+        lg: window.innerWidth > 1366
+      }
+    })
+  }
+
   componentDidMount() {
     ReactGA.pageview('/');
+    this.updateWindowDimensions();
+    window.addEventListener('resize', this.updateWindowDimensions);
   }
 
   render() {
     return <>
       <Header/>
-      <SimpleMenu/>
+      <SimpleMenu
+        windowSize={this.state.windowSize}
+      />
       <View style={{
         paddingTop: 20
       }}>
@@ -48,47 +82,98 @@ class Home extends Component {
           para você
           </RubikText>
         </View>
-        <View style={{
-          alignItems:'center',
-          margin: 20,
-          padding: 5,
-          paddingTop: 10,
-          borderTop: 1,
-          borderTopStyle: 'solid',
-          borderColor: '#585756'
-        }}>
-        <RubikText 
-          bold={true} 
-          style={{ fontSize: 15, color: '#585756' }}>
-          Com os cupons promocionais da
-        </RubikText>
-        <RubikText 
-          bold={true} 
-          style={{ fontSize: 15, color: '#585756' }}>
-        Vestylle Megastore Jaú, você tem
-        </RubikText>
-        <RubikText 
-          bold={true} 
-          style={{ fontSize: 15, color: '#585756' }}>
-          desconto o ano inteiro.
-        </RubikText>
-        </View>
       </View>
 
-      <CupomBoasVindas/>
+        <UserConsumer>
+          {({isAuth}) => (
+            this.state.windowSize.md  && !isAuth?
+            <View style={{ 
+              flexDirection: 'row', 
+              alignItems: 'stretch',
+              justifyContent: 'stretch',
+              marginTop: 50
+              }}>
+              <View style={{
+                backgroundColor: '#1d1d1b',
+                flexGrow: 1, 
+                paddingRight: 70,
+                lineHeight: 1.8,
+                alignItems: 'flex-end',
+                justifyContent: 'center',
+                color: 'white',
+                fontSize: 22
+              }}>
+                <RubikText> Com os cupons promocionais</RubikText>
+                <RubikText> <i style={{display:'inline'}}>Vestylle Megastore Jaú</i>, você</RubikText>
+                <RubikText> tem desconto o ano inteiro. </RubikText>
+              </View>
+              <View style={{flexGrow: 1, alignItems: 'flex-start', paddingLeft: 20, backgroundColor: "#feca03",}}>
+                <CupomBoasVindas/>
+              </View>
+            </View>:<>
+            <View style={{
+                alignItems:'center',
+                margin: 20,
+                padding: 5,
+                paddingTop: 10,
+                borderTop: 1,
+                borderTopStyle: 'solid',
+                borderColor: '#585756'
+              }}>
+              <RubikText 
+                bold={true} 
+                style={{ fontSize: 15, color: '#585756' }}>
+                Com os cupons promocionais da
+              </RubikText>
+              <RubikText 
+                bold={true} 
+                style={{ fontSize: 15, color: '#585756' }}>
+              Vestylle Megastore Jaú, você tem
+              </RubikText>
+              <RubikText 
+                bold={true} 
+                style={{ fontSize: 15, color: '#585756' }}>
+                desconto o ano inteiro.
+              </RubikText>
+            </View>
+            <CupomBoasVindas/>
+            </>
+      
+          )}
+        </UserConsumer>
       
       <View style={{
         paddingTop:40,
-      }}>
+      }}
+      className="container"
+      >
         <RubikText 
           bold={true} 
           style={{ 
-            alignSelf: 'center', 
+            alignSelf: this.state.windowSize.md ? 'flex-start' : 'center', 
             fontSize: 20,
+            padding: 10,
             marginBottom: 15
           }}>
           CONFIRA AS NOVIDADES
         </RubikText>
+        <View style={{display: 'block'}}>
+        {this.state.windowSize.md ? 
+        <UserConsumer>
+        {({listaDesejos, userToken}) => (
+          <LojaConsumer>
+          {({getOfertasComLike}) => (
+            <ListaProdutos
+              getOfertasComLike={getOfertasComLike}
+              listaDesejos={listaDesejos}
+              userToken={userToken}
+              visualizacao="wide"
+            />
+          )}
+          </LojaConsumer>
+        )}
+        </UserConsumer>
+        :
         <View style={{position: 'relative'}}>
           <div style={{
             position: 'absolute',
@@ -99,6 +184,8 @@ class Home extends Component {
             top: '10%',
           }}></div>
           <SliderOfertas/>
+        </View>
+        }
         </View>
         <Link 
           to="/produtos"

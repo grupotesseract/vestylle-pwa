@@ -5,7 +5,8 @@ self.addEventListener('push', function (e) {
         self.registration.showNotification(msg.title, {
             body: msg.body,
             icon: msg.icon,
-            actions: msg.actions
+            actions: msg.actions,
+            badge: msg.badge || 'badge-128x128.png'
         })
     );
 });

@@ -12,6 +12,7 @@ import ButtonBorder from '../ui/ButtonBorder';
 import { LojaConsumer } from '../LojaContext';
 import Alert from '../ui/Alert';
 import { UserConsumer } from '../UserContext';
+import ReactGA from 'react-ga';
 
 class FormContato extends React.Component {
   state = {
@@ -110,7 +111,6 @@ class FormContato extends React.Component {
       loading: true
     })
     await this.props.faleConosco(
-      1,
       this.state.nome,
       this.state.contato,
       this.state.assunto,
@@ -157,12 +157,11 @@ class FaleConoscoInfosLoja extends React.Component {
     if(!dadosLoja) {
       return <> </>
     }
-    console.log("Dados da loja", this.props.dadosLoja)
     return <>
-      <View style={{flexDirection:'column', justifyContent: 'space-evenly'}}>
+      <View className="md-width-auto" style={{flexDirection:'column', justifyContent: 'space-evenly', paddingLeft: 20}}>
         {dadosLoja.whatsapp &&
         <TouchableHighlight onPress={() => window.open("http://api.whatsapp.com/send?phone=55"+this.onlyNumbers(dadosLoja.whatsapp))}>
-          <RubikText style={{ color: "black", textDecorationLine: 'underline',  flexGrow: 0, marginTop: 5 }}>
+          <RubikText className="info-centralizada">
           <FaWhatsapp
             size={14}
           />{dadosLoja.whatsapp}
@@ -171,7 +170,7 @@ class FaleConoscoInfosLoja extends React.Component {
         }
         {dadosLoja.whatsapp2 &&
         <TouchableHighlight onPress={() => window.open("http://api.whatsapp.com/send?phone=55"+this.onlyNumbers(dadosLoja.whatsapp2))}>
-          <RubikText style={{ color: "black", textDecorationLine: 'underline',  flexGrow: 0, marginTop: 5 }}>
+          <RubikText className="info-centralizada">
           <FaWhatsapp
             size={14}
           />{dadosLoja.whatsapp2}
@@ -190,7 +189,7 @@ class FaleConoscoInfosLoja extends React.Component {
         </RubikText>
       </View>
       <a href={"tel:"+this.onlyNumbers(dadosLoja.telefone)}>
-        <RubikText style={{ color: "black", marginTop: 5}}>
+        <RubikText className="pl-md-20" style={{ color: "black", marginTop: 5}}>
           <FaPhone
           size={14}
         />{dadosLoja.telefone}
@@ -213,61 +212,61 @@ class FaleConoscoInfosLoja extends React.Component {
 
 export default class FaleConosco extends React.Component {
 
+  componentDidMount() {
+    ReactGA.pageview('/faleconosco');
+  }
+
   render() {
     return ( <View>
       <Header/>
 
-      <Breadcrumb>
-        <RubikText bold={true} style={{color: 'black'}}>Fale conosco</RubikText>
-      </Breadcrumb>
+      <View className="container">
+        <Breadcrumb>
+          <RubikText bold={true} style={{color: 'black'}}>Fale conosco</RubikText>
+        </Breadcrumb>
+        <View className="text-left-wide">
 
-      <RubikText 
-      bold={true} 
-      style={{
-        borderBottomWidth: 2, 
-        alignSelf: 'flex-start', 
-        paddingLeft: 20,
-        marginTop: 30
-      }}
-      >
-        FALE COM UM DE NOSSOS ATENDENTES
-      </RubikText>
-      <View style={{flexDirection: "row", paddingTop:10}}>
-        <RubikText style={{color: "black", paddingLeft: 20}}>
-          Iniciar conversa pelo 
-        </RubikText>
-        <TouchableHighlight onPress={this.openWhatsapp} style={{flexGrow: 1, justifyContent:"flex-start"}}>
-          <RubikText style={{ color: "black", textDecorationLine: 'underline' }}>&nbsp;Whatsapp</RubikText>
-        </TouchableHighlight>
+          <RubikText 
+          bold={true} 
+          className="titulo-fale-conosco"
+          >
+            FALE COM UM DE NOSSOS ATENDENTES
+          </RubikText>
+          <View style={{flexDirection: "row", paddingLeft: 20, paddingTop:10}}>
+            <RubikText style={{color: "black"}}>
+              Iniciar conversa pelo 
+            </RubikText>
+            <TouchableHighlight onPress={this.openWhatsapp} style={{flexGrow: 1, justifyContent:"flex-start"}}>
+              <RubikText style={{ color: "black", textDecorationLine: 'underline' }}>&nbsp;Whatsapp</RubikText>
+            </TouchableHighlight>
+          </View>
+          <LojaConsumer>
+            {({dadosLoja}) => (
+            <FaleConoscoInfosLoja
+              dadosLoja={dadosLoja}
+            />
+            )}
+          </LojaConsumer>
+
+          <RubikText 
+          bold={true} 
+          style={{
+            marginBottom: 20
+          }}
+          className="titulo-fale-conosco"
+          >
+            OU ENTRE EM CONTATO PELO FORMULÁRIO
+          </RubikText>
+
+          <UserConsumer>
+            {({faleConosco}) => (
+            <FormContato
+              faleConosco={faleConosco}
+            />
+            )}
+          </UserConsumer>
+        </View>
       </View>
-      <LojaConsumer>
-        {({dadosLoja}) => (
-        <FaleConoscoInfosLoja
-          dadosLoja={dadosLoja}
-        />
-        )}
-      </LojaConsumer>
-
-      <RubikText 
-      bold={true} 
-      style={{
-        borderBottomWidth: 2, 
-        alignSelf: 'flex-start', 
-        paddingLeft: 20,
-        marginTop: 30,
-        marginBottom: 20
-      }}
-      >
-        OU ENTRE EM CONTATO PELO FORMULÁRIO
-      </RubikText>
-
-      <UserConsumer>
-        {({faleConosco}) => (
-        <FormContato
-          faleConosco={faleConosco}
-        />
-        )}
-      </UserConsumer>
       <RodapeCompleto/>
     </View>
     )

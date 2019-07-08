@@ -7,6 +7,7 @@ import View from '../ui/View';
 import TextInput from '../ui/TextInput';
 import { Link, Redirect } from 'react-router-dom'
 import { UserConsumer } from '../UserContext';
+import ReactGA from 'react-ga';
 
 export default class CadastroSimples extends React.Component {
   state = {
@@ -22,11 +23,19 @@ export default class CadastroSimples extends React.Component {
     redirectTo: null
   }
 
+  componentDidMount() {
+    ReactGA.pageview('/cadastrosimples');
+  }
+
   render() {
     return (
       <ImageBackground
         source={require('../assets/fundologin.jpg')}
         style={{width: '100%', minHeight: '100vh', justifyContent: 'space-between', alignItems: 'center'}}>
+
+        <View 
+        className="container container-sm"
+        style={{height: '100%', justifyContent: 'space-evenly', alignItems: 'flex-end'}}>
 
         { this.state.redirectTo && (
           <Redirect to={this.state.redirectTo}/>
@@ -105,7 +114,7 @@ export default class CadastroSimples extends React.Component {
             dismissAlert = {this.dismissAlertErro}
           />
         )}
-        
+        </View> 
       </ImageBackground>
     );
   }

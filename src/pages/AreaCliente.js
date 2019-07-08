@@ -7,14 +7,21 @@ import { Link } from 'react-router-dom'
 import { FaUserAlt, FaStar, FaHeart } from 'react-icons/fa';
 import Breadcrumb from '../ui/Breadcrumb';
 import { UserConsumer } from '../UserContext';
+import ReactGA from 'react-ga';
 
 class AreaCliente extends Component {
+
+  componentDidMount() {
+    ReactGA.pageview('/areacliente');
+  }
 
   render() {
     return <>
       <Header/>
       <View style={{backgroundImage: 'linear-gradient(#585756, #1d1e1b)', flexGrow: 1}}>
+        <View className="container">
         <Breadcrumb><RubikText bold={true}>Área do Cliente</RubikText></Breadcrumb>
+        </View>
 
         <View style={{flexDirection:'row', textAlign: 'center'}}>
           <View style={{width: '20%'}}>
@@ -50,31 +57,34 @@ class AreaCliente extends Component {
           </Link>
         </View>
 
-        <View style={{marginTop: 20, paddingRight: 20, paddingLeft: 20, flexDirection: 'row'}}>
-          <Link to="/meuperfil" style={this.style.btnMeuPerfil}>
-            <FaUserAlt size={64} color="#1e1e1c"/>
-            <RubikText style={this.style.fonteBotao} bold={true}>Meu Perfil</RubikText>
-          </Link>
-          <Link to="/meuspontos" style={this.style.btnMeuPerfil}>
-            <FaStar size={64} color="#1e1e1c"/>
-            <RubikText style={this.style.fonteBotao} bold={true}>Meus Pontos</RubikText>
-          </Link>
-        </View>
+        <View className="container container-sm">
 
-        <View style={{padding: 20, paddingTop: 0, flexDirection: 'row'}}>
-          <Link to="/listadesejos" style={this.style.btnMeuPerfil}>
-            <FaHeart size={64} color="#1e1e1c"/>
-            <RubikText style={this.style.fonteBotao} bold={true}>Lista de Desejos</RubikText>
-          </Link>
-          <Link to="/meuscupons" style={this.style.btnMeuPerfil}>
-            <img
-              alt=""
-              src={require('../assets/qrcode.png')}
-              style={{ height: 64, width:64, flexGrow: 0 }}
-            />
-            <RubikText style={this.style.fonteBotao} bold={true}>Meus Cupons</RubikText>
-          </Link>
-        
+          <View style={{marginTop: 20, paddingRight: 20, paddingLeft: 20, flexDirection: 'row'}}>
+            <Link to="/meuperfil" style={this.style.btnMeuPerfil}>
+              <FaUserAlt size={64} color="#1e1e1c"/>
+              <RubikText style={this.style.fonteBotao} bold={true}>Meu Perfil</RubikText>
+            </Link>
+            <Link to="/meuspontos" style={this.style.btnMeuPerfil}>
+              <FaStar size={64} color="#1e1e1c"/>
+              <RubikText style={this.style.fonteBotao} bold={true}>Meus Pontos</RubikText>
+            </Link>
+          </View>
+
+          <View style={{padding: 20, paddingTop: 0, flexDirection: 'row'}}>
+            <Link to="/listadesejos" style={this.style.btnMeuPerfil}>
+              <FaHeart size={64} color="#1e1e1c"/>
+              <RubikText style={this.style.fonteBotao} bold={true}>Lista de Desejos</RubikText>
+            </Link>
+            <Link to="/meuscupons" style={this.style.btnMeuPerfil}>
+              <img
+                alt=""
+                src={require('../assets/qrcode.png')}
+                style={{ height: 64, width:64, flexGrow: 0 }}
+              />
+              <RubikText style={this.style.fonteBotao} bold={true}>Meus Cupons</RubikText>
+            </Link>
+          
+          </View>
         </View>
       </View>
       <MiniRodape/>

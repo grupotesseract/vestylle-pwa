@@ -66,10 +66,11 @@ html {
   text-align: center;
   display: flex;
   justify-content: center;
+  height:100%;
 }
 body {
-  max-width: 530px;
   width:100%;
+  height:100%;
 }
 
 body *{
@@ -85,16 +86,105 @@ body script {
   display: none;
 }
 
+#root {
+  width:100%;
+  height:100%;
+}
+
 .App {
   font-family: 'Rubik';
   text-align: center;
   background-color: white;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: stretch;
   justify-content: flex-start;
   color: black;
+  height:100%;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  align-self: center;
+  justify-self: center;
+  justify-content: space-evenly;
+}
+div.container-sm {
+  max-width:600px;
+}
+.laughing-and-smiling {
+  font-family: 'Laughing And Smiling';
+  flex-direction: 'row';
+  font-size:20px;
+  margin-bottom: 2px;
+}
+.titulo-loja.laughing-and-smiling {
+  font-size: 18px;
+}
+
+/* Pagina Fale Conosco */
+.titulo-fale-conosco {
+  border-bottom: 2px solid black;
+  align-self: flex-start;
+  padding-left: 20px;
+  margin-top: 30px;
+}
+.info-centralizada {
+  color: black;
+  text-decoration: underline;
+  flex-grow: 0;
+  margin-top: 5px;
+}
+/* Pagina Lista de Desejos */
+.features-desejos {
+  margin-bottom: 55px;
+}
+.card-interno-lista-desejos {
+  width:93%;
+  align-self:center;
+  margin-bottom: 100px;
+  z-index:2;
+}
+/* Pagina Detalhes Produto */
+.desconto {
+  align-items: center;
+  background-color: #e20f17;
+  padding: 10px;
+  margin-top: 20px;
+  margin-bottom:-15px;
+}
+.descricao-oferta {
+  color: white;
+  background-color: black;
+}
+/* Pagina Adicionar Cupom */
+.titulo-verde {
+  background-color: #55bcba;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  padding-left: 20px;
+  padding-right: 20px;
+  text-align: left;
+  align-self: flex-start;
+}
+/* Pagina Meus Cupons */
+
+.card-cupom {
+  background-color: white;
+  border-radius: 3px;
+  box-shadow: 0 0 5px black;
+  margin: 20px;
+  align-self: stretch;
+  align-items: stretch;
+  padding: 10px;
+  position: relative;
+}
+.cupom-utilizado {
+  opacity: 0.7;
+  filter: grayscale(100%);
 }
 
 img {
@@ -163,6 +253,7 @@ button {
   border-top: 0px solid #e20f17;
   border-bottom: 15px solid transparent;
 }
+
 .bandeirola:before{
   content:'';
   position:absolute;
@@ -204,10 +295,15 @@ button {
 }
 
 
+.hide-sm,
 .sm-hide {
   display: none;
   opacity: 1;
 }
+.margin-sm-top {
+  margin-bottom: 50px;
+}
+
 @media only screen and (min-width: 380px) {
   .sm-hide {
     display: block;
@@ -226,5 +322,145 @@ button {
   }
   .img-slider {
     max-height: 400px;
+  }
+  .laughing-and-smiling {
+    font-size: 26px;
+  }
+  .titulo-loja.laughing-and-smiling {
+    font-size: 26px;
+  }
+}
+@media only screen and (min-width: 650px) {
+  .text-left-wide {
+    text-align: left;
+    align-items: flex-start;
+    align-self: center;
+  }
+  .text-left-wide > div {
+    width: 650px;
+  }
+  div.titulo-fale-conosco {
+    border-bottom: 1px solid black;
+    align-self: flex-start;
+    font-size: 20px;
+    padding-left: 0px;
+    margin-top: 30px;
+    margin-left: 20px;
+    width: auto;
+  }
+  div.info-centralizada {
+    color: black;
+    text-decoration: underline;
+    flex-grow: 0;
+    margin-top: 5px;
+    align-self: flex-start;
+    text-align: left;
+    width: auto;
+  }
+  div.md-width-auto {
+    width: auto;
+  }
+  .pl-md-20 {
+    padding-left: 20px;
+  }
+  /* Pagina Lista de Desejos */
+  .features-desejos {
+    border: 2px solid black;
+    max-width: 50%;
+    padding: 40px 20px;
+    margin-left: 20px;
+    margin-bottom: 0px;
+    justify-content: center;
+  }
+
+  .card-lista-desejos {
+    width: 47%;
+    margin: 1%;
+    float: left;
+  }
+  div.codigo-cupom {
+    position: relative;
+    display: flex;
+    margin-top: 10px;
+  }
+  .codigo-cupom > div{
+    flex-grow: 1;
+    justify-content: center;
+    margin-top:5px;
+  }
+  .md-50-hard {
+    width: 50%;
+    float:left;
+  }
+  .circulo-pontos {
+    align-items: flex-end;
+    padding-right: 2em;
+    margin-bottom: 50px;
+  }
+  .md-50 {
+    max-width: 50%;
+    float:left;
+  }
+  .md-flexrow {
+    flex-direction: row;
+    position: relative;
+    justify-content: flex-start;
+  }
+  .lista-desejos-vazia {
+    flex-direction: row;
+    width: 100%;
+    max-width: 1200px;
+    align-self: center;
+    justify-self: center;
+    justify-content: space-evenly;
+    margin-bottom: 50px;
+  }
+  .margin-sm-top {
+    margin-bottom: 0px;
+  }
+  .margin-md-top-bottom,
+  .margin-md-top {
+    margin-top: 100px;
+    margin-bottom: 100px;
+  }
+  .hide-md {
+    display: none;
+    visibility: hidden;
+  }
+  .hide-sm {
+    display: block;
+    opacity: 1;
+  }
+  .descricao-oferta {
+    color: black;
+    background-color: transparent;
+  }
+  /* Pagina Adicionar Cupom */
+  .titulo-verde {
+    background-color: transparent;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+    text-align: left;
+    align-self: center;
+  }
+}
+@media only screen and (min-width: 850px) {
+  .card-cupom {
+    width: 29%;
+    margin: 1%;
+    float: left;
+    height: 19em;
+  }
+  .lista-cupons {
+    display: block;
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
+  .card-lista-desejos {
+    width: 31%;
   }
 }

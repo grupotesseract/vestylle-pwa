@@ -20,14 +20,24 @@ import FaleConosco from './pages/FaleConosco';
 import Loja from './pages/Loja';
 import MeusCupons from './pages/MeusCupons';
 import CupomDetalhe from './pages/CupomDetalhe';
+import ReactGA from 'react-ga';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 
 class App extends Component {
+
+  componentWillMount() {
+    ReactGA.initialize(process.env.REACT_APP_GOOGLE_UA, {
+      debug: true,
+      titleCase: false,
+    });
+  }
   render() {
     return <div className="App">
       <LojaProvider>
         <UserProvider>
           <Switch>
             <Route exact={true} path="/" component={Home}/>
+            <Route exact={true} path="/privacypolicy" component={PrivacyPolicy}/>
             <Route exact={true} path="/login" component={Login}/>
             <Route exact={true} path="/cadastro" component={Cadastro}/>
             <Route exact={true} path="/esqueceusenha" component={EsqueceuSenha}/>

@@ -10,6 +10,7 @@ import CircularProgressbar from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { FaStar } from 'react-icons/fa';
 import LaughingSmiling from '../ui/LaughingSmiling';
+import ReactGA from 'react-ga';
 
 class DisplayPontos extends React.Component {
 
@@ -33,6 +34,7 @@ class DisplayPontos extends React.Component {
         nome: this.props.nome || '',
       })
     })
+    ReactGA.pageview('/meuspontos');
   }
 
   datetime2DDMMAAAA = (datetime) => {
@@ -46,8 +48,9 @@ class DisplayPontos extends React.Component {
 
   render() {
     return( 
-    <View style={{alignSelf: 'stretch'}}>
-      <View style={{width:100, alignSelf: 'center', marginTop: 20}}>
+    <View style={{alignSelf: 'stretch', alignItems:'center'}} className="md-flexrow">
+      <View className="md-50-hard circulo-pontos">
+      <View style={{width:100, marginTop: 20}}>
         <CircularProgressbar
           percentage={this.state.qtdPontos/10}
           text={this.state.qtdPontos.toString()}
@@ -65,10 +68,11 @@ class DisplayPontos extends React.Component {
           }}
         />
       </View>
-      <View style={{alignItems: 'flex-start', alignSelf: 'stretch', textAlign: 'left', marginTop: 20}}>
+      </View>
+      <View className="md-50" style={{alignItems: 'flex-start', alignSelf: 'stretch', textAlign: 'left', marginTop: 20}}>
         { this.state.qtdPontos === 0 && (<>
           <RubikText style={this.style.fonteDestaque}>Você ainda não possui pontos.</RubikText>
-          <RubikText style={{color: 'white'}}>Para começar a acumular pontos, utilize seu CPF nas próximas compras na loja Vestylle Megastore Jaú. Seus pontos aparecerão aqui.</RubikText>
+          <RubikText style={{color: 'white'}}> Para começar a acumular pontos, insira seu CPF em <Link to="MeuPerfil" style={{display: 'inline'}}><b style={{display: 'inline'}}>Meu Perfil</b></Link> e utilize-o nas próximas compras na loja Vestylle Megastore Jaú. Seus pontos aparecerão aqui. </RubikText>
         </>)}
         { this.state.qtdPontos > 0 && this.state.qtdPontos < 1000 && (<>
           { this.state.nome !== '' && (
@@ -114,31 +118,35 @@ export default class MeusPontos extends React.Component {
     return ( <View>
       <Header/>
       <View style={{backgroundColor: "#1e1e1c"}}>
-        <Breadcrumb>
-          <Link to="/areacliente"><RubikText>Área do Cliente &gt;&nbsp;</RubikText></Link>
-          <RubikText bold={true}>Meus pontos</RubikText>
-        </Breadcrumb>
-        <View style={{padding: 20, alignItems: 'center'}}>
-          <LaughingSmiling style={{color: 'white', fontSize: 26}}>Suas compras</LaughingSmiling>
-          <LaughingSmiling style={{color: 'white', fontSize: 26, marginBottom: 10}}>acumulam pontos</LaughingSmiling>
+        <View className="container">
+          <Breadcrumb>
+            <Link to="/areacliente"><RubikText>Área do Cliente &gt;&nbsp;</RubikText></Link>
+            <RubikText bold={true}>Meus pontos</RubikText>
+          </Breadcrumb>
+          <View style={{padding: 20, alignItems: 'center'}}>
+            <View className="md-flexrow">
+              <LaughingSmiling style={{color: 'white', fontSize: 26}}>Suas compras</LaughingSmiling>
+              <LaughingSmiling style={{color: 'white', fontSize: 26, margin: 10, marginTop: 0}}>acumulam pontos</LaughingSmiling>
+            </View>
 
-          <UserConsumer>
-          {({ perfil, getDadosMeuPerfil }) => {
-            if(!perfil) {
-              return <></>
-            }
-            return <DisplayPontos 
-              qtdPontos={perfil.saldo_pontos}
-              data_vencimento={perfil.data_vencimento_pontos}
-              nome={perfil.nomeSimples || perfil.nome}
-              atualizaPerfil={getDadosMeuPerfil}
-            />
-          }}
-          </UserConsumer>
+            <UserConsumer>
+            {({ perfil, getDadosMeuPerfil }) => {
+              if(!perfil) {
+                return <></>
+              }
+              return <DisplayPontos 
+                qtdPontos={perfil.saldo_pontos}
+                data_vencimento={perfil.data_vencimento_pontos}
+                nome={perfil.nomeSimples || perfil.nome}
+                atualizaPerfil={getDadosMeuPerfil}
+              />
+            }}
+            </UserConsumer>
 
+          </View>
         </View>
       </View>
-      <View style={{paddingTop: 20, paddingBottom: 20}}>
+      <View className="container md-flexrow" style={{paddingTop: 20, paddingBottom: 20}}>
         <RubikText 
           style={{ 
             backgroundColor: '#bdbabc', 
@@ -151,10 +159,12 @@ export default class MeusPontos extends React.Component {
           bold={true}>
         Como resgatar seus pontos?
         </RubikText>
-        <RubikText style={{paddingLeft: 20}}>Para utilizar seus pontos, informe seu</RubikText>
-        <RubikText style={{paddingLeft: 20}}>CPF na próxima compra.</RubikText>
+        <View>
+          <RubikText style={{paddingLeft: 20}}>Para utilizar seus pontos, informe seu</RubikText>
+          <RubikText style={{paddingLeft: 20}}>CPF na próxima compra.</RubikText>
+        </View>
       </View>
-      <View style={{alignItems: 'center'}}>
+      <View style={{alignItems: 'center'}} className="hide-md">
         <RubikText 
           bold={true} 
           style={{
