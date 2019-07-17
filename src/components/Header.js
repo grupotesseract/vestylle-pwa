@@ -22,9 +22,23 @@ class OlaUsuario extends Component {
                 }}
                 >
                 <RubikText>Olá {this.props.perfil.nomeSimples || this.props.perfil.nome},</RubikText>
+
+                <View style={{ flexDirection: 'column', alignItems: 'flex-end' }}>
                 <View style={{flexDirection: 'row'}}>
                     <RubikText> acesse sua&nbsp;</RubikText><Link to="/areacliente" style={{borderBottom: '1px solid black'}}>área do cliente</Link>
                 </View>
+                <View style={{flexDirection: 'row'}}>
+                    <RubikText> ou&nbsp;</RubikText>
+                    <UserConsumer>
+                    {({ logout }) => (
+                    <button onClick={logout} >
+                        <RubikText style={{borderBottom: '1px solid black'}}>faça logoff</RubikText>
+                    </button>
+                    )}
+                    </UserConsumer>
+                </View>
+                </View>
+
                 </View> 
                 <View style={{ alignItems: 'center', padding: 20, flexDirection: 'row'}}>
                     <a target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/vestyllemegajau/" >
