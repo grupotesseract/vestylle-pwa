@@ -35,24 +35,26 @@ export default class CadastroSimples extends React.Component {
 
         <View 
         className="container container-sm"
-        style={{height: '100%', justifyContent: 'space-evenly', alignItems: 'flex-end'}}>
+        style={{height: '100%', justifyContent: 'space-evenly', alignItems: 'center'}}>
 
         { this.state.redirectTo && (
           <Redirect to={this.state.redirectTo}/>
         )}
         <View
           style={{width: '80%', flexGrow:1, marginBottom: 'auto', justifyContent: 'center'}}>
+        <Link to="/" style={{flexDirection:'column'}}>
           <img
             alt="Vestylle"
             src={require('../assets/logobranco.png')}
-            style={{ width:'80%', height:60 }}
+            style={{  height:60 }}
           />
           <RubikText style={this.styles.textoBranco}>Faça seu cadastro </RubikText>
           <RubikText style={this.styles.textoBranco}>e receba benefícios exclusivos</RubikText>
+        </Link>
         </View>
 
         <View
-          style={{width: '80%'}}>
+          style={{}}>
           <UserConsumer>
           {({ signup }) => (
           <form onSubmit={(e) => this.cadastrarNovoUsuario(signup, e)}>
