@@ -294,6 +294,10 @@ button {
   z-index:2;
 }
 
+.hide {
+  display: none;
+  opacity: 1;
+}
 
 .hide-sm,
 .sm-hide {
@@ -322,6 +326,9 @@ button {
   }
   .img-slider {
     max-height: 400px;
+  }
+  .produto-desktop .img-slider {
+    max-height: 300px;
   }
   .laughing-and-smiling {
     font-size: 26px;
@@ -463,5 +470,9 @@ button {
   }
   .card-lista-desejos {
     width: 31%;
+  }
+
+  .show-lg {
+    display: flex;
   }
 }
