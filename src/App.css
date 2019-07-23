@@ -270,6 +270,8 @@ button {
 }
 
 .qr-reader {
+  top: 0px;
+  left:0px;
   width: 100%;
   height: 100vh;
   position: fixed;
@@ -440,7 +442,7 @@ button {
   }
   .descricao-oferta {
     color: black;
-    background-color: transparent;
+  background-color: transparent;
   }
   /* Pagina Adicionar Cupom */
   .titulo-verde {

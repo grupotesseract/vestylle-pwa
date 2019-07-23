@@ -232,7 +232,7 @@ class Home extends Component {
           }}>
             <View style={{
               backgroundColor: '#55bcba',
-              marginTop: 100,
+              marginTop: 130,
               padding: 30,
               marginLeft: -150,
               paddingLeft: 150,
