@@ -67,9 +67,12 @@ class Home extends Component {
           }}></div>
           <SliderCupons/>
         </View>
-        <View style={{
-          alignItems:'center',
-        }}>
+        <View 
+          style={{
+            alignItems:'center',
+          }}
+          className="hide-md"
+          >
           <RubikText bold={true} style={{fontSize: 25}}>
           Preparamos
           </RubikText>
@@ -81,36 +84,9 @@ class Home extends Component {
           para você
           </RubikText>
         </View>
-      </View>
-
-        <UserConsumer>
-          {({isAuth}) => (
-            this.state.windowSize.md  && !isAuth?
-            <View style={{ 
-              flexDirection: 'row', 
-              alignItems: 'stretch',
-              justifyContent: 'stretch',
-              marginTop: 50
-              }}>
-              <View style={{
-                backgroundColor: '#1d1d1b',
-                flexGrow: 1, 
-                paddingRight: 70,
-                lineHeight: 1.8,
-                alignItems: 'flex-end',
-                justifyContent: 'center',
-                color: 'white',
-                fontSize: 22
-              }}>
-                <RubikText> Com os cupons promocionais</RubikText>
-                <RubikText> <i style={{display:'inline'}}>Vestylle Megastore Jaú</i>, você</RubikText>
-                <RubikText> tem desconto o ano inteiro. </RubikText>
-              </View>
-              <View style={{flexGrow: 1, alignItems: 'flex-start', paddingLeft: 20, backgroundColor: "#feca03",}}>
-                <CupomBoasVindas/>
-              </View>
-            </View>:<>
-            <View style={{
+            <View 
+            className="hide-md"
+            style={{
                 alignItems:'center',
                 margin: 20,
                 padding: 5,
@@ -135,12 +111,142 @@ class Home extends Component {
                 desconto o ano inteiro.
               </RubikText>
             </View>
+      </View>
+
+      <View 
+        className="hide show-lg"
+        >
+        <View style={{
+          flexDirection: 'row',
+          display: 'flex'
+        }}>
+          <View style={{
+            backgroundColor: '#55bcba',
+            flexGrow: 1, 
+            lineHeight: 1.8,
+            alignItems: 'flex-end',
+            justifyContent: 'center',
+            color: 'white',
+            width: '50%',
+            fontSize: 22
+          }}>
+            <View style={{width: '20em', alignItems: 'center'}}>
+              <RubikText bold={true} style={{fontSize: 30}}>
+              Preparamos
+              </RubikText>
+              
+              <LaughingSmiling style={{fontSize: 34, marginTop: -20, marginBottom: -15}}>
+              benefícios exclusivos
+              </LaughingSmiling>
+              <RubikText bold={true} style={{fontSize: 30}}>
+              para você
+              </RubikText>
+            </View>
+          </View>
+          <View style={{
+            backgroundColor: '#1d1d1b',
+            flexGrow: 1, 
+            lineHeight: 1.8,
+            alignItems: 'flex-start',
+            justifyContent: 'center',
+            color: 'white',
+            width: '50%',
+            fontSize: 22
+          }}>
+            <View style={{padding: 30,paddingLeft: 70}}>
+              <RubikText> Com os cupons promocionais</RubikText>
+              <RubikText> <i style={{display:'inline'}}>Vestylle Megastore Jaú</i>, você</RubikText>
+              <RubikText> tem desconto o ano inteiro. </RubikText>
+            </View>
+          </View>
+        </View>
+      </View>
+        <UserConsumer>
+          {({isAuth}) => (
+            this.state.windowSize.md  && !isAuth?
+            <View style={{ 
+              flexDirection: 'row', 
+              alignItems: 'stretch',
+              justifyContent: 'stretch',
+              }}>
+              <View style={{
+                backgroundColor: '#1d1d1b',
+                flexGrow: 1, 
+                paddingRight: 70,
+                lineHeight: 1.7,
+                alignItems: 'flex-end',
+                justifyContent: 'center',
+                color: 'white',
+                width: '50%',
+                fontSize: 22
+              }}>
+                <RubikText> Para utilizar seus cupons basta</RubikText>
+                <RubikText> apresentar a tela do seu celular </RubikText>
+                <RubikText> para a atendente da loja</RubikText>
+              </View>
+              <View 
+                style={{
+                  flexGrow: 1, 
+                  alignItems: 'flex-start', 
+                  paddingLeft: 70, 
+                  backgroundColor: "#feca03",
+                  width: '50%',
+                }}>
+                <CupomBoasVindas/>
+              </View>
+            </View>:<>
             <CupomBoasVindas/>
             </>
       
           )}
         </UserConsumer>
       
+      <View 
+        className="hide-sm"
+        style={{
+          marginTop: 40,
+          maxWidth: '100%'
+        }}
+        >
+        <View style={{
+          display: 'flex', 
+          flexDirection: 'row',
+        }}>
+
+          <View
+          style={{
+            width: '50%', 
+            alignItems: 'flex-end',
+            zIndex: 2
+          }}>
+            <img 
+              alt=""
+              src={require('../assets/corpomulheres.jpg')}
+              style={{width: '100%', maxWidth: '450px', maxHeight:'450px', margin: 20}}
+            />
+          </View>
+
+          <View style={{
+            width: '50%',
+            zIndex: 1
+          }}>
+            <View style={{
+              backgroundColor: '#55bcba',
+              marginTop: 130,
+              padding: 30,
+              marginLeft: -150,
+              paddingLeft: 150,
+              maxWidth: 500
+            }}>
+            <img 
+              alt="Vista-se com qualidade"
+              src={require('../assets/vistasecomqualidade.png')}
+              style={{maxWidth: 450, maxHeight: '400px'}}
+            />
+            </View>
+          </View>
+        </View>
+      </View>
       <View style={{
         paddingTop:40,
       }}

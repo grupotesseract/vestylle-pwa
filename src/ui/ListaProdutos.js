@@ -95,7 +95,7 @@ export default class ListaProdutos extends React.Component {
     // Quando visualizacao !== de 'thumb'
 
     const ofertas = this.state.visualizacao === "wide" ?
-        this.state.ofertas.slice(0,3) :
+        this.state.ofertas.slice(0,6) :
         this.state.ofertas;
   return <>
     {ofertas.map((oferta, key) => {
@@ -121,7 +121,12 @@ export default class ListaProdutos extends React.Component {
             this.styleProdutoWide : this.styleProduto
           } key={key}>
         {rowBackground}
-        <View style={{padding:30, zIndex:2}}>
+        <View 
+          style={{padding:30, zIndex:2}} 
+          className={
+            (this.state.visualizacao === 'wide' || this.state.visualizacao === 'wide-full') ? 
+            'produto-desktop' : ''
+          }>
           <Produto
             key={key}
             id={oferta.id}
