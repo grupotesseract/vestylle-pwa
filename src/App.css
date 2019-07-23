@@ -270,6 +270,8 @@ button {
 }
 
 .qr-reader {
+  top: 0px;
+  left:0px;
   width: 100%;
   height: 100vh;
   position: fixed;
@@ -294,6 +296,10 @@ button {
   z-index:2;
 }
 
+.hide {
+  display: none;
+  opacity: 1;
+}
 
 .hide-sm,
 .sm-hide {
@@ -322,6 +328,9 @@ button {
   }
   .img-slider {
     max-height: 400px;
+  }
+  .produto-desktop .img-slider {
+    max-height: 300px;
   }
   .laughing-and-smiling {
     font-size: 26px;
@@ -433,7 +442,7 @@ button {
   }
   .descricao-oferta {
     color: black;
-    background-color: transparent;
+  background-color: transparent;
   }
   /* Pagina Adicionar Cupom */
   .titulo-verde {
@@ -463,5 +472,9 @@ button {
   }
   .card-lista-desejos {
     width: 31%;
+  }
+
+  .show-lg {
+    display: flex;
   }
 }

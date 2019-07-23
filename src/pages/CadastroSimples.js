@@ -31,7 +31,7 @@ export default class CadastroSimples extends React.Component {
     return (
       <ImageBackground
         source={require('../assets/fundologin.jpg')}
-        style={{width: '100%', height: window.innerHeight, justifyContent: 'space-between', alignItems: 'center'}}>
+        style={{width: '100%', height: window.innerHeight, minHeight: 450, justifyContent: 'space-between', alignItems: 'center'}}>
 
         <View 
         className="container container-sm"
