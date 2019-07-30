@@ -16,12 +16,12 @@ class DisplayPontos extends React.Component {
 
   state = {
     nome: '',
-    qtdPontos: 0,
+    qtdPontos: 1200,
     data_vencimento: null
   }
 
   componentDidMount() {
-    this.setState({
+    /*this.setState({
       qtdPontos: this.props.qtdPontos || 0,
       data_vencimento: this.datetime2DDMMAAAA(this.props.data_vencimento),
       nome: this.props.nome || '',
@@ -33,7 +33,7 @@ class DisplayPontos extends React.Component {
         data_vencimento: this.datetime2DDMMAAAA(this.props.data_vencimento),
         nome: this.props.nome || '',
       })
-    })
+    })*/
     ReactGA.pageview('/meuspontos');
   }
 
@@ -88,7 +88,12 @@ class DisplayPontos extends React.Component {
           <RubikText style={{color: 'white'}}>para gastar como quiser.</RubikText>
           <View style={{flexDirection: 'row', alignSelf: 'center', margin: 10}}>
             <View style={{backgroundColor: "#55bcba", width: 40}}>
-              <RubikText bold={true} style={{width:100 ,fontSize: 10, color: "white", transform: 'rotate(-90deg) translate(-14px, -29px)'}}>MIL PONTOS</RubikText>
+              <img 
+                alt="MIL PONTOS"
+                style={{width: '100%'}} 
+                src={require('../assets/milpontos.png')}
+                resizeMode="contain"/>
+              {/* <RubikText bold={true} style={{width:100 ,fontSize: 10, color: "white", transform: 'rotate(-90deg) translate(-14px, -29px)'}}>MIL PONTOS</RubikText> */}
             </View>
             <View style={{backgroundColor: "white", padding: 5}}>
               <RubikText bold ={true} style={{fontSize: 36 ,borderWidth: 1, borderColor:"#55bcba" ,padding: 10, paddingTop: 15}}>R$ 60,00</RubikText>
