@@ -11,6 +11,7 @@ class UserProvider extends React.Component {
     userId: null,
     perfil: null,
     ofertas: [],
+    listaDesejos: [],
     cupons: [],
     cuponsUtilizados: [],
     isLoadingUser: true
@@ -19,6 +20,7 @@ class UserProvider extends React.Component {
   constructor() {
     super()
     this.ativaCupom = this.ativaCupom.bind(this)
+    this.atualizaOfertas = this.atualizaOfertas.bind(this)
     this.atualizaCupons = this.atualizaCupons.bind(this)
     this.atualizaCuponsUtilizados = this.atualizaCuponsUtilizados.bind(this)
     this.atualizaInfosUser = this.atualizaInfosUser.bind(this)
@@ -26,7 +28,9 @@ class UserProvider extends React.Component {
     this.faleConosco = this.faleConosco.bind(this)
     this.getCupomById = this.getCupomById.bind(this)
     this.getDadosMeuPerfil = this.getDadosMeuPerfil.bind(this)
-    this.getOfertas = this.getOfertas.bind(this)
+    this.atualizaListaDesejos = this.atualizaListaDesejos.bind(this)
+    this.getOfertasComLike = this.getOfertasComLike.bind(this)
+    this.getOfertaById = this.getOfertaById.bind(this)
     this.loadFromLocalStorage = this.loadFromLocalStorage.bind(this)
     this.login = this.login.bind(this)
     this.logout = this.logout.bind(this)
@@ -64,6 +68,8 @@ class UserProvider extends React.Component {
   async atualizaInfosUser() {
     await this.loadFromLocalStorage()
     await this.atualizaCuponsUtilizados()
+    await this.atualizaListaDesejos()
+    await this.atualizaOfertas()
     await this.setState({ isLoadingUser: false })
   }
 
@@ -285,7 +291,10 @@ class UserProvider extends React.Component {
       fbData: null,
       userId: null,
       perfil: null,
-      ofertas: []
+      ofertas: [],
+      cupons: [],
+      listaDesejos: [],
+      cuponsUtilizados: [],
     });
   }
 
@@ -324,6 +333,13 @@ class UserProvider extends React.Component {
       return null
     });
     return res
+  }
+
+  async setListaDesejos(listaDesejos) {
+    await this.setState({
+      listaDesejos
+    })
+    localStorage.setItem('listaDesejos', JSON.stringify(listaDesejos));
   }
 
   setPerfil(perfil) {
@@ -371,6 +387,70 @@ class UserProvider extends React.Component {
     return res;
   }
 
+  async atualizaOfertas() {
+    const userToken = this.state.userToken
+    let auth = null
+    if(userToken) {
+      auth = {
+        credentials: 'include',
+        headers: {
+          'Authorization': 'Bearer '+userToken,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      }
+    }
+    const res = await fetch(process.env.REACT_APP_API_URL+'/ofertas', auth)
+    .then(response => response.json())
+    .catch(erro => console.log('Erro no atualizaOfertas',erro))
+    if(res && res.success) {
+      const ofertas = res.data;
+      this.setState({ofertas})
+      console.log("ofertasAtualizadas", ofertas)
+      return Promise.resolve(ofertas)
+    } 
+    if(res) {
+      return Promise.reject(res.message)
+    }
+  }
+
+  /***
+   * Função que recebe um array com ids das ofertas
+   * e retorna todas as ofertas marcando as 
+   * recebidas com like = true 
+   */
+  async getOfertasComLike(idsOfertas) {
+    if(!idsOfertas) {
+      const listaDesejos = this.state.listaDesejos
+      idsOfertas = listaDesejos ? listaDesejos.map((oferta)=> oferta.id) : []
+    }
+    if(this.state.ofertas === null) {
+      await this.atualizaOfertas()
+    }
+    const ofertasComLike = this.state.ofertas.map((oferta) => {
+      if(idsOfertas.indexOf(oferta.id) !== -1) {
+        oferta.liked = true
+      } else {
+        oferta.liked = false
+      }
+      return oferta
+    })
+
+    return Promise.resolve(ofertasComLike)
+  }
+
+  async getOfertaById(idOferta) {
+    if(!this.state.ofertas) {
+      await this.atualizaOfertas()
+    }
+    const oferta = this.state.ofertas.find((oferta) => {
+      return Number(oferta.id) === Number(idOferta)
+    })
+    return oferta
+  }
+
+
+
   async toggleDesejo(oferta_id) {
     if(!this.state.userId) {
       return
@@ -392,16 +472,16 @@ class UserProvider extends React.Component {
     }
     if(res.success) {
       const ofertas = res.data.ofertas
-      this.setOfertas(ofertas)
+      this.setListaDesejos(ofertas)
       return ofertas
     } else {
       throw res.message
     }
   }
 
-  async getOfertas() {
+  async atualizaListaDesejos() {
     if(!this.state.userId) {
-      return
+      return []
     }
     const res = await fetch(process.env.REACT_APP_API_URL+'/pessoas/'+this.state.userId+'/ofertas',
       {
@@ -412,19 +492,19 @@ class UserProvider extends React.Component {
       }
     )
     .then(response => response.json())
-    .catch(erro => console.error('Erro no getOfertas',erro))
+    .catch(erro => console.log('Erro no getListaDesejos',erro))
     if(!res) {
       return
     }
     if(res.success) {
       const ofertas = res.data.ofertas
-      console.log("lista de desejos atualizadas", ofertas)
-      await this.setOfertas(ofertas)
+      await this.setListaDesejos(ofertas)
       return ofertas
     } else {
       throw res.message
     }
   }
+
 
   async getDadosMeuPerfil() {
     const res = await fetch(process.env.REACT_APP_API_URL+'/pessoas/'+this.state.userId,
@@ -601,6 +681,9 @@ class UserProvider extends React.Component {
     return (
       <UserContext.Provider
         value={{ 
+          atualizaOfertas: this.atualizaOfertas,
+          getOfertasComLike: this.getOfertasComLike,
+          getOfertaById: this.getOfertaById,
           ativaCupom: this.ativaCupom,
           atualizaCupons: this.atualizaCupons,
           atualizaCuponsUtilizados: this.atualizaCuponsUtilizados,
@@ -611,10 +694,11 @@ class UserProvider extends React.Component {
           faleConosco: this.faleConosco, 
           getCupomById: this.getCupomById,
           getDadosMeuPerfil: this.getDadosMeuPerfil,
-          getOfertas: this.getOfertas,
+          atualizaListaDesejos: this.atualizaListaDesejos,
           isAuth: this.state.isAuth,
           isLoadingUser: this.state.isLoadingUser,
-          listaDesejos: this.state.ofertas,
+          ofertas: this.state.ofertas,
+          listaDesejos: this.state.listaDesejos,
           loadFromLocalStorage: this.loadFromLocalStorage,
           login: this.login,
           logout: this.logout,

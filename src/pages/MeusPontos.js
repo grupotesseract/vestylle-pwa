@@ -84,7 +84,7 @@ class DisplayPontos extends React.Component {
         { this.state.qtdPontos >= 1000 && (<>
           <RubikText style={{color: 'white'}} bold={true}>Parabéns {this.state.nome},</RubikText>
           <RubikText style={{color: 'white'}} bold={true}>você completou 1000 pontos.</RubikText>
-          <RubikText style={this.style.fonteDestaque}>E ganhou um bônus de R$60,00</RubikText>
+          <RubikText style={this.style.fonteDestaque}>E ganhou { Math.floor(this.state.qtdPontos/1000) } bônus de R$60,00</RubikText>
           <RubikText style={{color: 'white'}}>para gastar como quiser.</RubikText>
           <View style={{flexDirection: 'row', alignSelf: 'center', margin: 10}}>
             <View style={{backgroundColor: "#55bcba", width: 40}}>

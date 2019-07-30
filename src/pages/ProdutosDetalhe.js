@@ -6,7 +6,6 @@ import RubikText from '../ui/RubikText';
 import RodapeCompleto from '../components/RodapeCompleto';
 import Breadcrumb from '../ui/Breadcrumb';
 import { Link } from 'react-router-dom'
-import { LojaConsumer } from '../LojaContext';
 import CupomBoasVindas from '../components/CupomBoasVindas';
 import { UserConsumer } from '../UserContext';
 import ReactGA from 'react-ga';
@@ -259,17 +258,13 @@ export default class ProdutosDetalhe extends React.Component {
 
       <View>
         <UserConsumer>
-          {({userToken}) => (
-          <LojaConsumer>
-            {({getOfertaById}) => (
+          {({getOfertaById,userToken}) => (
               <ProdutoDetalhado
                 getOfertaById={getOfertaById}
                 produtoId={this.state.produtoId}
                 userToken={userToken}
               />
             )}
-          </LojaConsumer>
-          )}
         </UserConsumer>
       </View>
       </View>

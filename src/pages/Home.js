@@ -11,7 +11,6 @@ import CupomBoasVindas from '../components/CupomBoasVindas';
 import LaughingSmiling from '../ui/LaughingSmiling';
 import ReactGA from 'react-ga';
 import { UserConsumer } from '../UserContext';
-import { LojaConsumer } from '../LojaContext';
 import ListaProdutos from '../ui/ListaProdutos';
 class Home extends Component {
 
@@ -265,18 +264,15 @@ class Home extends Component {
         <View style={{display: 'block'}}>
         {this.state.windowSize.md ? 
         <UserConsumer>
-        {({listaDesejos, userToken}) => (
-          <LojaConsumer>
-          {({getOfertasComLike}) => (
+        {({atualizaOfertas, atualizaListaDesejos, listaDesejos, getOfertasComLike}) => (
             <ListaProdutos
+              atualizaOfertas={atualizaOfertas}
+              atualizaListaDesejos={atualizaListaDesejos}
               getOfertasComLike={getOfertasComLike}
               listaDesejos={listaDesejos}
-              userToken={userToken}
               visualizacao="wide"
             />
           )}
-          </LojaConsumer>
-        )}
         </UserConsumer>
         :
         <View style={{position: 'relative'}}>
