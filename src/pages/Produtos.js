@@ -6,7 +6,6 @@ import RodapeCompleto from '../components/RodapeCompleto';
 import { Link } from 'react-router-dom'
 import Breadcrumb from '../ui/Breadcrumb';
 import LaughingSmiling from '../ui/LaughingSmiling';
-import { LojaConsumer } from '../LojaContext';
 import { UserConsumer } from '../UserContext';
 import { FaRegHeart, FaTh, FaSquare } from 'react-icons/fa';
 import CupomBoasVindas from '../components/CupomBoasVindas';
@@ -123,19 +122,16 @@ export default class Produtos extends React.Component {
 
         <View style={{display: 'block'}}>
           <UserConsumer>
-          {({listaDesejos, userToken}) => (
-            <LojaConsumer>
-            {({getOfertasComLike}) => (
+          {({listaDesejos, getOfertasComLike, atualizaOfertas, atualizaListaDesejos}) => (
               <ListaProdutos
+                atualizaOfertas={atualizaOfertas}
+                atualizaListaDesejos={atualizaListaDesejos}
                 getOfertasComLike={getOfertasComLike}
                 listaDesejos={listaDesejos}
-                userToken={userToken}
                 visualizacao={this.state.windowSize.md ? 
                   "wide-full" :
                   this.state.visualizacao}
               />
-            )}
-            </LojaConsumer>
           )}
           </UserConsumer>
         </View>

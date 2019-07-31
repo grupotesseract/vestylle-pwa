@@ -17,20 +17,12 @@ export default class ListaProdutos extends React.Component {
     this.atualizaOfertas = this.atualizaOfertas.bind(this)
   }
 
-  atualizaOfertas(listaNova) {
-    if(!listaNova) {
-      listaNova = this.state.listaDesejos
-    }
-    if(!this.props.getOfertasComLike) {
-      return null
-    }
-
-    let listaDesejos = []
-    if(listaNova) {
-      listaDesejos = listaNova.map((oferta) => oferta.id);
-    }
-    this.props.getOfertasComLike(listaDesejos, this.props.userToken)
+  atualizaOfertas() {
+    this.props.atualizaListaDesejos();
+    this.props.atualizaOfertas();
+    this.props.getOfertasComLike()
     .then((ofertas) => {
+      console.log("ofertas Receidas", ofertas)
       this.setState({ofertas})
     })
   }
@@ -43,9 +35,13 @@ export default class ListaProdutos extends React.Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (props.listaDesejos !== state.listaDesejos) {
+    const idsListaState = state.listaDesejos.map(e => e.id)
+    const idsListaProps = props.listaDesejos.map(e => e.id)
+      console.log(idsListaProps, idsListaState)
+    if (!idsListaProps.every( e => idsListaState.includes(e)) ||
+      !idsListaState.every( e => idsListaProps.includes(e))) {
       if(state.atualizaOfertas) {
-        state.atualizaOfertas(props.listaDesejos)
+        state.atualizaOfertas()
       }
       return {
         listaDesejos: props.listaDesejos,
@@ -132,7 +128,7 @@ export default class ListaProdutos extends React.Component {
             id={oferta.id}
             img={oferta.urlFoto}
             liked={oferta.liked}
-            titulo={oferta.descricao_oferta}
+            titulo={oferta.titulo}
             subtitulo={oferta.subtitulo}
             porcentagem_off={oferta.porcentagem_off}
           />
