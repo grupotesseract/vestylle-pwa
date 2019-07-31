@@ -204,7 +204,7 @@ class DadosRodape extends Component {
             <RubikText style={{ color: "#feca03", textDecorationLine: 'underline',  flexGrow: 0, marginTop: 5 }}>
             <FaWhatsapp
               size={14}
-            />(14) 2104-3500
+            />{dadosLoja.whatsapp2}
             </RubikText>
           </TouchableHighlight>
           }

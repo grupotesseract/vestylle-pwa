@@ -19,10 +19,12 @@ class ListagemDesejos extends React.Component {
   }
 
   componentDidMount() {
-    this.props.getOfertas()
-    .then((listaDesejos) => {
-     this.setState({listaDesejos})
-    })
+    if(this.props.atualizaListaDesejos) {
+      this.props.atualizaListaDesejos()
+      .then((listaDesejos) => {
+      this.setState({listaDesejos})
+      })
+    }    
     ReactGA.pageview('/listadesejos');
   }
 
@@ -189,9 +191,9 @@ export default class ListaDesejos extends React.Component {
       </View>
 
       <UserConsumer>
-      {({ getOfertas, listaDesejos, isAuth }) => (<>
+      {({atualizaListaDesejos, listaDesejos, isAuth }) => (<>
           <ListagemDesejos
-            getOfertas={getOfertas}
+            atualizaListaDesejos={atualizaListaDesejos}
             listaDesejos={listaDesejos}
             isAuth={isAuth}
           />

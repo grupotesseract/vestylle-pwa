@@ -3,7 +3,6 @@ import Slider from "react-slick";
 import { Link } from 'react-router-dom'
 import RubikText from "../ui/RubikText";
 import View from "../ui/View";
-import { LojaConsumer } from "../LojaContext";
 import { FaSpinner } from "react-icons/fa";
 import { UserConsumer } from "../UserContext";
 
@@ -55,8 +54,7 @@ class ListaCupons extends React.Component {
   static getDerivedStateFromProps(props, state) {
 
     if (!props.isLoadingUser && !state.cupons && !props.cupons) {
-      const token = props.userToken
-      props.atualizaCupons(token)
+      props.atualizaCupons()
     }
 
     if(props.cupons !== state.cupons) {
@@ -71,13 +69,15 @@ class ListaCupons extends React.Component {
 
   componentDidMount() {
     this.setState({cupons: this.props.cupons})
-
+    if(this.props.atualizaCupons) {
+      this.props.atualizaCupons()
+    }
   }
 
   
 
   render() {
-    if(this.state.cupons === null) {
+    if(!this.state.cupons) {
       return <FaSpinner
         style={{
           fontSize: 72,
@@ -120,17 +120,12 @@ export default class SliderCupons extends React.Component {
         marginBottom: '70px',
       }}>
       <UserConsumer>
-        {({userToken, isLoadingUser}) => (
-        <LojaConsumer>
-          {({atualizaCupons, cupons}) => (
+        {({atualizaCupons, cupons, isLoadingUser}) => (
           <ListaCupons
             atualizaCupons={atualizaCupons}
             cupons={cupons && cupons.filter((item) => item.em_destaque === true)}
-            userToken={userToken}
             isLoadingUser={isLoadingUser}
           />
-          )}
-        </LojaConsumer>
         )}
       </UserConsumer>
       </View>

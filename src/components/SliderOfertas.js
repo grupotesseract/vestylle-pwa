@@ -1,7 +1,6 @@
 import React from "react";
 import Slider from "react-slick";
 import View from "../ui/View";
-import { LojaConsumer } from "../LojaContext";
 import Produto from "../ui/Produto";
 import { UserConsumer } from "../UserContext";
 import { FaSpinner } from "react-icons/fa";
@@ -28,7 +27,7 @@ class ListaOfertas extends React.Component {
 
     if ((props.listaDesejos !== state.listaDesejosIds) || (!props.isLoadingUser && !state.ofertas && !props.ofertas)) {
       const listaDesejosIds = props.listaDesejos ? props.listaDesejos.map((produto)=> produto.id) : []
-      props.getOfertasComLike(listaDesejosIds, props.userToken)
+      props.getOfertasComLike(listaDesejosIds)
       .then(ofertas => {
       console.log("ofertas",ofertas)
         return {
@@ -109,19 +108,15 @@ export default class SliderOfertas extends React.Component {
       }}>
 
       <UserConsumer>
-        {( {listaDesejos, userToken, isLoadingUser} ) => (
-        <LojaConsumer>
-          {({getOfertasComLike, ofertas}) => (
-
+        {( {getOfertasComLike, ofertas, listaDesejos, isLoadingUser, atualizaListaDesejos, atualizaOfertas} ) => (
           <ListaOfertas
+            atualizaOfertas={atualizaOfertas}
+            atualizaListaDesejos={atualizaListaDesejos}
             getOfertasComLike={getOfertasComLike}
             ofertas={ofertas}
             listaDesejos={listaDesejos}
-            userToken={userToken}
             isLoadingUser={isLoadingUser}
           />
-          )}
-        </LojaConsumer>
         )}
       </UserConsumer>
       </View>

@@ -120,12 +120,17 @@ class Menu extends Component {
                 />
             </button>
             <UserConsumer>
-            {({ logout }) => (<>
+            {({ logout, isAuth }) => (<>
+            {isAuth &&
             <button 
                 onClick={() => this.logoutAndClose(logout)}
             >
                 <RubikText style={{color: 'white', cursor: 'pointer'}}>Sair</RubikText>
-            </button>
+            </button>}
+            {!isAuth &&
+            <Link to="/areacliente">
+                <RubikText style={{color: 'white', cursor: 'pointer'}}>Login</RubikText>
+            </Link>}
             </>
             )}
             </UserConsumer>
