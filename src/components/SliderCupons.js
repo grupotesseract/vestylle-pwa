@@ -69,7 +69,9 @@ class ListaCupons extends React.Component {
 
   componentDidMount() {
     this.setState({cupons: this.props.cupons})
-
+    if(this.props.atualizaCupons) {
+      this.props.atualizaCupons()
+    }
   }
 
   
