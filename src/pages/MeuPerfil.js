@@ -92,7 +92,8 @@ class FormMeuPerfil extends React.Component {
     celular: '',
     genero: '',
     loading: true,
-    atualizando: false
+    atualizando: false,
+    dispositivoCadastrado: false
   }
 
   loadPerfil() {
@@ -211,6 +212,7 @@ class FormMeuPerfil extends React.Component {
       />
       </View>
 
+
       { this.state.erroUpdate && (
         <Alert
           title = "Atenção"
@@ -220,11 +222,30 @@ class FormMeuPerfil extends React.Component {
           dismissAlert = {this.dismissAlertErro}
         />
       )}
+      { this.state.dispositivoCadastrado && (
+        <Alert
+          title = "Dispositivo Cadastrado"
+          message = 'Este dispositivo agora está habilitado a receber notificações.'
+          btnText = "OK"
+          onClickButton = {this.dismissAlertCadastro}
+          dismissAlert = {this.dismissAlertCadastro}
+        />
+      )}
     </form>
   }
 
   ativaNotificacoes() {
-    this.props.receberNotificacoes();
+    this.props.receberNotificacoes()
+    .then( () => {
+      this.setState({
+        dispositivoCadastrado: true
+      })
+    });}
+
+  dismissAlertCadastro = () => {
+    this.setState({
+      dispositivoCadastrado: false
+    })
   }
 
   dismissAlertErro = () => {
