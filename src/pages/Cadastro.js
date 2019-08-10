@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ImageBackground from '../ui/ImageBackground';
 import View from '../ui/View';
 import RubikText from '../ui/RubikText';
-import { FaFacebook, FaUserCircle, FaSpinner } from 'react-icons/fa';
+import { FaFacebook, FaUserCircle, FaSpinner, FaSignInAlt } from 'react-icons/fa';
 import TouchableHighlight from '../ui/TouchableHighlight';
 import { Link, Redirect } from 'react-router-dom'
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
@@ -135,7 +135,19 @@ class Cadastro extends Component {
         ):(
         <>
           <View style={this.styles.rightAlign}>
-            <RubikText style={{color:'#FFFFFF', textAlign: 'left', paddingRight: 20}}>Faça seu cadastro e receba benefícios exclusivos</RubikText>
+            <RubikText style={{color:'#FFFFFF', textAlign: 'left', paddingRight: 20}}>Entre ou faça seu cadastro e receba benefícios exclusivos</RubikText>
+
+            <Link
+              style={this.styles.botaoQuadrado}
+              to="Login">
+                <FaSignInAlt
+                  size={15}
+                  color="white"
+                  style={{marginRight: 5}}
+                  />
+                <RubikText style={this.styles.fontBotao}> Acesse sua conta</RubikText>
+            </Link>
+
             <UserConsumer>
             {({ setFacebookToken }) => (
               <FBButton
@@ -158,7 +170,7 @@ class Cadastro extends Component {
             </Link>
           </View>
 
-          <View style={this.styles.fullCenter}>
+          {/* <View style={this.styles.fullCenter}>
             <RubikText style={this.styles.textoSmall}>JÁ POSSUI CADASTRO? </RubikText>
             <Link
               to="Login"
@@ -172,7 +184,7 @@ class Cadastro extends Component {
               }}
             >ACESSE SUA CONTA
             </Link>
-          </View>
+          </View> */}
         </>
         )}
         </View>
