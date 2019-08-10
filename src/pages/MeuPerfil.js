@@ -11,7 +11,7 @@ import { MdCheckBox, MdCheckBoxOutlineBlank } from 'react-icons/md';
 import TouchableHighlight from '../ui/TouchableHighlight';
 import Alert from '../ui/Alert';
 import MaskedInput from 'react-text-mask'
-import { FaSpinner } from 'react-icons/fa';
+import { FaSpinner, FaBell } from 'react-icons/fa';
 import ReactGA from 'react-ga';
 
 class Checkbox extends React.Component {
@@ -91,7 +91,6 @@ class FormMeuPerfil extends React.Component {
     data_nascimento: '',
     celular: '',
     genero: '',
-    receberNovidades: false,
     loading: true,
     atualizando: false
   }
@@ -118,9 +117,8 @@ class FormMeuPerfil extends React.Component {
 
   componentDidMount() {
     this.loadPerfil();
+    this.ativaNotificacoes = this.ativaNotificacoes.bind(this)
     ReactGA.pageview('/meuperfil');
-    // this.setState({ receberNovidades: ( Notification.permission === 'granted' )})
-    this.setState({ receberNovidades: false})
   }
 
   render() {
@@ -184,12 +182,27 @@ class FormMeuPerfil extends React.Component {
         value={this.state.celular}
         onChange={(celular) => this.setState({celular: celular.target.value})}/>
 
-      <Checkbox
-        title="Quero receber novidades e ofertas da Vestylle Megastore Jaú"
-        value={this.state.receberNovidades}
-        onChange={(receberNovidades) => this.toggleNotificacoes(receberNovidades)}
-        style={{paddingTop: 20, paddingBottom: 15}}/>
-      
+      <TouchableHighlight
+        style={{
+          backgroundColor: '#feca03',
+          borderRadius: 5,
+          padding: 7,
+          paddingRight: 10,
+          paddingLeft: 10,
+          alignSelf: 'center',
+          alignItems: 'center',
+          justifyContent: 'center',
+          margin: 10
+        }}
+        onPress={this.ativaNotificacoes}
+      >
+        <View style={{flexDirection: 'row'}}>
+          <FaBell size={24}/>
+          <View style={{alignItems: 'center', justifyContent: 'center', flexGrow: 1, marginLeft: 5}}>
+            <RubikText>Ativar notificações neste dispositivo</RubikText>
+          </View>
+        </View>
+      </TouchableHighlight>
       <ButtonBorder
         title="CONTINUAR"
         submit={true}
@@ -210,11 +223,8 @@ class FormMeuPerfil extends React.Component {
     </form>
   }
 
-  toggleNotificacoes(receberNovidades) {
-    this.setState({receberNovidades})
-    if(receberNovidades) {
-      this.props.receberNotificacoes();
-    }
+  ativaNotificacoes() {
+    this.props.receberNotificacoes();
   }
 
   dismissAlertErro = () => {
@@ -235,7 +245,6 @@ class FormMeuPerfil extends React.Component {
       genero: this.state.genero,
       data_nascimento: this.state.data_nascimento,
       celular: this.state.celular,
-      receberNovidades: this.state.receberNovidades
     }
     
     // Trata data de nascimento e cpf
