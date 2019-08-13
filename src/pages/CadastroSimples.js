@@ -132,7 +132,8 @@ export default class CadastroSimples extends React.Component {
     .then(jsonRes => {
       if(jsonRes.success) {
         self.setState({
-          cadastroConcluido: true
+          cadastroConcluido: true,
+          loading: false
         })
         return
       }
@@ -146,11 +147,11 @@ export default class CadastroSimples extends React.Component {
       }
       self.setState({
         erroCadastro: true,
+        loading: false,
         msgErro
       })
     })
     .catch(error => console.error('Deu ruim memo:', error));
-    this.setState({loading:false})
   };
 
   dismissAlertErro = () => {
