@@ -12,6 +12,10 @@
   font-size: 10px;
 }
 
+.slick-slider {
+  margin-top: 30px;
+}
+
 .img-slider-wide {
   max-height: 170px;
   align-self: center;
@@ -327,7 +331,7 @@ button {
     max-height: 250px;
   }
   .img-slider {
-    max-height: 400px;
+    max-height: 450px;
   }
   .produto-desktop .img-slider {
     max-height: 300px;
