@@ -596,7 +596,7 @@ class UserProvider extends React.Component {
     return objRes
   }
 
-  receberNotificacoes() {
+  async receberNotificacoes() {
     this.setState({
       notificacoes: true
     })
@@ -681,30 +681,31 @@ class UserProvider extends React.Component {
     return (
       <UserContext.Provider
         value={{ 
-          atualizaOfertas: this.atualizaOfertas,
-          getOfertasComLike: this.getOfertasComLike,
-          getOfertaById: this.getOfertaById,
           ativaCupom: this.ativaCupom,
           atualizaCupons: this.atualizaCupons,
           atualizaCuponsUtilizados: this.atualizaCuponsUtilizados,
           atualizaInfosUser: this.atualizaInfosUser,
+          atualizaListaDesejos: this.atualizaListaDesejos,
+          atualizaOfertas: this.atualizaOfertas,
           buscaCupom: this.buscaCupom,
           cupons: this.state.cupons,
           cuponsUtilizados: this.state.cuponsUtilizados,
           faleConosco: this.faleConosco, 
           getCupomById: this.getCupomById,
           getDadosMeuPerfil: this.getDadosMeuPerfil,
-          atualizaListaDesejos: this.atualizaListaDesejos,
+          getOfertaById: this.getOfertaById,
+          getOfertasComLike: this.getOfertasComLike,
           isAuth: this.state.isAuth,
           isLoadingUser: this.state.isLoadingUser,
-          ofertas: this.state.ofertas,
           listaDesejos: this.state.listaDesejos,
           loadFromLocalStorage: this.loadFromLocalStorage,
           login: this.login,
           logout: this.logout,
           notificacoes: this.state.notificacoes,
+          ofertas: this.state.ofertas,
           perfil: this.state.perfil,
           receberNotificacoes: this.receberNotificacoes,
+          recoverPassword: this.recoverPassword,
           setDadosMeuPerfil: this.setDadosMeuPerfil,
           setFacebookToken: this.setFacebookToken,
           setPerfil: this.setPerfil,
@@ -712,7 +713,6 @@ class UserProvider extends React.Component {
           signup: this.signup,
           toggleDesejo: this.toggleDesejo,
           userToken: this.state.userToken,
-          recoverPassword: this.recoverPassword,
         }}
       >
         {this.props.children}

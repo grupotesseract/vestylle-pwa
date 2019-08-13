@@ -7,14 +7,14 @@ import ImageBackground from '../ui/ImageBackground';
 import ButtonBorder from '../ui/ButtonBorder';
 import MiniRodape from '../components/MiniRodape'
 import { Redirect } from 'react-router-dom'
-import { MdCheckBox, MdCheckBoxOutlineBlank } from 'react-icons/md';
+// import { MdCheckBox, MdCheckBoxOutlineBlank } from 'react-icons/md';
 import TouchableHighlight from '../ui/TouchableHighlight';
 import Alert from '../ui/Alert';
 import MaskedInput from 'react-text-mask'
 import { FaSpinner, FaBell } from 'react-icons/fa';
 import ReactGA from 'react-ga';
 
-class Checkbox extends React.Component {
+/*class Checkbox extends React.Component {
   render() { 
     return <TouchableHighlight
       onPress={this.toggleCheckbox}
@@ -41,7 +41,7 @@ class Checkbox extends React.Component {
     const newValue = !this.props.value;
     this.props.onChange(newValue);
   }
-}
+}*/
 
 class InputValidacao extends React.Component {
 
@@ -100,7 +100,7 @@ class FormMeuPerfil extends React.Component {
     if(this.state.loading) {
       this.props.getData()
       .then(perfil => {
-        if(perfil.data_nascimento) {
+        if(perfil && perfil.data_nascimento) {
           perfil.data_nascimento = this.utf2ddmmaaaa(perfil.data_nascimento)
         }
         this.setState({
@@ -240,7 +240,8 @@ class FormMeuPerfil extends React.Component {
       this.setState({
         dispositivoCadastrado: true
       })
-    });}
+    });
+  }
 
   dismissAlertCadastro = () => {
     this.setState({

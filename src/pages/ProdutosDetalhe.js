@@ -122,42 +122,40 @@ class ProdutoDetalhado extends React.Component {
             src={oferta.urlFoto}/>
         }
 
-          <View className="hide-sm">
-            {Number(porcentagem_off) > 0 && (
-            <View className="desconto bandeirola" style={{ fontSize: 18, color: 'white', position: 'absolute', left: 45, top: 8}}>
-              {cupom && cupom.id && 
-              <>
-              <RubikText bold={true}>
-                  {porcentagem_off+"% OFF"}
-              </RubikText>
-              <RubikText bold={true} style={{fontSize: 12}}>
-                COM CUPOM
-              </RubikText>
-              </>
-              }
-              {cupom && cupom.id && !cupom.porcentagem_off && 
-              <>
-              <RubikText bold={true} style={{fontSize: 16}}>
-                DESCONTO
-              </RubikText> 
-              <RubikText bold={true} style={{fontSize: 14}}>
-                COM CUPOM"
-              </RubikText>
-              </>
-              }
-              {(!cupom || !cupom.id) && 
-              <>
-                <RubikText bold={true}>
-                { porcentagem_off+"%" }
-                </RubikText>
-                <RubikText bold={true}>
-                  OFF
-                </RubikText>
-              </>
-              }
-            </View>
-            )}
-          </View>
+        {Number(porcentagem_off) > 0 && (
+        <View className="desconto bandeirola hide-sm" style={{ fontSize: 18, color: 'white', position: 'absolute', left: 45, top: 8}}>
+          {cupom && cupom.id && 
+          <>
+          <RubikText bold={true}>
+              {porcentagem_off+"% OFF"}
+          </RubikText>
+          <RubikText bold={true} style={{fontSize: 12}}>
+            COM CUPOM
+          </RubikText>
+          </>
+          }
+          {cupom && cupom.id && !cupom.porcentagem_off && 
+          <>
+          <RubikText bold={true} style={{fontSize: 16}}>
+            DESCONTO
+          </RubikText> 
+          <RubikText bold={true} style={{fontSize: 14}}>
+            COM CUPOM"
+          </RubikText>
+          </>
+          }
+          {(!cupom || !cupom.id) && 
+          <>
+            <RubikText bold={true}>
+            { porcentagem_off+"%" }
+            </RubikText>
+            <RubikText bold={true}>
+              OFF
+            </RubikText>
+          </>
+          }
+        </View>
+        )}
 
         </View>
         <View className="md-50" style={{justifyContent: 'center', flexGrow: 1,}}>
