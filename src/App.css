@@ -467,6 +467,7 @@ button {
   .lista-cupons {
     display: block;
     align-self: stretch;
+    width: 100%;
     padding-top: 50px;
     padding-bottom: 50px;
   }
