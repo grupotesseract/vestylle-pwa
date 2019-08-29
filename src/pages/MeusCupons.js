@@ -157,7 +157,6 @@ class ListaCupons extends React.Component {
                 </RubikText>
                 <Link
                     to={"/cupom/"+cupom.id}
-                    title="VER DETALHES"
                     style={{
                         backgroundColor: '#e20f17',
                         color: 'white',
@@ -169,7 +168,7 @@ class ListaCupons extends React.Component {
                         alignSelf: 'center'
                     }}
                 >
-                    <RubikText>{ this.state.cuponsSelecionados === 'utilizados' ? "VER DETALHES" : "VER DETALHES"} </RubikText>
+                    <RubikText> ENTRAR </RubikText>
                 </Link>
             </View>
         })}
