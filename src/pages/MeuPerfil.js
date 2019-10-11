@@ -283,6 +283,7 @@ class FormMeuPerfil extends React.Component {
 
     await this.props.setData(perfil)
     .then((res) => {
+      console.log(res);
       if(res && res.succes && res.data) {
         const meuPerfil = res.data
         this.props.atualizaPerfil(meuPerfil)

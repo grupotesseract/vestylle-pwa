@@ -64,8 +64,7 @@ class DadosRodapeWide extends Component {
             </RubikText>
           </View>
           <View style={{padding: 10, alignItems: 'flex-start'}}>
-            <RubikText bold={true}>FALE COM UM DE</RubikText>
-            <RubikText bold={true}>NOSSOS ATENDENTES</RubikText>
+            <RubikText bold={true}>FALE CONOSCO</RubikText>
             {dadosLoja.whatsapp &&
             <>
               <RubikText style={{marginTop: 6}}>
@@ -174,8 +173,7 @@ class DadosRodape extends Component {
             style={{ height: 30, width:30, flexGrow: 0, marginRight: 10, marginLeft: 10 }}
           />
           <View style={this.style.faleComAtendentes}>
-            <RubikText bold={true} style={{color: "#feca03"}}>FALE COM UM DE</RubikText>
-            <RubikText bold={true} style={{color: "#feca03"}}>NOSSOS ATENDENTES</RubikText>
+            <RubikText bold={true} style={{color: "#feca03"}}>FALE CONOSCO</RubikText>
           </View>
         </View>
         {dadosLoja.whatsapp &&
@@ -285,7 +283,8 @@ class DadosRodape extends Component {
     },
     faleComAtendentes: {
       flexGrow: 8,
-      fontSize:14
+      fontSize:14,
+      justifyContent: 'center',
     },
     email: {
       borderWidth: 0,
