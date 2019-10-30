@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import RubikText from '../ui/RubikText';
 import MiniRodape from './MiniRodape'
 import View from '../ui/View';
-import { FaClock, FaMapMarker, FaWhatsapp, FaPhone } from 'react-icons/fa';
+import { FaClock, FaWhatsapp, FaPhone } from 'react-icons/fa';
 import TouchableHighlight from '../ui/TouchableHighlight';
 import { MdEmail } from 'react-icons/md';
 import { LojaConsumer } from '../LojaContext';
@@ -149,12 +149,6 @@ class DadosRodape extends Component {
           <RubikText style={{fontSize: 14}}>Segunda a Sexta 9h as 18h</RubikText>
           <RubikText style={{fontSize: 14}}>Sábados 9h as 17h</RubikText>
         </View>
-        <RubikText style={{fontSize: 14}}>
-          <FaMapMarker
-            size={14}
-          />
-          {dadosLoja.endereco}
-        </RubikText>
         <a href="http://maps.apple.com/?ll=-22.2955408,-48.5574577,17">
           <RubikText bold={true} style={{fontSize: 14, textDecorationLine: 'underline'}}>VER LOCALIZAÇÃO NO MAPA</RubikText>
         </a>

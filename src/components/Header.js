@@ -41,7 +41,7 @@ class OlaUsuario extends Component {
 
                 </View> 
                 <View style={{ alignItems: 'center', padding: 20, flexDirection: 'row'}}>
-                    <a target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/vestyllemegajau/" >
+                    <a target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/vestyllejau/" >
                     <FaInstagram
                         size={32}
                     />
@@ -69,7 +69,7 @@ class OlaUsuario extends Component {
                 </View>
             </View>
             <View style={{ alignItems: 'center', padding: 20, flexDirection: 'row'}}>
-                <a target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/vestyllemegajau/" >
+                <a target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/vestyllejau/" >
                 <FaInstagram
                     size={32}
                 />
