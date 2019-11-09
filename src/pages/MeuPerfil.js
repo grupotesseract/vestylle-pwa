@@ -7,41 +7,11 @@ import ImageBackground from '../ui/ImageBackground';
 import ButtonBorder from '../ui/ButtonBorder';
 import MiniRodape from '../components/MiniRodape'
 import { Redirect } from 'react-router-dom'
-// import { MdCheckBox, MdCheckBoxOutlineBlank } from 'react-icons/md';
 import TouchableHighlight from '../ui/TouchableHighlight';
 import Alert from '../ui/Alert';
 import MaskedInput from 'react-text-mask'
 import { FaSpinner, FaBell } from 'react-icons/fa';
 import ReactGA from 'react-ga';
-
-/*class Checkbox extends React.Component {
-  render() { 
-    return <TouchableHighlight
-      onPress={this.toggleCheckbox}
-      style={this.props.style}
-      >
-    <View style={{flexDirection: 'row', alignItems: 'center'}}>
-      {this.props.value ? (
-      <MdCheckBox
-        size={26}
-        style={{color:'white'}}
-      />
-      ):(
-      <MdCheckBoxOutlineBlank
-        size={26}
-        style={{color:'white'}}
-      />
-      )}
-      <RubikText style={{color: 'white', paddingLeft: 5}}>{this.props.title}</RubikText>
-    </View>
-    </TouchableHighlight>
-  }
-
-  toggleCheckbox = () => {
-    const newValue = !this.props.value;
-    this.props.onChange(newValue);
-  }
-}*/
 
 class InputValidacao extends React.Component {
 
@@ -113,7 +83,7 @@ class FormMeuPerfil extends React.Component {
   }
 
   componentDidUpdate() {
-    this.loadPerfil();
+    // this.loadPerfil();
   }
 
   componentDidMount() {
