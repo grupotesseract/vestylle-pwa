@@ -5,7 +5,7 @@ import RubikText from '../ui/RubikText';
 import { Link, Redirect } from 'react-router-dom'
 import Breadcrumb from '../ui/Breadcrumb';
 import RodapeCompleto from '../components/RodapeCompleto';
-import { FaCamera, FaArrowLeft, FaSpinner } from 'react-icons/fa';
+import { FaCamera, FaArrowLeft, FaSpinner, FaSearch } from 'react-icons/fa';
 import QrReader from 'react-qr-reader'
 import Alert from '../ui/Alert';
 import { UserConsumer } from '../UserContext';
@@ -27,7 +27,7 @@ class InputCupomQR extends React.Component {
       cupomValue = this.removeURI(cupomValue)
       this.setState({
         cupom: cupomValue,
-        status: 'display'
+        status: 'display',
       })
       this.findCupom(cupomValue)
     }
@@ -44,11 +44,6 @@ class InputCupomQR extends React.Component {
   }
 
   componentDidUpdate() {
-    /*
-    this.setState({
-      atualizaValorCupom: this.atualizaValorCupom
-    })
-    */
     const codigoCupom = this.props.codigoCupom
     if(codigoCupom && !this.state.cupom)
     if(codigoCupom){
@@ -60,17 +55,16 @@ class InputCupomQR extends React.Component {
   handleChangeCumpom = (e) => {
     let cupomValue = this.removeURI(e.target.value)
     this.setState({cupom: cupomValue})
-    clearTimeout(this.state.ativaBuscaCupom)
-    this.setState({
-      ativaBuscaCupom: setTimeout(()=>{
-        this.findCupom(cupomValue)
-      } ,1500)
-    })
+  }
+
+  onPressIR = () => {
+    const { cupom } = this.state;
+    console.log("CUPOM", cupom)
+    this.findCupom(cupom);
   }
 
   removeURI(cupomValue) {
     const valoresQR = cupomValue && cupomValue.split('/')
-    console.log(valoresQR)
     if(valoresQR.length > 1){
       return valoresQR[valoresQR.length-1]
     }
@@ -78,8 +72,9 @@ class InputCupomQR extends React.Component {
   }
 
   findCupom = async (cupomValue) => {
+    const { loadingCupom } = this.state;
     if(cupomValue && cupomValue.length > 3) {
-      if(!this.state.loadingCupom) {
+      if(!loadingCupom) {
         this.setState({ loadingCupom: true })
         console.log(cupomValue)
 
@@ -88,6 +83,8 @@ class InputCupomQR extends React.Component {
           console.log(cupom)
           if(cupom && cupom.id) {
             this.setState({
+              loadingCupom: false,
+              cupom: '',
               redirectTo: 'cupom/'+cupom.id
             })
           }
@@ -110,13 +107,19 @@ class InputCupomQR extends React.Component {
   }
 
   render() {
+    const { 
+      redirectTo, 
+      status, 
+      loadingCupom,
+      alertMessage,
+    } = this.state;
     return <View className="margin-md-top">
 
-      { this.state.redirectTo && (
-        <Redirect to={this.state.redirectTo}/>
+      { redirectTo && (
+        <Redirect to={redirectTo}/>
       )}
 
-      {this.state.status === 'read' && (
+      {status === 'read' && (
         <div className="qr-reader">
           <QrReader
             delay={100}
@@ -161,33 +164,53 @@ class InputCupomQR extends React.Component {
         Insira seu código no campo abaixo
       </RubikText>
 
-      <input
-        type="text"
-        style={{
-          border: 2,
-          borderStyle: 'solid',
-          borderRadius: 7,
-          borderColor: '#bdbabc',
-          backgroundColor: '#ebeaeb',
-          alignSelf: 'center',
-          padding: 10,
-          fontSize: 20,
-          marginTop: 10,
-          marginBottom: 30,
-          textAlign: 'center'
-        }}
-        value={this.state.cupom}
-        onChange={(e) => this.handleChangeCumpom(e)}
-      />
-      { this.state.loadingCupom && (
-          <View style={{ alignItems: 'center', alignSelf: 'stretch', paddingBottom: 10}}>
-            <FaSpinner color="black" className="spin" style={{fontSize: 36}} />
-          </View>
-      )}
-      { this.state.alertMessage && (
+      <View style={{ 
+        display: 'flex', 
+        flexDirection: "row", 
+        justifyContent: 'center',
+        marginTop: 10,
+        marginBottom: 30,
+        }}>
+        <input
+          type="text"
+          style={{
+            border: 2,
+            borderStyle: 'solid',
+            borderRadius: 7,
+            borderColor: '#bdbabc',
+            backgroundColor: '#ebeaeb',
+            alignSelf: 'center',
+            padding: 10,
+            fontSize: 20,
+            textAlign: 'center'
+          }}
+          value={this.state.cupom}
+          onChange={(e) => this.handleChangeCumpom(e)}
+        />
+        <button
+          style={{
+            backgroundColor: '#feca03',
+            padding: 12,
+            alignSelf:'center',
+            borderWidth: 2,
+            borderStyle: 'solid',
+            marginLeft: 5,
+            borderRadius: 7,
+            borderColor: '#eeba13',
+          }}
+          onClick={() => this.onPressIR()}
+        >
+          { loadingCupom ? (
+            <FaSpinner color="black" className="spin" style={{fontSize: 20}} />
+          ):(
+            <FaSearch color="black" style={{fontSize: 20}} />
+          )}
+        </button>
+      </View>
+      { alertMessage && (
         <Alert
           title = "Adicionando Cupom"
-          message = {this.state.alertMessage}
+          message = {alertMessage}
           btnText = "OK"
           onClickButton = {this.dismissAlertErro}
           dismissAlert = {this.dismissAlertErro}
