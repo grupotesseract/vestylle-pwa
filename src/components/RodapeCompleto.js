@@ -49,7 +49,7 @@ class DadosRodapeWide extends Component {
             <RubikText style={{maxWidth: 180, textAlign: 'left'}}>
               {dadosLoja.endereco}
             </RubikText>
-            <a href="http://maps.apple.com/?ll=-22.2955408,-48.5574577,17">
+            <a href="http://maps.apple.com/?ll=-22.2955408,-48.5574577,17&q=Vestylle+Megastore&address=R.+Edgard+Ferraz%2c+281+-+Centro%2c+Ja%c3%ba+-+SP%2c+17201-440">
               <RubikText bold={true} style={{fontSize: 14, textDecorationLine: 'underline'}}>VER NO MAPA</RubikText>
             </a>
           </View>
