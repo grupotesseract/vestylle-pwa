@@ -38,7 +38,7 @@ class SimpleMenu extends Component {
         />
       </Link>
       <LojaConsumer>
-        {({ atualizaDadosLoja, dadosLoja }) =>
+        {({ dadosLoja }) =>
             <TouchableHighlight
               onPress={() => window.open("http://api.whatsapp.com/send?phone=55"+this.onlyNumbers(dadosLoja.whatsapp))}>
               <FaWhatsapp
