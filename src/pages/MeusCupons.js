@@ -119,12 +119,10 @@ class ListaCupons extends React.Component {
             
                 <View
                     style={{
-                        margin: 20,
-                        marginTop: 10,
+                        margin: 8,
                         border: 1,
                         borderColor: '#868686',
                         borderStyle: 'solid',
-                        height: 220,
                         justifyItems: 'center',
                         position: 'relative',
                         overflow: 'hidden',
@@ -134,9 +132,8 @@ class ListaCupons extends React.Component {
                         alt={cupom.titulo}
                         style={{
                             width:'100%',
-                            position: 'absolute',
                             objectFit: 'cover',
-                            height: '100%'
+                            height: 'auto'
 
                         }}
                     />

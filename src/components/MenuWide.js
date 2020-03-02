@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import View from '../ui/View';
-import { IoMdHome, IoMdQrScanner, IoMdShirt, IoMdPin } from 'react-icons/io'
+import { IoMdHome, IoMdQrScanner, IoMdShirt, IoMdPin } from 'react-icons/io';
 // import { MdPerson } from 'react-icons/md';
-import { FaStar, FaHeart, FaWhatsapp,  FaWallet } from 'react-icons/fa'
-import { Link } from 'react-router-dom'
+import { FaStar, FaHeart, FaWhatsapp,  FaWallet } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import RubikText from '../ui/RubikText';
+import TouchableHighlight from '../ui/TouchableHighlight';
+import { LojaConsumer } from '../LojaContext';
 
 class MenuButton extends React.Component {
   render() {
@@ -34,6 +36,11 @@ class MenuButton extends React.Component {
 }
 
 class MenuWide extends Component {
+
+    onlyNumbers(str) {
+        return str.replace(/\D/g, '');
+    }
+    
     render() {
         return <View style={{
             borderTopWidth: 0,
@@ -48,52 +55,65 @@ class MenuWide extends Component {
                 flexDirection: "row",
                 justifyContent: "space-around",
             }}>
-            <MenuButton 
-                label="Início"
-                page="/"
-                icon={IoMdHome}
-            />
-            {/* <MenuButton 
+                <MenuButton
+                    label="Início"
+                    page="/"
+                    icon={IoMdHome}
+                />
+                {/* <MenuButton 
                 label="Área do Cliente"
                 page="/areacliente"
                 icon={MdPerson}
             /> */}
-            <MenuButton 
-                label="Meus Pontos"
-                page="/meuspontos"
-                icon={FaStar}
-            />
-            <MenuButton 
-                label="Meus Cupons"
-                page="/meuscupons"
-                icon={FaWallet}
-            />
-            <MenuButton 
-                label="Adicionar Cupom"
-                page="/adicionarcupom"
-                icon={IoMdQrScanner}
-            />
-            <MenuButton 
-                label="Lista de Desejos"
-                page="/listadesejos"
-                icon={FaHeart}
-            />
-            <MenuButton 
-                label="Produtos"
-                page="/produtos"
-                icon={IoMdShirt}
-            />
-            <MenuButton 
-                label="Loja"
-                page="/loja"
-                icon={IoMdPin}
-            />
-            <MenuButton 
-                label="Fale Conosco"
-                page="/faleconosco"
-                icon={FaWhatsapp}
-                noborder={true}
-            />
+                <MenuButton
+                    label="Meus Pontos"
+                    page="/meuspontos"
+                    icon={FaStar}
+                />
+                <MenuButton
+                    label="Meus Cupons"
+                    page="/meuscupons"
+                    icon={FaWallet}
+                />
+                <MenuButton
+                    label="Adicionar Cupom"
+                    page="/adicionarcupom"
+                    icon={IoMdQrScanner}
+                />
+                <MenuButton
+                    label="Lista de Desejos"
+                    page="/listadesejos"
+                    icon={FaHeart}
+                />
+                <MenuButton
+                    label="Produtos"
+                    page="/produtos"
+                    icon={IoMdShirt}
+                />
+                <MenuButton
+                    label="Loja"
+                    page="/loja"
+                    icon={IoMdPin}
+                />
+                <LojaConsumer>
+                    {({ dadosLoja }) =>
+                        <TouchableHighlight
+                            onPress={() => window.open("http://api.whatsapp.com/send?phone=55" + this.onlyNumbers(dadosLoja.whatsapp))}>
+                            <FaWhatsapp
+                                size={16}
+                                style={{ justifyContent: 'flex-end' }}
+                                color="#6b6b6b"
+                            />
+                            <RubikText style={{
+                                color: '#6b6b6b',
+                                textTransform: 'uppercase',
+                                paddingRight: 15,
+                                fontSize: 14,
+                                textAlign: 'left'
+                            }}>{"Fale Conosco".toUpperCase()}</RubikText>
+                        </TouchableHighlight>
+                    }
+                </LojaConsumer>
             </View>
         </View>
     }
